@@ -25,10 +25,8 @@
     <link href="<?= base_url() ?>asset_user/lib/animate/animate.min.css" rel="stylesheet">
     <link href="<?= base_url() ?>asset_user/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
     <link href="<?= base_url() ?>asset_user/lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
-
     <!-- Customized Bootstrap Stylesheet -->
     <link href="<?= base_url() ?>asset_user/css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Template Stylesheet -->
     <link href="<?= base_url() ?>asset_user/css/style.css" rel="stylesheet">
 </head>
@@ -42,12 +40,11 @@
     </div>
     <!-- Spinner End -->
 
-
     <!-- Navbar & Hero Start -->
     <div class="container-fluid position-relative p-0">
         <nav class="navbar navbar-expand-lg navbar-light px-40 px-lg-5 py-3 py-lg-0">
             <a href="#" class="navbar-brand d-flex align-items-center">
-                <img class="fa img-fluid" src="<?= base_url() ?>asset_user/img/logobali.png" alt="">
+            <img class="fa img-fluid" src="<?= base_url() ?>asset_user/img/logobali.png" alt="">
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,14 +52,14 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
-                    <a href="<?= base_url() ?>" class="nav-item nav-link active">Home</a>
+                    <a href="<?= base_url() ?>" class="nav-item nav-link">Home</a>
                     <a href="<?= base_url() ?>about" class="nav-item nav-link">About</a>
-                    <a href="<?= base_url() ?>service" class="nav-item nav-link active">Services</a>
+                    <a href="<?= base_url() ?>service" class="nav-item nav-link">Services</a>
                     <a href="<?= base_url() ?>booking" class="nav-item nav-link">Booking</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
                         <div class="dropdown-menu m-0">
-                            <a href="<?= base_url() ?>documentation" class="dropdown-item">Documentation</a>
+                            <a href="<?= base_url() ?>documentation" class="dropdown-item active">Documentation</a>
                             <a href="<?= base_url() ?>review" class="dropdown-item">Testimonial</a>
                         </div>
                     </div>
@@ -72,8 +69,8 @@
 
                         <script type="text/javaScript">
                             function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');    
-                        }
-                    </script>
+                            }
+                        </script>
                         <script type="text/javaScript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
                     </span>
                 </div>
@@ -84,11 +81,11 @@
             <div class="container py-5">
                 <div class="row justify-content-center py-5">
                     <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-                        <h1 class="display-3 text-white animated slideInDown">Service</h1>
+                        <h1 class="display-3 text-white animated slideInDown">Documentation</h1>
                         <nav aria-label="breadcrumb">
                             <ol class="breadcrumb justify-content-center">
                                 <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item text-white active" aria-current="page">Service</li>
+                                <li class="breadcrumb-item text-white active" aria-current="page">Documentation</li>
                             </ol>
                         </nav>
                     </div>
@@ -99,90 +96,42 @@
     <!-- Navbar & Hero End -->
 
 
-    <!-- Service Start -->
-    <div class="container-xxl py-5">
+    <!-- Documentation Start -->
+    <div class="container-xxl py-5 destination">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Services</h6>
-                <h1 class="mb-5">Our Services</h1>
+                <h6 class="section-title bg-white text-center text-primary px-3">Image Documentation</h6>
+                <h1 class="mb-5">Documentation</h1>
             </div>
-            <div class="row g-4">
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-road text-primary mb-4"></i>
-                            <h5>Road To View</h5>
-                            <p>Enjoy a stunning journey with beautiful views along the way. We present the best routes that show the stunning natural panorama of Bali. From enchanting beaches to towering mountains, every trip will be an unforgettable visual experience.</p>
+            <div class="row g-3">
+                <div class="col-lg-7 col-md-6">
+                    <div class="row g-3">
+                        <div class="col-lg-12 col-md-12 wow zoomIn" data-wow-delay="0.1s">
+                            <a class="position-relative d-block overflow-hidden" href="">
+                                <img class="img-fluid" src="img/dokumentasi1.jpeg" alt="">
+                            </a>
+                        </div>
+                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.3s">
+                            <a class="position-relative d-block overflow-hidden" href="">
+                                <img class="img-fluid" src="img/dokumentasi4.jpeg" alt="">
+                            </a>
+                        </div>
+                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.5s">
+                            <a class="position-relative d-block overflow-hidden" href="">
+                                <img class="img-fluid" src="img/dokumentasi3.jpeg" alt="">
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-map-marker-alt text-primary mb-4"></i>
-                            <h5>Destination</h5>
-                            <p>Discover the best destinations in Bali with us. We offer a wide selection of interesting tourist attractions, ranging from cultural, natural and culinary attractions. Each destination is carefully selected to provide the best experience and sweet memories while in Bali.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-user text-primary mb-4"></i>
-                            <h5>Profile Travel</h5>
-                            <p>Get to know our travel services specifically designed to meet your various travel needs. With experience and dedication in the tourism industry, we are committed to providing the best service and ensuring every trip you take with us is a satisfying experience.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-sm-6 wow fadeInUp" data-wow-delay="0.7s">
-                    <div class="service-item rounded pt-3">
-                        <div class="p-4">
-                            <i class="fa fa-3x fa-cog text-primary mb-4"></i>
-                            <h5>Custom Itineraries</h5>
-                            <p>We offer a travel plan creation service tailored to your wishes and needs. With our experience and in-depth local knowledge, we will help you design the perfect trip, including the best destinations, activities and accommodation options in Bali.</p>
-                        </div>
-                    </div>
+                <div class="col-lg-5 col-md-6 wow zoomIn" data-wow-delay="0.7s" style="min-height: 350px;">
+                    <a class="position-relative d-block h-100 overflow-hidden" href="">
+                        <img class="img-fluid position-absolute w-100 h-100" src="img/dokumentasi5.jpeg" alt="" style="object-fit: cover;">
+                    </a>
                 </div>
             </div>
         </div>
     </div>
-    </div>
-    </div>
-    <!-- Service End -->
-
-
-    <!-- Testimonial Start -->
-    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container">
-            <div class="text-center">
-                <h6 class="section-title bg-white text-center text-primary px-3">Testimonial</h6>
-                <h1 class="mb-5">Our Clients Say!!!</h1>
-            </div>
-            <div class="owl-carousel testimonial-carousel position-relative">
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <h5 class="mb-0">Alexander Johann Schmidt</h5>
-                    <p>Germany</p>
-                    <p class="mb-0">Our trip to Bali with ExploreTour & Travel Bali was one of the best holidays we have ever had. Every detail of the trip was arranged perfectly. We really enjoyed the tour to the Tegallalang Rice Terrace and snorkeling in Amed. Our tour guide was very knowledgeable and always helpful . The hotel chosen for us was very clean and comfortable, with very friendly staff. We will definitely return and recommend ExploreTour & Travel Bali to all our friends!</p>
-                </div>
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <h5 class="mb-0">Isabella Sofia Rodríguez García</h5>
-                    <p>Spain</p>
-                    <p class="mt-2 mb-0">Many thanks to ExploreTour & Travel Bali for making our holiday in Bali so special! Everything is professionally arranged, from transportation to tours to beautiful destinations such as Besakih Temple and Jimbaran Beach. Our tour guide was very friendly and provided lots of interesting information about Balinese culture. The accommodation is very comfortable and has stunning views. We highly recommend ExploreTour & Travel Bali!</p>
-                </div>
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <h5 class="mb-0">Jonathan Michael Williams</h5>
-                    <p>USA</p>
-                    <p class="mt-2 mb-0">Traveling to Bali with Explore Tour & Travel Bali is an amazing experience! Everything was very well organized, from airport pick up to daily tours to amazing places like Tanah Lot and Ubud. Our tour guide, was very friendly and informative. We also really enjoyed the snorkeling tour in Nusa Penida. Thank you for an unforgettable holiday!</p>
-                </div>
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <h5 class="mb-0">Olivia Marie Johnson</h5>
-                    <p>Italy</p>
-                    <p class="mt-2 mb-0">Explore Tour & Travel Bali made our holiday in Bali truly magical! Everything was perfectly organized, from the warm welcome at the airport to the comprehensive tour. Highlights include sunset at Tanah Lot and cultural dance performances in Ubud. Our guides were great, shared a lot of knowledge and were always willing to help. Highly recommend Explore Tour & Travel Bali for the perfect holiday in Bali!</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Testimonial End -->
+    <!-- Documentation Start -->
 
 
     <!-- Footer Start -->
@@ -200,22 +149,22 @@
                     <h4 class="text-white mb-3">Gallery</h4>
                     <div class="row g-2 pt-2">
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="<?= base_url() ?>asset_user/img/dokumentasi8.jpeg" alt="">
+                            <img class="img-fluid bg-light p-1" src="img/dokumentasi8.jpeg" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="<?= base_url() ?>asset_user/img/dokumentasi2.jpeg" alt="">
+                            <img class="img-fluid bg-light p-1" src="img/dokumentasi2.jpeg" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="<?= base_url() ?>asset_user/img/dokumentasi6.jpeg" alt="">
+                            <img class="img-fluid bg-light p-1" src="img/dokumentasi6.jpeg" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="<?= base_url() ?>asset_user/img/dokumentasi5.jpeg" alt="">
+                            <img class="img-fluid bg-light p-1" src="img/dokumentasi5.jpeg" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="<?= base_url() ?>asset_user/img/dokumentasi4.jpeg" alt="">
+                            <img class="img-fluid bg-light p-1" src="img/dokumentasi4.jpeg" alt="">
                         </div>
                         <div class="col-4">
-                            <img class="img-fluid bg-light p-1" src="<?= base_url() ?>asset_user/img/dokumentasi3.jpeg" alt="">
+                            <img class="img-fluid bg-light p-1" src="img/dokumentasi3.jpeg" alt="">
                         </div>
                     </div>
                 </div>
@@ -228,8 +177,6 @@
     </div>
     </div>
     <!-- Footer End -->
-
-
 
     <!-- Back to Top -->
     <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
