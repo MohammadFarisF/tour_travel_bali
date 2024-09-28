@@ -29,8 +29,16 @@ $routes->set404Override();
 
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
-$routes->get('/', 'Home::user');
-$routes->get('/bali', 'Home::admin');
+$routes->get('/', 'User::index');
+$routes->get('/about', 'User::about');
+$routes->get('/booking', 'User::booking');
+$routes->get('/contact', 'User::contact');
+$routes->get('/service', 'User::service');
+$routes->get('/review', 'User::testimonial');
+$routes->get('/documentation', 'User::documentation');
+
+
+$routes->get('/bali', 'Home::index');
 
 
 

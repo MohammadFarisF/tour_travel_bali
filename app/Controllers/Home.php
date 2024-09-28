@@ -2,17 +2,10 @@
 
 namespace App\Controllers;
 
-use App\Models\UsersModel;
-use SebastianBergmann\Template\Template;
-
 class Home extends BaseController
 {
-    public function user()
-    {
-        echo view('user/index');
-    }
 
-    public function admin()
+    public function index()
     {
 
         $data = [
