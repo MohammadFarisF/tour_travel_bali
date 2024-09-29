@@ -38,7 +38,10 @@ $routes->get('/review', 'User::testimonial');
 $routes->get('/documentation', 'User::documentation');
 
 
-$routes->get('/bali', 'Home::index');
+$routes->get('/bali', 'Dashboard::index');
+$routes->get('/bali/paket', 'Dashboard\Paket::index');
+$routes->get('/bali/destinasi', 'Dashboard\Destinasi::index');
+$routes->get('/bali/kendaraan', 'Dashboard\Kendaraan::index');
 
 
 
