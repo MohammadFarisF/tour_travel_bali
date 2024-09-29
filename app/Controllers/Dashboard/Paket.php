@@ -1,19 +1,21 @@
 <?php
 
-namespace App\Controllers;
+namespace App\Controllers\Dashboard;
 
-class Home extends BaseController
+use App\Controllers\BaseController;
+
+class Paket extends BaseController
 {
 
     public function index()
     {
 
         $data = [
-            'title' => 'Dashboard',
+            'title' => 'Paket',
         ];
         echo view('admin/Template/header', $data);
         echo view('admin/Template/sidebar');
-        echo view('admin/index');
+        echo view('admin/paket');
         echo view('admin/Template/footer');
     }
 }
