@@ -7,6 +7,9 @@ use CodeIgniter\Model;
 class kendaraanmodel extends Model
 {
     protected $table = 'vehicles';
+    
+    // Menetapkan primary key
+    protected $primaryKey = 'vehicle_id';
 
     // Fields that can be modified
     protected $allowedFields = [
