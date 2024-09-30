@@ -15,6 +15,7 @@
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
@@ -46,44 +47,54 @@
     <!-- Spinner End -->
 
 
-    <!-- Navbar & Hero Start -->
-    <div class="container-fluid position-relative p-0">
-        <nav class="navbar navbar-expand-lg navbar-light px-40 px-lg-5 py-3 py-lg-0">
-            <a href="#" class="navbar-brand d-flex align-items-center">
-                <img class="fa img-fluid" src="<?= base_url() ?>asset_user/img/logobali.png" alt="">
-            </a>
+<!-- Navbar & Hero Start -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-40 px-lg-5 py-3 py-lg-0">
+        <a href="#" class="navbar-brand d-flex align-items-center">
+            <img class="fa img-fluid" src="<?= base_url() ?>asset_user/img/logobali.png" alt="">
+        </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto py-0">
-                    <a href="<?= base_url() ?>" class="nav-item nav-link active">Home</a>
-                    <a href="<?= base_url() ?>about" class="nav-item nav-link">About</a>
-                    <a href="<?= base_url() ?>service" class="nav-item nav-link">Services</a>
-                    <a href="<?= base_url() ?>booking" class="nav-item nav-link">Booking</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="<?= base_url() ?>documentation" class="dropdown-item">Documentation</a>
-                            <a href="<?= base_url() ?>review" class="dropdown-item">Testimonial</a>
-                        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a href="<?= base_url() ?>" class="nav-item nav-link active">Home</a>
+                <a href="<?= base_url() ?>about" class="nav-item nav-link">About</a>
+                <a href="<?= base_url() ?>payment" class="nav-item nav-link">Payment</a>
+                <a href="<?= base_url() ?>booking" class="nav-item nav-link">Booking</a>
+                <a href="<?= base_url() ?>contact" class="nav-item nav-link">Contact</a>
+                
+                <!-- New Customer Profile Dropdown -->
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-cog"></i> <!-- Ikon Profil -->
+                    </a>
+                    <div class="dropdown-menu m-0">
+                        <a href="<?= base_url() ?>profile/change" class="dropdown-item">Change Password</a>
+                        <a href="<?= base_url() ?>profile/order_data" class="dropdown-item">Order Data</a>
+                        <a href="<?= base_url() ?>profile/review" class="dropdown-item">Review</a>
+                        <!-- Logout Button -->
+                    <form action="<?= base_url() ?>logout" method="post" class="dropdown-item p-0">
+                        <button type="submit" class="btn btn-danger w-100 text-start">Logout</button>
+                    </form>
+
                     </div>
-                    <a href="<?= base_url() ?>contact" class="nav-item nav-link">Contact</a>
-                    <span>
-                        <div class="translate" id="google_translate_element"></div>
-
-                        <script type="text/javaScript">
-                            function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');    
-                            }
-                        </script>
-                        <script type="text/javaScript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-                    </span>
                 </div>
+
+                <span>
+                    <div class="translate" id="google_translate_element"></div>
+                    <script type="text/javaScript">
+                        function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element'); }
+                    </script>
+                    <script type="text/javaScript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                </span>
             </div>
-        </nav>
-    </div>
-    <!-- Navbar & Hero End -->
+        </div>
+    </nav>
+</div>
+<!-- Navbar & Hero End -->
+
 
     <div class="container-fluid bg-primary py-5 mb-5 hero-header">
         <div class="container py-5">
@@ -186,24 +197,24 @@
                     <div class="row g-3">
                         <div class="col-lg-12 col-md-12 wow zoomIn" data-wow-delay="0.1s">
                             <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/dokumentasi1.jpeg" alt="">
+                                <img class="img-fluid" src="asset_user/img/dokumentasi1.jpeg" alt="">
                             </a>
                         </div>
                         <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.3s">
                             <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/dokumentasi4.jpeg" alt="">
+                                <img class="img-fluid" src="asset_user/img/dokumentasi4.jpeg" alt="">
                             </a>
                         </div>
                         <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.5s">
                             <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="img/dokumentasi3.jpeg" alt="">
+                                <img class="img-fluid" src="asset_user/img/dokumentasi3.jpeg" alt="">
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-5 col-md-6 wow zoomIn" data-wow-delay="0.7s" style="min-height: 350px;">
                     <a class="position-relative d-block h-100 overflow-hidden" href="">
-                        <img class="img-fluid position-absolute w-100 h-100" src="img/dokumentasi5.jpeg" alt="" style="object-fit: cover;">
+                        <img class="img-fluid position-absolute w-100 h-100" src="asset_user/img/dokumentasi5.jpeg" alt="" style="object-fit: cover;">
                     </a>
                 </div>
             </div>
@@ -223,7 +234,7 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.1s">
                     <div class="package-item">
                         <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/ubud.webp" alt="">
+                            <img class="img-fluid" src="asset_user/img/ubud.webp" alt="">
                         </div>
                         <div class="d-flex border-bottom">
                             <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt text-primary me-2"></i>Ubud</small>
@@ -258,7 +269,7 @@
                             </div>
                             <div class="modal-body">
                                 <!-- Gambar Utama -->
-                                <img class="img-fluid mb-3" src="img/ubud.webp" alt="Ubud Palace">
+                                <img class="img-fluid mb-3" src="asset_user/img/ubud.webp" alt="Ubud Palace">
 
                                 <!-- Deskripsi Paket -->
                                 <p>Ubud is a unique and captivating tourist destination that offers a perfect blend of nature, culture, and art. Despite its increasing popularity, Ubud has managed to preserve its traditional charm and serene atmosphere, which are hallmarks of the area. With its stunning natural beauty, rich cultural heritage, and peaceful environment, Ubud stands out as one of Bali's hidden gems and is a must-visit for travelers.</p>
@@ -267,91 +278,91 @@
                                 <!-- Gambar Tambahan -->
                                 <div class="row">
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubu1.jpg" alt="Ubud Palace - Additional View 1">
+                                        <img class="img-fluid" src="asset_user/img/ubu1.jpg" alt="Ubud Palace - Additional View 1">
                                         <p><b>Rice Terrace Swing (UBUD)</b> the most popular choice in Bali recently. The tourist destination is located on the north side of Ubud Village, Gianyar Regency.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud2.jpg" alt="Ubud Palace - Additional View 2">
+                                        <img class="img-fluid" src="asset_user/img/ubud2.jpg" alt="Ubud Palace - Additional View 2">
                                         <p><b>Goa Gajah Temple (UBUD) </b> famously with a historical temple, an archaelogical place. An Archaelogical and Historical Temple in Bali.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud3.jpg" alt="Ubud Palace - Additional View 3">
+                                        <img class="img-fluid" src="asset_user/img/ubud3.jpg" alt="Ubud Palace - Additional View 3">
                                         <p><b>Tirta Empul temple (UBUD)</b> is a Hindu Balinese water temple, and is considered sacred by the community. Worshippers take part in ancient cleansing rituals here and visitors are welcomed to join.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud4.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud4.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Tegenungan Waterfall (UBUD)</b> is a beautiful natural waterfall located just a half-hour drive from Ubud. The lush greenery and picturesque falls are a great photo op to commemorate your trip to Bali.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud5.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud5.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Luwak Coffee Plantation (UBUD)</b> or known with popular name Bali Agrotourim, is a place to see various Tropical plantations such as coffee robusta, pineapple, Balinese snake fruite (salak), plain Balinese potatoes, fruit stars, cacao, jack fruit, durian tree and many more. Experience to see how to make Balinese coffee in very traditional ways, and taste the fresh of Balinese coffee or ginger tea with green view river valley.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud6.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud6.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Ubud Monkey Forest</b> or also called the Sacred Wenara Wana Mandala is a nature reserve area as well as a temple complex located in Ubud, Bali. This area is home to around 340 Macaca fascicularis, better known as long- tailed macaques. This herd of monkeys is divided into four groups, each of which occupies a different area in the forest.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubu7.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubu7.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Batuan Temple (UBUD)</b> is one of the most popular and beautiful village temple which is part of three major temples in a village that is calleg Tri Kahyangan, and designed with Balinese architecture with split gates, stone guardians, thatched shrines and detailed carvings.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud8.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud8.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>ATV Bike Riding Bali (UBUD)</b> activity offers an extreme, sensational, beautiful and safe adventure tour. This offers you the serenity of nature and pampers your adrenaline soul. ATV riding takes you through local forests, rice fields, rivers and place you can never imagine.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud9.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud9.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Rafting in Bali (UBUD)</b> is an adventure tourism activity that can be used to navigate the river using a rubber boat, as well as a challenging and exciting water sports activity while enjoying the beautiful and exotic views of the villages and nature of the island of Bali. There are 5 popular rivers for rafting in Bali.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud10.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud10.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Bali's first Zoolpgical Park (UBUD)</b> is a wondrous place where you can learn the behaviour of over 500 rare and exotic animals in a lush, tropical environment. A park where you can participate in fascinating animal adventure activities, some of which are unique experiences of ther kind in Indonesia.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud11.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud11.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Bali Bird Park (UBUD)</b> is a 2000 square meter attraction in Gianyar that exhibits 250 species of birds and interactive bird shows.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud12.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud12.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Taman Safari Bali (UBUD)</b> home to over a thousand animals and your finest destination for an adventurous, fun and educational experience more than just a safari.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud13.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud13.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Celuk Village in Ubud</b> is also known as the Silver Village and that is entirely for its production of jewelry.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud14.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud14.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Kampung Batik Tohpati (UBUD)</b> is unique! This place is the centre of Batik variety in Bali, from the authentic hand-drawn batik to woven Batik that are processed traditionally.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud15.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud15.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Bali Batuan Village (UBUD)</b> is a famous Balinese Paintings and as such as a famous Bali tourism destinations, located about 7 kilometers north of Denpasar about and 10 kilometers south of Ubud, it is popular with center of Bali arts, and now it’s knowm for its dancing, wood panel carving and Bali Paintings Ubud.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud16.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud16.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Mas Ubud Village</b> is a wondrous place where you can learn the behaviour of over 500 rare and exotic animals in a lush, tropical environment. A park where you can participate in fascinating animal adventure activities, some of which are unique experiences of ther kind in Indonesia.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud17.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud17.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Tibumana Waterfall (UBUD)</b> is one of the most beautiful hidden waterfalls in Bali. It is a true hidden gem, and definitely highly recommended for thos want to enjoy beautiful scenery, cool breeze atmosphere, peace and tranquility.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud18.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud18.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>The Ubud Center</b> is one of the most famous places on Earth. The spiritual centre of Bali. From the moment you step off your flight, feel the bright energy of this magical place. Located in the heart of Bali, this town is abundant with natural beauty, rich cultural heritage and spiritualism.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud19.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud19.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Bali Cycling Tour (UBUD)</b> is interesting activities tours to enjoy experience, education, exercise and dull of fun by ride bicycle from Ubud Rice Field, Balinese Village and Jatiluwih Rice Terrace.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud20.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud20.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Yoga (UBUD)</b> spiritual is rooted in Balinese culture and the Hindu religion. With Bali’s mindful atmosphere, it’s no sureprise that world-class yoga studios have blossomed on the island, providing an oasis of peace for the body.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud21.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud21.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>These Cooking Classes (UBUD)</b> in Bali let you take home the tricks of Indonesia’s culinary trade, with trips to the markets and spicy tips for the perfect sambal too</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/ubud22.jpg" alt="Ubud Palace - Additional View 4">
+                                        <img class="img-fluid" src="asset_user/img/ubud22.jpg" alt="Ubud Palace - Additional View 4">
                                         <p><b>Penglipuran Village (UBUD)</b> is one of the traditional villages of Bangli Regency, Bali Province. It’s one of 3 Villages that has been named the cleanest villages in the World. Thanks to its cleanliness and neatness, this tourism village has also won several awards including Kalpataru, ISTA (Indonesia Sustainable Tourism Award) in 2017.</p>
                                     </div>
                                 </div>
@@ -369,7 +380,7 @@
                 <div class="col-lg-4 col-md-6 wow fadeInUp" data-wow-delay="0.2s">
                     <div class="package-item">
                         <div class="overflow-hidden">
-                            <img class="img-fluid" src="img/uluwatu.webp" alt="">
+                            <img class="img-fluid" src="asset_user/img/uluwatu.webp" alt="">
                         </div>
                         <div class="d-flex border-bottom">
                             <small class="flex-fill text-center border-end py-2"><i class="fa fa-map-marker-alt text-primary me-2"></i>Uluwatu/Nusa Dua</small>
@@ -404,7 +415,7 @@
                             </div>
                             <div class="modal-body">
                                 <!-- Gambar Utama -->
-                                <img class="img-fluid mb-3" src="img/uluwatu.webp" alt="Uluwatu/Nusa Dua">
+                                <img class="img-fluid mb-3" src="asset_user/img/uluwatu.webp" alt="Uluwatu/Nusa Dua">
 
                                 <!-- Deskripsi Paket -->
                                 <p>Uluwatu and Nusa Dua are unique and captivating tourist destinations that offer a perfect blend of natural beauty, culture, and luxury. Uluwatu, known for its dramatic cliffs, stunning beaches, and iconic temples, maintains its traditional charm and serene atmosphere despite its rising popularity. Meanwhile, Nusa Dua, with its pristine beaches, world-class resorts, and tranquil gardens, strikes a balance between elegance and Balinese culture. Both destinations stand out as hidden gems in Bali, offering a harmonious mix of adventure, relaxation, and cultural richness, making them must-visit spots for any traveler.</p>
@@ -413,59 +424,59 @@
                                 <!-- Gambar Tambahan -->
                                 <div class="row">
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu1.jpg" alt="uluwatu1 - Additional View 1">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu1.jpg" alt="uluwatu1 - Additional View 1">
                                         <p><b>Blue Point Beach (ULUWATU)</b> actually the original name of this beach is Suluban. Suluban adoption of the word ‘mesulub’ which in Balinese language means “in Bali have to sop to walk through a gap in the cliff”. This may be because the road to this beach you must go down through a narrow road between the coastal cliffs.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu2.jpg" alt="uluwatu2 - Additional View 2">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu2.jpg" alt="uluwatu2 - Additional View 2">
                                         <p><b>Padang Padang Beach (ULUWATU) </b> is one of Bali’s most famous surf spots. The surf has a steady set of barrels during good weather, attracting wave riders from around the world. This beach is also a regular spot for international surfing events, such as the Rip Curl Cup Padang Padang.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu3.jpg" alt="uluwatu3 - Additional View 3">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu3.jpg" alt="uluwatu3 - Additional View 3">
                                         <p><b>Dreamland Beach (ULUWATU)</b> is a beautiful beach with white sand stretch 100 meters and leaned on a steep of white stone cliff overlooking to the amazing view of Indian Ocean. This beach is very attractive for tourist including the surfers offering the elegant, tranquility and spectacular sunset view that create the romantic nuance that make it as one of the place many visited by tourist every day.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu5.jpg" alt="uluwatu4 - Additional View 5">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu5.jpg" alt="uluwatu4 - Additional View 5">
                                         <p><b>Water Sport Bali (NUSA DUA)</b> is a favorite place for all tourists who come to Bali, be it foreign or domestic tourists to add a very pleasant holiday experience
                                             during your holiday in Bali. We are located precisely in the Tanjung Benoa area, Nusa Dua, Bali. A place that will give you many beautiful memories in Bali watersport games.
                                         </p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu6.jpg" alt="uluwatu5 - Additional View 6">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu6.jpg" alt="uluwatu5 - Additional View 6">
                                         <p><b>Paragliding Bali (NUSA DUA)</b> is an aerospace sport using a special parachute controlled by an instructor (pilot). Enjoy the sensation of flying over cliffs along
                                             beaches in southern Bali, such as Pandawa Beach, Green Bowl Beach, Uluwatu Beach and Sawangan Beach.
                                         </p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu7.jpg" alt="uluwatu6 - Additional View 7">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu7.jpg" alt="uluwatu6 - Additional View 7">
                                         <p><b>GWK (Garuda Wisnu Kencana) Cultural Park (ULUWATU)</b> is home to some of the most iconic cultural landmarks in Bali, including the magnificent Garuda Wisnu Kencana statue, which stands tall at 121 meters and is a representation of the Hindu god Visnu and his mount, the Garuda bird. Also features a range of cultural activities and perfomances, including the Kecak Garuda Wisnu dance, traditional Balinese music and dance performances, and much more.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu8.jpg" alt="uluwatu7 - Additional View 8">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu8.jpg" alt="uluwatu7 - Additional View 8">
                                         <p><b>Pandawa Beach (ULUWATU)</b> located about 4 km away from the mighty GWK in Kutuh Village, South Kuta Badung. There is a lesser known beach in the most southern part of Bali, hidden among the mountainous area of Badung. Named after the five brothers in the Mahabaratha epoch, which consistes of Yudistira, Bima, Arjuna, Sahadewa and Nakula, Pandawa Beach offers you a view of the vast Indian Ocean.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu9.jpg" alt="uluwatu8 - Additional View 9">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu9.jpg" alt="uluwatu8 - Additional View 9">
                                         <p><b>Uluwatu Temple</b> is a Balinese Hindu sea temple located in uluwatu. The temple is regarded as one of the sad kahyangan and is dedicated to Sang Hyang Widhi Wasa in his manifestation as Rudra.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu10.jpg" alt="uluwatu9 - Additional View 10">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu10.jpg" alt="uluwatu9 - Additional View 10">
                                         <b>Penangkaran penyu (NUSA DUA)</b>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu11.jpg" alt="uluwatu10 - Additional View 11">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu11.jpg" alt="uluwatu10 - Additional View 11">
                                         <p><b>Melasti Beach (ULUWATU)</b> is a beautiful beach located below a high cliff. unspoiled blue sea, make this beach to be one of the best in the region Ungasan. because many tourists who visit here, the beach melasti began repaired road to more easily reach the beach. High cliffs cleaved used as a road with many bends. from top, the road looks beautiful with limestone cliffs.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu12.jpg" alt="uluwatu11 - Additional View 12">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu12.jpg" alt="uluwatu11 - Additional View 12">
                                         <p><b>Kecak and Fire Dance Show (ULUWATU)</b> is a must if you travel to Bali, that takes place at sunset time. As you enjoy the sublime sunset, watch the locals put on mesmerizing show of traditional and hypnotic Kecak Dance with swirling flames and vibrant cultural costumes. The show is perfectly timed just n time for this. There is no doubt that it will be a memorable trip to the iland.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu13.jpg" alt="uluwatu12  - Additional View 13">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu13.jpg" alt="uluwatu12  - Additional View 13">
                                         <p><b>Green Bowl Beach (ULUWATU)</b> is known as one of the strongest currents on the island. A broken leash or last board could you sucked out to sea.</p>
                                     </div>
                                     <div class="col-6 mb-3">
-                                        <img class="img-fluid" src="img/uluwatu14.jpg" alt="uluwatu13 - Additional View 14">
+                                        <img class="img-fluid" src="asset_user/img/uluwatu14.jpg" alt="uluwatu13 - Additional View 14">
                                         <p><b>Heli tour Bali (ULUWATU)</b> is your premier destination for breathtaking aerial adventures on the island of Bali.</p>
                                     </div>
                                 </div>

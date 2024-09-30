@@ -41,58 +41,67 @@
     </div>
     <!-- Spinner End -->
 
-    <!-- Navbar & Hero Start -->
-    <div class="container-fluid position-relative p-0">
-        <nav class="navbar navbar-expand-lg navbar-light px-40 px-lg-5 py-3 py-lg-0">
-            <a href="#" class="navbar-brand d-flex align-items-center">
+<!-- Navbar & Hero Start -->
+<div class="container-fluid position-relative p-0">
+    <nav class="navbar navbar-expand-lg navbar-light px-40 px-lg-5 py-3 py-lg-0">
+        <a href="#" class="navbar-brand d-flex align-items-center">
             <img class="fa img-fluid" src="<?= base_url() ?>asset_user/img/logobali.png" alt="">
-            </a>
+        </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarCollapse">
-                <div class="navbar-nav ms-auto py-0">
-                    <a href="<?= base_url() ?>" class="nav-item nav-link">Home</a>
-                    <a href="<?= base_url() ?>about" class="nav-item nav-link">About</a>
-                    <a href="<?= base_url() ?>service" class="nav-item nav-link">Services</a>
-                    <a href="<?= base_url() ?>booking" class="nav-item nav-link">Booking</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">Pages</a>
-                        <div class="dropdown-menu m-0">
-                            <a href="<?= base_url() ?>documentation" class="dropdown-item">Documentation</a>
-                            <a href="<?= base_url() ?>review" class="dropdown-item">Testimonial</a>
-                        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ms-auto py-0">
+                <a href="<?= base_url() ?>" class="nav-item nav-link active">Home</a>
+                <a href="<?= base_url() ?>about" class="nav-item nav-link">About</a>
+                <a href="<?= base_url() ?>payment" class="nav-item nav-link">Payment</a>
+                <a href="<?= base_url() ?>booking" class="nav-item nav-link">Booking</a>
+                <a href="<?= base_url() ?>contact" class="nav-item nav-link active">Contact</a>
+                
+                <!-- New Customer Profile Dropdown -->
+                <div class="nav-item dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                        <i class="fas fa-cog"></i> <!-- Ikon Profil -->
+                    </a>
+                    <div class="dropdown-menu m-0">
+                        <a href="<?= base_url() ?>profile/change" class="dropdown-item">Change Password</a>
+                        <a href="<?= base_url() ?>profile/order_data" class="dropdown-item">Order Data</a>
+                        <a href="<?= base_url() ?>profile/review" class="dropdown-item">Review</a>
+                        <!-- Logout Button -->
+                    <form action="<?= base_url() ?>logout" method="post" class="dropdown-item p-0">
+                        <button type="submit" class="btn btn-danger w-100 text-start">Logout</button>
+                    </form>
+
                     </div>
-                    <a href="<?= base_url() ?>contact" class="nav-item nav-link active">Contact</a>
-                    <span>
-                        <div class="translate" id="google_translate_element"></div>
-
-                        <script type="text/javaScript">
-                            function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');    
-                            }
-                        </script>
-                        <script type="text/javaScript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-                    </span>
                 </div>
-            </div>
-        </nav>
 
-        <div class="container-fluid bg-primary py-5 mb-5 hero-header">
-            <div class="container py-5">
-                <div class="row justify-content-center py-5">
-                    <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-                        <h1 class="display-3 text-white animated slideInDown">Contact</h1>
-                        <nav aria-label="breadcrumb">
-                            <ol class="breadcrumb justify-content-center">
-                                <li class="breadcrumb-item"><a href="index.html">Home</a></li>
-                                <li class="breadcrumb-item text-white active" aria-current="page">Contact</li>
-                            </ol>
-                        </nav>
+                <span>
+                    <div class="translate" id="google_translate_element"></div>
+                    <script type="text/javaScript">
+                        function googleTranslateElementInit() { new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element'); }
+                    </script>
+                    <script type="text/javaScript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+                </span>
+            </div>
+        </div>
+    </nav>
+</div>
+<!-- Navbar & Hero End -->
+
+
+    <div class="container-fluid bg-primary py-5 mb-5 hero-header">
+        <div class="container py-5">
+            <div class="row justify-content-center py-5">
+                <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                    <h1 class="display-3 text-white mb-3 animated slideInDown">Enjoy Your Vacation With Us</h1>
+                    <p class="fs-4 text-white mb-4 animated slideInDown">Experience the magic of a holiday in Bali like you've never felt before!</p>
+                    <div class="position-relative w-75 mx-auto animated slideInDown">
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     </div>
     <!-- Navbar & Hero End -->
 
