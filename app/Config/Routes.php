@@ -43,6 +43,9 @@ $routes->get('/bali', 'Dashboard::index');
 $routes->get('/bali/paket', 'Dashboard\Paket::index');
 $routes->get('/bali/destinasi', 'Dashboard\Destinasi::index');
 $routes->get('/bali/kendaraan', 'Dashboard\Kendaraan::index');
+$routes->get('dashboard/kendaraan', 'Dashboard\Kendaraan::index');
+
+$routes->post('dashboard/kendaraan/delete/(:num)', 'Dashboard\Kendaraan::delete/$1');
 
 
 
