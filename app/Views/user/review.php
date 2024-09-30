@@ -55,20 +55,20 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <div class="navbar-nav ms-auto py-0">
                 <a href="<?= base_url() ?>" class="nav-item nav-link">Home</a>
-                <a href="<?= base_url() ?>about" class="nav-item nav-link active">About</a>
+                <a href="<?= base_url() ?>about" class="nav-item nav-link">About</a>
                 <a href="<?= base_url() ?>payment" class="nav-item nav-link">Payment</a>
                 <a href="<?= base_url() ?>booking" class="nav-item nav-link">Booking</a>
                 <a href="<?= base_url() ?>contact" class="nav-item nav-link">Contact</a>
                 
                 <!-- New Customer Profile Dropdown -->
                 <div class="nav-item dropdown">
-                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                    <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown active">
                         <i class="fas fa-cog"></i> <!-- Ikon Profil -->
                     </a>
                     <div class="dropdown-menu m-0">
                         <a href="<?= base_url() ?>profile/change" class="dropdown-item">Change Password</a>
                         <a href="<?= base_url() ?>profile/order_data" class="dropdown-item">Order Data</a>
-                        <a href="<?= base_url() ?>profile/review" class="dropdown-item">Review</a>
+                        <a href="<?= base_url() ?>profile/review" class="dropdown-item active">Review</a>
                         <!-- Logout Button -->
                     <form action="<?= base_url() ?>logout" method="post" class="dropdown-item p-0">
                         <button type="submit" class="btn btn-danger w-100 text-start">Logout</button>
@@ -89,9 +89,7 @@
     </nav>
 </div>
 <!-- Navbar & Hero End -->
-
-
-    <div class="container-fluid bg-primary py-5 mb-5 hero-header">
+<div class="container-fluid bg-primary py-5 mb-5 hero-header">
         <div class="container py-5">
             <div class="row justify-content-center py-5">
                 <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
@@ -105,25 +103,8 @@
     </div>
     </div>
     <!-- Navbar & Hero End -->
-    <!-- About Start -->
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="row g-5">
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.1s" style="min-height: 400px;">
-                    <div class="position-relative h-100">
-                        <img class="img-fluid position-absolute w-100 h-100" src="img/home.jpg" alt="Explore Tour & Travel Bali" style="object-fit: cover;">
-                    </div>
-                </div>
-                <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
-                    <h6 class="section-title bg-white text-start text-primary pe-3">About Us</h6>
-                    <h1 class="mb-4">Welcome to <span class="text-primary">Explore Tour & Travel Bali</span></h1>
-                    <p class="mb-4">At Explore Tour & Travel Bali, we specialize in curating exceptional travel experiences on the Island of the Gods. Our mission is to make your journey in Bali truly memorable by offering top-notch services and unique adventures tailored to your desires. Let us be your guide as you uncover the hidden gems and breathtaking beauty of Bali. Join us, and create lasting memories on your next adventure!</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- About End -->
 
+    
 
     <!-- Footer Start -->
     <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">

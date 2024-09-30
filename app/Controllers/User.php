@@ -23,16 +23,18 @@ class User extends BaseController
     {
         echo view('user/contact');
     }
-    public function service()
+    public function payment()
     {
-        echo view('user/service');
-    }
-    public function testimonial()
+        echo view('user/payment');
+    }public function change()
     {
-        echo view('user/testimonial');
-    }
-    public function documentation()
+        echo view('user/change');
+    }public function order_data()
     {
-        echo view('user/documentation');
+        echo view('user/order_data');
+    }public function review()
+    {
+        echo view('user/review');
     }
+
 }

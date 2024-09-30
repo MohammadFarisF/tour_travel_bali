@@ -6,6 +6,12 @@
     --dark: #14141F;
 }
 
+.destination-container {
+    display: flex;
+    justify-content: space-between; /* Menciptakan jarak antara pilihan */
+    margin-top: 1rem; /* Memberikan jarak di atas */
+}
+
 .fw-medium {
     font-weight: 600 !important;
 }
@@ -39,6 +45,36 @@
 
 
 /*** Button ***/
+/* CSS untuk tombol */
+.button {
+    padding: 0.5rem 1rem;          /* Padding untuk tombol */
+    border-radius: 0.375rem;       /* Radius border */
+    font-weight: bold;              /* Font tebal */
+    color: white;                   /* Warna teks putih */
+    cursor: pointer;                /* Kursor pointer saat hover */
+    transition: background-color 0.3s, transform 0.2s; /* Transisi efek */
+}
+
+/* Gaya untuk tombol Cancel */
+.button-cancel {
+    background-color: #e53e3e;     /* Warna merah */
+}
+
+.button-cancel:hover {
+    background-color: #c53030;      /* Warna merah saat hover */
+    transform: scale(1.05);         /* Efek skala saat hover */
+}
+
+/* Gaya untuk tombol Booking */
+.button-book {
+    background-color: #3182ce;      /* Warna biru */
+}
+
+.button-book:hover {
+    background-color: #2b6cb0;      /* Warna biru saat hover */
+    transform: scale(1.05);         /* Efek skala saat hover */
+}
+
 .btn {
     font-family: 'Nunito', sans-serif;
     font-weight: 600;
