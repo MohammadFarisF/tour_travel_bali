@@ -35,13 +35,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <?php if (!empty($packages) && is_array($packages)): ?>
+                                <?php foreach ($packages as $package): ?>
+                                    <tr>
+                                        <td><?= esc($package['package_id']); ?></td>
+                                        <td><?= esc($package['package_name']); ?></td>
+                                        <td><?= esc($package['package_type']); ?></td>
+                                        <td><?= esc($package['description']); ?></td>
+                                        <td>
+                                            <a href="<?= site_url('dashboard/paket/edit/' . $package['package_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
+                                            <a href="<?= site_url('dashboard/paket/delete/' . $package['package_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus paket ini?');">Hapus</a>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>

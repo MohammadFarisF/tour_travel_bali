@@ -21,7 +21,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Data Kendaraan</span>
                     <!-- Button berada di ujung kanan -->
-                    <a href="#" class="btn btn-primary">Tambah Kendaraan</a>
+                    <a href="<?= site_url('dashboard/kendaraan/create'); ?>"  class="btn btn-primary">Tambah Kendaraan</a>
                 </div>
                 <div class="card-body">
                 <table id="datatablesSimple">
