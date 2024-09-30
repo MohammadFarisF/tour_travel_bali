@@ -52,7 +52,6 @@ $routes->post('dashboard/kendaraan/delete/(:num)', 'Dashboard\Kendaraan::delete/
 
 
 
-
 /*
  * --------------------------------------------------------------------
  * Additional Routing

@@ -10,7 +10,7 @@ class kendaraanmodel extends Model
     
     // Menetapkan primary key
     protected $primaryKey = 'vehicle_id';
-
+    
     // Fields that can be modified
     protected $allowedFields = [
         'vehicle_id', 'vehicle_name', 'license_plate',
