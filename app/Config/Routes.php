@@ -45,7 +45,10 @@ $routes->get('/bali/destinasi', 'Dashboard\Destinasi::index');
 $routes->get('/bali/kendaraan', 'Dashboard\Kendaraan::index');
 $routes->get('dashboard/kendaraan', 'Dashboard\Kendaraan::index');
 $routes->get('dashboard/kendaraan/create', 'Dashboard\Kendaraan::create');
+$routes->post('dashboard/kendaraan/store', 'Dashboard\Kendaraan::store');
 $routes->get('dashboard/paket', 'Dashboard\Paket::index');
+$routes->get('dashboard/kendaraan/edit/(:num)', 'Dashboard\Kendaraan::edit/$1');
+$routes->post('dashboard/kendaraan/update/(:num)', 'Dashboard\Kendaraan::update/$1');
 
 
 $routes->post('dashboard/kendaraan/delete/(:num)', 'Dashboard\Kendaraan::delete/$1');

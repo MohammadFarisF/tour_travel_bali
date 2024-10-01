@@ -27,20 +27,6 @@ class Kendaraan extends BaseController
         echo view('admin/Template/footer');
     }
 
-    public function detail($id)
-    {
-        $data['kendaraan'] = $this->kendaraanModel->getkendaraan($id);
-        if (empty($data['kendaraan'])) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
-        }
-
-        $data['title'] = 'Detail Kendaraan';
-        echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
-        echo view('admin/kendaraan_detail', $data); // Create this view for detail display
-        echo view('admin/Template/footer');
-    }
-
     public function create()
     {
         $data['title'] = 'Tambah Kendaraan';
@@ -52,19 +38,32 @@ class Kendaraan extends BaseController
 
     public function store()
     {
+
+        // Mengambil file foto kendaraan dari form
+        $filePhoto = $this->request->getFile('vehicle_photo');
+
+        // Tentukan nama file yang akan disimpan
+        $fileName = '';
+        if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
+            // Pindahkan file ke folder uploads dengan nama asli
+            $fileName = $filePhoto->getRandomName(); // Buat nama file acak
+            $filePhoto->move('uploads', $fileName); // Simpan file ke folder uploads
+        }
+
+        // Simpan data ke database
         $this->kendaraanModel->save([
             'vehicle_name' => $this->request->getPost('vehicle_name'),
             'license_plate' => $this->request->getPost('license_plate'),
             'capacity' => $this->request->getPost('capacity'),
             'vehicle_type' => $this->request->getPost('vehicle_type'),
-            'vehicle_photo' => $this->request->getPost('vehicle_photo'),
-            'status' => $this->request->getPost('status'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s'),
+            'vehicle_photo' => $fileName, // Simpan nama file di database
+            'status' => 'available',
+            'created_at' => date('Y-m-d H:i:s')
         ]);
 
-        return redirect()->to('/dashboard/kendaraan'); // Adjust to your route
+        return redirect()->to('/dashboard/kendaraan');
     }
+
 
     public function edit($id)
     {
@@ -80,28 +79,76 @@ class Kendaraan extends BaseController
         echo view('admin/Template/footer');
     }
 
-    public function update()
+    public function update($id)
     {
-        $id = $this->request->getPost('vehicle_id');
+        // Ambil data kendaraan yang ada berdasarkan ID
+        $kendaraan = $this->kendaraanModel->find($id);
+        if (!$kendaraan) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
+        }
 
-        $this->kendaraanModel->simpan([
-            'vehicle_id' => $id,
+        // Ambil data dari form
+        $data = [
             'vehicle_name' => $this->request->getPost('vehicle_name'),
             'license_plate' => $this->request->getPost('license_plate'),
             'capacity' => $this->request->getPost('capacity'),
             'vehicle_type' => $this->request->getPost('vehicle_type'),
-            'vehicle_photo' => $this->request->getPost('vehicle_photo'),
             'status' => $this->request->getPost('status'),
-            'created_at' => $this->request->getPost('created_at'), // Adjust if not needed
             'updated_at' => date('Y-m-d H:i:s'),
-        ]);
+        ];
 
-        return redirect()->to('/dashboard/kendaraan'); // Adjust to your route
+        // Mengambil file foto kendaraan dari form
+        $filePhoto = $this->request->getFile('vehicle_photo');
+
+        // Jika ada file foto baru yang diunggah
+        if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
+            // Hapus foto lama jika ada
+            if (!empty($kendaraan['vehicle_photo'])) {
+                $oldFilePath = 'uploads/' . $kendaraan['vehicle_photo'];
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath); // Menghapus file lama
+                }
+            }
+
+            // Pindahkan file ke folder uploads dengan nama baru
+            $fileName = $filePhoto->getRandomName(); // Buat nama file acak
+            $filePhoto->move('uploads', $fileName); // Simpan file ke folder uploads
+            $data['vehicle_photo'] = $fileName; // Tambahkan nama file baru ke data
+        } else {
+            // Jika tidak ada file baru, tetap gunakan foto lama
+            $data['vehicle_photo'] = $kendaraan['vehicle_photo'];
+        }
+
+        // Update data ke database
+        $this->kendaraanModel->update($id, $data);
+
+        return redirect()->to('/dashboard/kendaraan'); // Redirect setelah sukses
     }
 
     public function delete($id)
     {
-        $this->kendaraanModel->hapus($id);
-        return redirect()->to('/dashboard/kendaraan'); // Adjust to your route
+        // Cari data kendaraan berdasarkan ID
+        $kendaraan = $this->kendaraanModel->find($id);
+
+        if ($kendaraan) {
+            // Ambil nama file foto dari database
+            $fotoPath = $kendaraan['vehicle_photo'];
+
+            // Tentukan lokasi file di folder 'uploads'
+            $filePath = WRITEPATH . '../public/uploads/' . $fotoPath;
+
+            // Cek apakah file ada di folder dan hapus file tersebut
+            if (file_exists($filePath) && !empty($fotoPath)) {
+                unlink($filePath); // Menghapus file
+            }
+
+            // Hapus data kendaraan dari database
+            $this->kendaraanModel->delete($id);
+
+            // Redirect setelah penghapusan berhasil
+            return redirect()->to('dashboard/kendaraan')->with('message', 'Data kendaraan dan foto berhasil dihapus');
+        } else {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
+        }
     }
 }
