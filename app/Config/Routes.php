@@ -49,10 +49,15 @@ $routes->post('dashboard/kendaraan/store', 'Dashboard\Kendaraan::store');
 $routes->get('dashboard/paket', 'Dashboard\Paket::index');
 $routes->get('dashboard/kendaraan/edit/(:num)', 'Dashboard\Kendaraan::edit/$1');
 $routes->post('dashboard/kendaraan/update/(:num)', 'Dashboard\Kendaraan::update/$1');
-
+$routes->get('/bali/dashboard/paket/create', 'Dashboard\Paket::create');
+$routes->post('dashboard/paket/store', 'Dashboard\Paket::store');
+$routes->get('dashboard/paket/edit/(:num)', 'Dashboard\Paket::edit/$1');
+$routes->post('dashboard/paket/update', 'Dashboard\Paket::update');
+$routes->get('dashboard/paket/delete/(:num)', 'Dashboard\Paket::delete/$1');
+$routes->get('dashbboard/dashboard/paket/create', 'Dashboard\Paket::create');
 
 $routes->post('dashboard/kendaraan/delete/(:num)', 'Dashboard\Kendaraan::delete/$1');
-$routes->get('dashboard/paket/delete/(:num)', 'Dashboard\Paket::delete/$1');
+
 
 
 
