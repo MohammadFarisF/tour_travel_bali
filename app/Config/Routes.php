@@ -34,6 +34,7 @@ $routes->get('/about', 'User::about');
 $routes->get('/booking', 'User::booking');
 $routes->get('/contact', 'User::contact');
 $routes->get('/payment', 'User::payment');
+
 $routes->get('profile/change', 'User::change');
 $routes->get('profile/order_data', 'User::order_data');
 $routes->get('profile/review', 'User::review');
@@ -43,6 +44,10 @@ $routes->get('/bali', 'Dashboard::index');
 $routes->get('/bali/paket', 'Dashboard\Paket::index');
 $routes->get('/bali/destinasi', 'Dashboard\Destinasi::index');
 $routes->get('/bali/kendaraan', 'Dashboard\Kendaraan::index');
+$routes->get('/bali/customer', 'Dashboard\Customer::index');
+
+
+$routes->get('dashboard/customer', 'Dashboard\Customer::index');
 $routes->get('dashboard/kendaraan', 'Dashboard\Kendaraan::index');
 $routes->get('dashboard/kendaraan/create', 'Dashboard\Kendaraan::create');
 $routes->post('dashboard/kendaraan/store', 'Dashboard\Kendaraan::store');
@@ -51,6 +56,7 @@ $routes->get('dashboard/kendaraan/edit/(:num)', 'Dashboard\Kendaraan::edit/$1');
 $routes->post('dashboard/kendaraan/update/(:num)', 'Dashboard\Kendaraan::update/$1');
 
 
+$routes->post('dashboard/customer/delete/(:num)', 'Dashboard\Customer::delete/$1');
 $routes->post('dashboard/kendaraan/delete/(:num)', 'Dashboard\Kendaraan::delete/$1');
 $routes->get('dashboard/paket/delete/(:num)', 'Dashboard\Paket::delete/$1');
 
