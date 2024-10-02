@@ -10,6 +10,7 @@ class PaketModel extends Model
 
     // Menetapkan primary key
     protected $primaryKey = 'package_id';
+    protected $useAutoIncrement = false;
 
     // Fields that can be modified
     protected $allowedFields = [
