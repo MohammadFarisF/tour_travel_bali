@@ -21,7 +21,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Paket Perjalanan</span>
                     <!-- Button berada di ujung kanan -->
-                    <a href="#" class="btn btn-primary">Tambah Paket</a>
+                    <a href="dashboard/paket/create" class="btn btn-primary">Tambah Paket</a>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
