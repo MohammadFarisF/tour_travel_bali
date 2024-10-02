@@ -43,18 +43,7 @@ $routes->get('/bali', 'Dashboard::index');
 $routes->get('/bali/paket', 'Dashboard\Paket::index');
 $routes->get('/bali/destinasi', 'Dashboard\Destinasi::index');
 $routes->get('/bali/kendaraan', 'Dashboard\Kendaraan::index');
-<<<<<<< Updated upstream
-$routes->get('dashboard/kendaraan', 'Dashboard\Kendaraan::index');
-$routes->get('dashboard/kendaraan/create', 'Dashboard\Kendaraan::create');
-$routes->post('dashboard/kendaraan/store', 'Dashboard\Kendaraan::store');
-$routes->get('dashboard/paket', 'Dashboard\Paket::index');
-$routes->get('dashboard/kendaraan/edit/(:num)', 'Dashboard\Kendaraan::edit/$1');
-$routes->post('dashboard/kendaraan/update/(:num)', 'Dashboard\Kendaraan::update/$1');
 
-
-$routes->post('dashboard/kendaraan/delete/(:num)', 'Dashboard\Kendaraan::delete/$1');
-$routes->get('dashboard/paket/delete/(:num)', 'Dashboard\Paket::delete/$1');
-=======
 $routes->get('/bali/kendaraan/create', 'Dashboard\Kendaraan::create');
 $routes->post('/bali/kendaraan/store', 'Dashboard\Kendaraan::store');
 $routes->get('/bali/kendaraan/edit/(:num)', 'Dashboard\Kendaraan::edit/$1');
@@ -66,8 +55,6 @@ $routes->post('/bali/paket/update', 'Dashboard\Paket::update');
 $routes->get('/bali/paket/delete/(:any)', 'Dashboard\Paket::delete/$1');
 
 $routes->post('/bali/kendaraan/delete/(:any)', 'Dashboard\Kendaraan::delete/$1');
-
->>>>>>> Stashed changes
 
 
 

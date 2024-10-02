@@ -24,13 +24,13 @@
                 <div class="card-body">
                     <div class="sbp-preview">
                         <div class="sbp-preview-content">
+
                             <form id="formdata" action="<?= base_url(); ?>/bali/paket/store" method="post" enctype="multipart/form-data">
 
                                 <div class="mb-3">
                                     <label for="package_id" class="form-label">Kode Paket</label>
                                     <input type="text" class="form-control" id="package_id" name="package_id" value="<?= $newPackageId; ?>" readonly>
                                 </div>
-
 
                                 <div class="mb-3">
                                     <label for="package_name" class="form-label">Nama Paket</label>
@@ -41,7 +41,7 @@
                                     <label for="package_type" class="form-label">Tipe Paket</label>
                                     <select class="form-select" id="package_type" name="package_type" required>
                                         <option disable selected>Pilih Tipe Paket</option>
-                                        <option value="single_destination" nam>Single Day</option>
+                                        <option value="single_destination">Single Day</option>
                                         <option value="multiple_day" >Multiple Day</option>
                                     </select>
                                 </div>
@@ -52,7 +52,9 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Simpan</button>
+
                                 <a href="<?= base_url(); ?>bali/paket" class="btn btn-secondary">Batal</a>
+
                             </form>
                         </div>
                     </div>

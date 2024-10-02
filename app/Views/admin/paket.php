@@ -21,11 +21,9 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Paket Perjalanan</span>
                     <!-- Button berada di ujung kanan -->
-<<<<<<< Updated upstream
-                    <a href="#" class="btn btn-primary">Tambah Paket</a>
-=======
+
                     <a href="<?= base_url(); ?>bali/paket/create" class="btn btn-primary">Tambah Paket</a>
->>>>>>> Stashed changes
+
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">

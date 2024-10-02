@@ -59,6 +59,7 @@ class Paket extends BaseController
     {
         // Menyimpan data paket ke database
         $this->paketModel->save([
+            'package_id' => $this->request->getPost('package_id'),
             'package_name' => $this->request->getPost('package_name'),
             'package_type' => $this->request->getPost('package_type'),
             'description' => $this->request->getPost('description'),
@@ -91,8 +92,8 @@ class Paket extends BaseController
         $id = $this->request->getPost('package_id');
 <<<<<<< Updated upstream
 
-        $this->paketModel->simpan([
-            'package_id' => $id,
+        $this->paketModel->save([
+            'package_id' => $this->request->getPost('package_id'),
             'package_name' => $this->request->getPost('package_name'),
             'package_type' => $this->request->getPost('package_type'),
             'description' => $this->request->getPost('description'),
