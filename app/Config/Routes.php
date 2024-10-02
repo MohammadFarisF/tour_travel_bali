@@ -47,6 +47,11 @@ $routes->get('/bali/kendaraan', 'Dashboard\Kendaraan::index');
 
 $routes->get('/bali/customer', 'Dashboard\Customer::index');
 
+$routes->get('/bali/destinasi/create', 'Dashboard\Destinasi::create');
+$routes->post('/bali/destinasi/store', 'Dashboard\Destinasi::store');
+$routes->get('/bali/destinasi/delete/(:any)', 'Dashboard\Destinasi::delete/$1');
+$routes->get('/bali/destinasi/edit/(:any)', 'Dashboard\Destinasi::edit/$1');
+$routes->post('/bali/destinasi/update', 'Dashboard\Destinasi::update'); 
 
 
 $routes->get('/bali/kendaraan/create', 'Dashboard\Kendaraan::create');
