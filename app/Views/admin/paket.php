@@ -21,7 +21,9 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Paket Perjalanan</span>
                     <!-- Button berada di ujung kanan -->
-                    <a href="#" class="btn btn-primary">Tambah Paket</a>
+
+                    <a href="<?= base_url(); ?>bali/paket/create" class="btn btn-primary">Tambah Paket</a>
+
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
@@ -40,11 +42,21 @@
                                     <tr>
                                         <td><?= esc($package['package_id']); ?></td>
                                         <td><?= esc($package['package_name']); ?></td>
-                                        <td><?= esc($package['package_type']); ?></td>
+                                        <td>
+                                            <?php
+                                                if ($package['package_type'] === 'single_destination') {
+                                                    echo 'Single Day';
+                                                } elseif ($package['package_type'] === 'multiple_day') {
+                                                    echo 'Multiple Day';
+                                                } else {
+                                                    echo esc($package['package_type']);
+                                                }
+                                                ?>
+                                        </td>
                                         <td><?= esc($package['description']); ?></td>
                                         <td>
-                                            <a href="<?= site_url('dashboard/paket/edit/' . $package['package_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
-                                            <a href="<?= site_url('dashboard/paket/delete/' . $package['package_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus paket ini?');">Hapus</a>
+                                            <a href="<?= site_url('bali/paket/edit/' . $package['package_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
+                                            <a href="<?= site_url('bali/paket/delete/' . $package['package_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus paket ini?');">Hapus</a>
                                         </td>
                                     </tr>
                                 <?php endforeach; ?>

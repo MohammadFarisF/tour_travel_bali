@@ -21,7 +21,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Data Kendaraan</span>
                     <!-- Button berada di ujung kanan -->
-                    <a href="<?= base_url(); ?>dashboard/kendaraan/create" class="btn btn-primary">Tambah Kendaraan</a>
+                    <a href="<?= base_url(); ?>/bali/kendaraan/create" class="btn btn-primary">Tambah Kendaraan</a>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
@@ -64,8 +64,8 @@
                                         ?>
                                     </td>
                                     <td>
-                                        <a href="<?php echo site_url('dashboard/kendaraan/edit/' . $vehicle['vehicle_id']); ?>" class="btn btn-warning">Edit</a>
-                                        <form action="<?php echo site_url('dashboard/kendaraan/delete/' . $vehicle['vehicle_id']); ?>" method="post" style="display:inline;">
+                                        <a href="<?php echo site_url('/bali/kendaraan/edit/' . $vehicle['vehicle_id']); ?>" class="btn btn-warning">Edit</a>
+                                        <form action="<?php echo site_url('/bali/kendaraan/delete/' . $vehicle['vehicle_id']); ?>" method="post" style="display:inline;">
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this vehicle?');">Delete</button>
                                         </form>
                                     </td>

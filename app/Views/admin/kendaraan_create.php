@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <div class="sbp-preview">
                         <div class="sbp-preview-content">
-                            <form id="formdata" action="<?= base_url(); ?>dashboard/kendaraan/store" method="post" enctype="multipart/form-data">
+                            <form id="formdata" action="<?= base_url(); ?>bali/kendaraan/store" method="post" enctype="multipart/form-data">
 
                                 <div class="mb-3">
                                     <label for="vehicle_name" class="form-label">Nama Kendaraan</label>
@@ -55,7 +55,7 @@
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Simpan</button>
-                                <a href="<?= base_url(); ?>dashboard/kendaraan" class="btn btn-secondary">Batal</a>
+                                <a href="<?= base_url(); ?>/bali/kendaraan" class="btn btn-secondary">Batal</a>
                             </form>
                         </div>
                     </div>

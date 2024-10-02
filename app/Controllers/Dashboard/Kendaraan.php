@@ -61,7 +61,7 @@ class Kendaraan extends BaseController
             'created_at' => date('Y-m-d H:i:s')
         ]);
 
-        return redirect()->to('/dashboard/kendaraan');
+        return redirect()->to('/bali/kendaraan');
     }
 
 
@@ -122,7 +122,7 @@ class Kendaraan extends BaseController
         // Update data ke database
         $this->kendaraanModel->update($id, $data);
 
-        return redirect()->to('/dashboard/kendaraan'); // Redirect setelah sukses
+        return redirect()->to('/bali/kendaraan'); // Redirect setelah sukses
     }
 
     public function delete($id)
@@ -146,7 +146,7 @@ class Kendaraan extends BaseController
             $this->kendaraanModel->delete($id);
 
             // Redirect setelah penghapusan berhasil
-            return redirect()->to('dashboard/kendaraan')->with('message', 'Data kendaraan dan foto berhasil dihapus');
+            return redirect()->to('/bali/kendaraan')->with('message', 'Data kendaraan dan foto berhasil dihapus');
         } else {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
         }
