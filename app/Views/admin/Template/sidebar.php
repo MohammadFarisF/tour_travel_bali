@@ -18,8 +18,8 @@
                     </a>
                     <div class="collapse" id="collapseUser" data-bs-parent="#accordionSidenav">
                         <nav class="sidenav-menu-nested nav">
-                            <a class="nav-link" href="pricing.html">Admin</a>
-                            <a class="nav-link" href="invoice.html">Customer</a>
+                            <a class="nav-link" href="<?= base_url() ?>bali/customer">Admin</a>
+                            <a class="nav-link" href="<?= base_url() ?>bali/customer">Customer</a>
                         </nav>
                     </div>
                     <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapsePaket" aria-expanded="false" aria-controls="collapsePaket">
