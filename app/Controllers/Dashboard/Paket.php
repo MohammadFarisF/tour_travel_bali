@@ -90,13 +90,13 @@ class Paket extends BaseController
     {
         // Mengupdate data paket berdasarkan ID
         $id = $this->request->getPost('package_id');
-    $data = [
-    'package_name' => $this->request->getPost('package_name'),
-    'package_type' => $this->request->getPost('package_type'),
-    'description' => $this->request->getPost('description'),
-    'created_at' => $this->request->getPost('created_at'), // Bisa disesuaikan
-    'updated_at' => date('Y-m-d H:i:s')
-];
+        $data = [
+            'package_name' => $this->request->getPost('package_name'),
+            'package_type' => $this->request->getPost('package_type'),
+            'description' => $this->request->getPost('description'),
+            'created_at' => $this->request->getPost('created_at'), // Bisa disesuaikan
+            'updated_at' => date('Y-m-d H:i:s')
+        ];
         $this->paketModel->update($id, $data);
 
         // Redirect ke halaman daftar paket setelah update

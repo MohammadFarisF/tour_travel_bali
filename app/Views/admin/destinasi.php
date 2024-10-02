@@ -21,14 +21,13 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Destinasi Perjalanan</span>
                     <!-- Button berada di ujung kanan -->
-                    <a href="#" class="btn btn-primary">Tambah Destinasi</a>
+                    <a href="<?= base_url(); ?>bali/destinasi/create" class="btn btn-primary">Tambah Destinasi</a>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
                                 <th>Kode Destinasi</th>
-                                <th>Kode Paket</th>
                                 <th>Nama Destinasi</th>
                                 <th>Lokasi</th>
                                 <th>Deskripsi</th>
@@ -36,14 +35,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <!-- Looping data destinasi -->
+                            <?php foreach ($destinasi as $destinasi): ?>
+                                <tr>
+                                    <td><?php echo esc($destinasi['destination_id']); ?></td>
+                                    <td><?php echo esc($destinasi['destination_name']); ?></td>
+                                    <td><?php echo esc($destinasi['location']); ?></td>
+                                    <td><?php echo esc($destinasi['description']); ?></td>
+                                    <td>
+                                    <a href="<?= site_url('bali/destinasi/edit/' . $destinasi['destination_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
+                                    <a href="<?= site_url('bali/destinasi/delete/' . $destinasi['destination_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus paket ini?');">Hapus</a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
