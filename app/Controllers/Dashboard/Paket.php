@@ -90,17 +90,6 @@ class Paket extends BaseController
     {
         // Mengupdate data paket berdasarkan ID
         $id = $this->request->getPost('package_id');
-<<<<<<< Updated upstream
-
-        $this->paketModel->save([
-            'package_id' => $this->request->getPost('package_id'),
-            'package_name' => $this->request->getPost('package_name'),
-            'package_type' => $this->request->getPost('package_type'),
-            'description' => $this->request->getPost('description'),
-            'created_at' => $this->request->getPost('created_at'), // Bisa disesuaikan
-            'updated_at' => date('Y-m-d H:i:s'),
-        ]);
-=======
     $data = [
     'package_name' => $this->request->getPost('package_name'),
     'package_type' => $this->request->getPost('package_type'),
@@ -109,7 +98,6 @@ class Paket extends BaseController
     'updated_at' => date('Y-m-d H:i:s')
 ];
         $this->paketModel->update($id, $data);
->>>>>>> Stashed changes
 
         // Redirect ke halaman daftar paket setelah update
         return redirect()->to('/bali/paket');
