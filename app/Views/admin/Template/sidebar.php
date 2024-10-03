@@ -55,8 +55,8 @@
                     </a>
                     <div class="collapse" id="collapseBank" data-bs-parent="#accordionSidenav">
                         <nav class="sidenav-menu-nested nav">
-                            <a class="nav-link" href="multi-tenant-select.html">Travel</a>
-                            <a class="nav-link" href="wizard.html">Pelanggan</a>
+                            <a class="nav-link" href="<?= base_url() ?>bali/banktravel">Travel</a>
+                            <a class="nav-link" href="<?= base_url() ?>bali/bankpelanggan">Pelanggan</a>
                         </nav>
                     </div>
                     <a class="nav-link" href="javascript:void(0);">

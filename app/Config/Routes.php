@@ -53,7 +53,6 @@ $routes->get('/bali/destinasi/delete/(:any)', 'Dashboard\Destinasi::delete/$1');
 $routes->get('/bali/destinasi/edit/(:any)', 'Dashboard\Destinasi::edit/$1');
 $routes->post('/bali/destinasi/update', 'Dashboard\Destinasi::update'); 
 
-
 $routes->get('/bali/kendaraan/create', 'Dashboard\Kendaraan::create');
 $routes->post('/bali/kendaraan/store', 'Dashboard\Kendaraan::store');
 $routes->get('/bali/kendaraan/edit/(:num)', 'Dashboard\Kendaraan::edit/$1');
@@ -63,7 +62,14 @@ $routes->post('/bali/paket/store', 'Dashboard\Paket::store');
 $routes->get('/bali/paket/edit/(:any)', 'Dashboard\Paket::edit/$1');
 $routes->post('/bali/paket/update', 'Dashboard\Paket::update');
 $routes->get('/bali/paket/delete/(:any)', 'Dashboard\Paket::delete/$1');
-
+$routes->get('/bali/bankpelanggan', 'Dashboard\Bank_Pelanggan::index');
+$routes->get('/bali/bankpelanggan/delete/(:num)', 'Dashboard\Bank_Pelanggan::delete/$1');
+$routes->get('/bali/banktravel','Dashboard\Bank_Travel::index');
+$routes->get('/bali/banktravel/create/', 'Dashboard\Bank_Travel::create');
+$routes->post('/bali/banktravel/store', 'Dashboard\Bank_Travel::store');
+$routes->get('/bali/banktravel/delete/(:num)', 'Dashboard\Bank_Travel::delete/$1');
+$routes->get('/bali/banktravel/edit/(:num)','Dashboard\Bank_Travel::edit/$1');
+$routes->post('/bali/banktravel/update/(:num)', 'Dashboard\Bank_Travel::update/$1');
 $routes->post('/bali/kendaraan/delete/(:any)', 'Dashboard\Kendaraan::delete/$1');
 
 
