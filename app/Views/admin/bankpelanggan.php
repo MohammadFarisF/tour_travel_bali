@@ -7,9 +7,9 @@
                         <div class="col-auto mt-4">
                             <h1 class="page-header-title">
                                 <div class="page-header-icon"><i data-feather="briefcase"></i></div>
-                                Destinasi Perjalanan
+                                Bank Pelanggan
                             </h1>
-                            <div class="page-header-subtitle">Hai admin, Selamat Datang di Pengelolaan Destinasi Perjalanan :)</div>
+                            <div class="page-header-subtitle">Hai admin, Selamat Datang di Pengelolaan Bank Pelanggan :)</div>
                         </div>
                     </div>
                 </div>
@@ -19,32 +19,33 @@
         <div class="container-xl px-4 mt-n10">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Destinasi Perjalanan</span>
+                    <span>Bank Pelanggan</span>
                     <!-- Button berada di ujung kanan -->
-                    <a href="<?= base_url(); ?>bali/destinasi/create" class="btn btn-primary">Tambah Destinasi</a>
+                
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
-                                <th>Kode Destinasi</th>
-                                <th>Nama Destinasi</th>
-                                <th>Lokasi</th>
-                                <th>Deskripsi</th>
+                                <th>Kode Bank</th>
+                                <th>Nama Akun</th>
+                                <th>Nomor Akun</th>
+                                <th>Nama Pemegang Akun</th>
+                                <th>Tipe Akun</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <!-- Looping data destinasi -->
-                            <?php foreach ($destinasi as $destinasi): ?>
+                            <?php foreach ($bankpelanggan as $bankpelanggan): ?>
                                 <tr>
-                                    <td><?php echo esc($destinasi['destination_id']); ?></td>
-                                    <td><?php echo esc($destinasi['destination_name']); ?></td>
-                                    <td><?php echo esc($destinasi['location']); ?></td>
-                                    <td><?php echo esc($destinasi['description']); ?></td>
+                                    <td><?php echo esc($bankpelanggan['custbank_id']); ?></td>
+                                    <td><?php echo esc($bankpelanggan['account_name']); ?></td>
+                                    <td><?php echo esc($bankpelanggan['account_number']); ?></td>
+                                    <td><?php echo esc($bankpelanggan['account_holder_name']); ?></td>
+                                    <td><?php echo esc($bankpelanggan['account_type']); ?></td>
                                     <td>
-                                    <a href="<?= site_url('bali/destinasi/edit/' . $destinasi['destination_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="<?= site_url('bali/destinasi/delete/' . $destinasi['destination_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus destinasi ini?');">Hapus</a>
+                                    <a href="<?= site_url('bali/bankpelanggan/delete/' . $bankpelanggan['custbank_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus bank ini?');">Hapus</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
