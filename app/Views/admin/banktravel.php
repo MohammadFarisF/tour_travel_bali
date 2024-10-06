@@ -45,7 +45,7 @@
                                     <td><?php echo esc($banktravel['bank_name']); ?></td>
                                     <td>
                                         <?php if (!empty($banktravel['photo'])): ?>
-                                            <img src="<?= base_url('uploads/banktravel' . esc($banktravel['photo'])); ?>" alt="Foto Bank" style="width: 100px; height: auto;">
+                                            <img src="<?= base_url('uploads/banktravel/' . esc($banktravel['photo'])); ?>" alt="Foto Bank" style="width: 100px; height: auto;">
                                         <?php else: ?>
                                             No Image
                                         <?php endif; ?></td>

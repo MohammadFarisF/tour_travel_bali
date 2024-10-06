@@ -4,6 +4,7 @@ namespace App\Controllers\Dashboard;
 
 use App\Controllers\BaseController;
 use App\Models\destinasimodel;
+use App\Models\paketmodel;
 
 class Destinasi extends BaseController
 {
@@ -32,7 +33,11 @@ class Destinasi extends BaseController
 
     public function create()
     {
+        // Ambil data packages
+        $paketModel = new paketmodel();
+        $data['packages'] = $paketModel->findAll(); // Ambil semua data packages
         // Ambil kode destinasi terakhir
+
         $lastdestinasi = $this->destinasiModel->orderBy('destination_id', 'DESC')->first();
 
         // Jika ada kode destinasi, increment. Jika tidak, mulai dari P01.
@@ -57,17 +62,53 @@ class Destinasi extends BaseController
 
     public function store()
     {
-        // Menyimpan data destinasi ke database
-        $this->destinasiModel->save([
-            'destination_id' => $this->request->getPost('destination_id'),
-            'destination_name' => $this->request->getPost('destination_name'),
-            'location' => $this->request->getPost('location'),
-            'description' => $this->request->getPost('description'),
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => NULL
-        ]);
+        $filePhotos = $this->request->getFiles(); // Dapatkan semua file
+        $fileNames = []; // Array untuk menyimpan nama file yang berhasil diupload
 
-        // Redirect ke halaman daftar destinasi setelah berhasil menyimpan
+        foreach ($filePhotos['foto'] as $filePhoto) {
+            if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
+                // Tentukan nama acak untuk setiap file
+                $fileName = $filePhoto->getRandomName();
+                // Pindahkan file ke folder uploads
+                $filePhoto->move('uploads/destinasi', $fileName);
+                // Simpan nama file ke array
+                $fileNames[] = $fileName;
+            }
+        }
+
+        // Jika semua file berhasil diupload, simpan ke database
+        if (!empty($fileNames)) {
+            // Gabungkan nama file menjadi string, pisahkan dengan koma (opsional, atau bisa disimpan sebagai array JSON)
+            $foto = implode(',', $fileNames);
+
+            $package_id = $this->request->getPost('package_id');
+
+            // Validasi package_id
+            $paketmodel = new paketmodel();
+            $package = $paketmodel->find($package_id);
+            
+            if (!$package) {
+                // Jika package_id tidak valid, redirect dengan pesan error
+                return redirect()->back()->with('error', 'Paket yang dipilih tidak valid.');
+            }
+            
+            // Jika valid, lanjutkan proses penyimpanan
+            $destinasiModel = new DestinasiModel();
+            $data = [
+                'destination_id' => $this->request->getPost('destination_id'), // Pastikan ini benar
+                'package_id' => $this->request->getPost('package_id'), // Foreign key yang valid
+                'destination_name' => $this->request->getPost('destination_name'),
+                'location' => $this->request->getPost('location'),
+                'description' => $this->request->getPost('description'),
+                'foto' => $foto,
+                'created_at' => date('Y-m-d H:i:s')
+            ];
+            
+            $destinasiModel->save($data);
+            
+        }
+
+        // Redirect ke halaman sukses atau tampilan lain
         return redirect()->to('/bali/destinasi');
     }
 

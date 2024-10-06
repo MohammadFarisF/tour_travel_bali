@@ -32,6 +32,16 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label for="package_id" class="form-label">Nama Paket</label>
+                                    <select class="form-control" id="package_id" name="package_id" required>
+                                        <option value="" disabled selected>Pilih Nama Paket</option>
+                                        <?php foreach ($packages as $package): ?>
+                                            <option value="<?= $package['package_id']; ?>"><?= $package['package_name']; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
                                     <label for="destination_name" class="form-label">Nama Destinasi</label>
                                     <input type="text" class="form-control" id="destination_name" name="destination_name" placeholder="Masukkan Nama Destinasi..." required>
                                 </div>
@@ -46,6 +56,11 @@
                                     <div class="input-group">
                                         <input type="text" class="form-control no-spinner" id="description" name="description" placeholder="Masukkan Deskripsi Destinasi..." required>
                                     </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="foto" class="form-label">Foto</label>
+                                    <input class="form-control" type="file" id="foto" name="foto[]" accept="image/*" multiple>
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Simpan</button>
