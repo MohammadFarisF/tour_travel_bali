@@ -42,7 +42,7 @@
                                     <label for="photo" class="form-label">Foto Bank</label>
                                     <input class="form-control" type="file" id="photo" name="photo" accept="image/*">
                                     <!-- Tampilkan foto lama -->
-                                    <img src="<?= base_url('uploads/' . esc($banktravel['photo'])); ?>" alt="Foto Bank" style="width: 100px;">
+                                    <img src="<?= base_url('uploads/banktravel/' . esc($banktravel['photo'])); ?>" alt="Foto Bank" style="width: 100px;">
                                     <!-- Simpan nama foto lama jika tidak ada foto baru yang diunggah -->
                                     <input type="hidden" name="existing_photo" value="<?= esc($banktravel['photo']); ?>">
                                 </div>

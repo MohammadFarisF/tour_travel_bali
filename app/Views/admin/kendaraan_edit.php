@@ -52,7 +52,7 @@
                                 <div class="mb-3">
                                     <label for="vehicle_photo" class="form-label">Foto Kendaraan</label>
                                     <?php if (!empty($kendaraan['vehicle_photo'])): ?>
-                                        <img src="<?= base_url('uploads/' . esc($kendaraan['vehicle_photo'])); ?>" alt="Foto Kendaraan" style="width: 100px; height: auto;">
+                                        <img src="<?= base_url('uploads/kendaraan/' . esc($kendaraan['vehicle_photo'])); ?>" alt="Foto Kendaraan" style="width: 100px; height: auto;">
                                     <?php endif; ?>
                                     <input class="form-control" type="file" id="vehicle_photo" name="vehicle_photo" accept="image/*">
                                 </div>
