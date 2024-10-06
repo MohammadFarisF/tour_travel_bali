@@ -61,8 +61,8 @@ $routes->get('/bali/admin', 'Dashboard\Admin::index');
 $routes->get('/bali/admin/create', 'Dashboard\Admin::create'); // Tambah prefix Dashboard
 $routes->post('/bali/admin/store', 'Dashboard\Admin::store');;
 $routes->post('/bali/admin/delete/(:any)', 'Dashboard\Admin::delete/$1'); // Tambah prefix Dashboard
-$routes->get('/bali/admin/edit/(:num)', 'Dashboard\Admin::edit/$1'); // Tambah prefix Dashboard
-$routes->post('/bali/admin/update/(:num)', 'Dashboard\Admin::update/$1');
+$routes->get('/bali/admin/edit/(:any)', 'Dashboard\Admin::edit/$1'); // Tambah prefix Dashboard
+$routes->post('/bali/admin/update/(:any)', 'Dashboard\Admin::update/$1');
 
 $routes->get('/bali/kendaraan', 'Dashboard\Kendaraan::index');
 $routes->get('/bali/kendaraan/create', 'Dashboard\Kendaraan::create');

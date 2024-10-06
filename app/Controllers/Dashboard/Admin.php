@@ -109,7 +109,7 @@ class Admin extends BaseController
         $this->adminModel->update($id, $data);
 
         // Redirect setelah sukses
-        return redirect()->to('/dashboard/admin')->with('message', 'Admin berhasil diupdate');
+        return redirect()->to('/bali/admin')->with('message', 'Admin berhasil diupdate');
     }
 
     public function delete($id)
@@ -124,6 +124,6 @@ class Admin extends BaseController
         $this->adminModel->delete($id);
 
         // Redirect setelah sukses dihapus
-        return redirect()->to('/dashboard/admin')->with('message', 'Admin berhasil dihapus');
+        return redirect()->to('/bali/admin')->with('message', 'Admin berhasil dihapus');
     }
 }
