@@ -28,6 +28,7 @@
                         <thead>
                             <tr>
                                 <th>Kode Destinasi</th>
+                                <th>Kode Paket</th>
                                 <th>Nama Destinasi</th>
                                 <th>Lokasi</th>
                                 <th>Deskripsi</th>
@@ -39,6 +40,7 @@
                             <?php foreach ($destinasi as $destinasi): ?>
                                 <tr>
                                     <td><?php echo esc($destinasi['destination_id']); ?></td>
+                                    <td></td>
                                     <td><?php echo esc($destinasi['destination_name']); ?></td>
                                     <td><?php echo esc($destinasi['location']); ?></td>
                                     <td><?php echo esc($destinasi['description']); ?></td>

@@ -20,7 +20,7 @@ class Bank_Travel extends BaseController
         // Mengambil semua data travel
         $data = [
             'title' => 'Bank Travel',
-            'banktravel' => $this-> banktravelModel->getbanktravel(), // Mengambil semua travel
+            'banktravel' => $this->banktravelModel->getbanktravel(), // Mengambil semua travel
         ];
 
         // Menampilkan view dengan data travel
@@ -49,7 +49,7 @@ class Bank_Travel extends BaseController
         if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
             // Pindahkan file ke folder uploads dengan nama asli
             $fileName = $filePhoto->getRandomName(); // Buat nama file acak
-            $filePhoto->move('uploads', $fileName); // Simpan file ke folder uploads
+            $filePhoto->move('uploads/banktravel', $fileName); // Simpan file ke folder uploads
         }
 
         // Menyimpan data travel ke database
@@ -89,12 +89,12 @@ class Bank_Travel extends BaseController
         if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
             // Pindahkan file ke folder uploads
             $fileName = $filePhoto->getRandomName();
-            $filePhoto->move('uploads', $fileName);
+            $filePhoto->move('uploads/banktravel', $fileName);
         } else {
             // Jika tidak ada file baru, tetap gunakan file yang lama
             $fileName = $this->request->getPost('existing_photo');
         }
-    
+
         // Update data bank travel di database dengan kondisi WHERE menggunakan trabank_id
         $this->banktravelModel->where('trabank_id', $id)->update($id, [
             'account_number' => $this->request->getPost('account_number'),
@@ -103,17 +103,37 @@ class Bank_Travel extends BaseController
             'photo' => $fileName, // Simpan nama file baru atau tetap yang lama
             'updated_at' => date('Y-m-d H:i:s')
         ]);
-    
+
         // Redirect ke halaman daftar bank travel setelah update
         return redirect()->to('/bali/banktravel');
     }
-    
+
 
 
     public function delete($id)
     {
-        // Menghapus travel berdasarkan ID
-        $this->banktravelModel->hapus($id);
-        return redirect()->to('/bali/banktravel');
+        // Cari data kendaraan berdasarkan ID
+        $banktravel = $this->banktravelModel->find($id);
+
+        if ($banktravel) {
+            // Ambil nama file foto dari database
+            $fotoPath = $banktravel['photo'];
+
+            // Tentukan lokasi file di folder 'uploads'
+            $filePath = WRITEPATH . '../public/uploads/banktravel' . $fotoPath;
+
+            // Cek apakah file ada di folder dan hapus file tersebut
+            if (file_exists($filePath) && !empty($fotoPath)) {
+                unlink($filePath); // Menghapus file
+            }
+
+            // Hapus data kendaraan dari database
+            $this->banktravelModel->delete($id);
+
+            // Redirect setelah penghapusan berhasil
+            return redirect()->to('/bali/banktravel')->with('message', 'Data Travel bank dan foto berhasil dihapus');
+        } else {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Akun Travel tidak ditemukan');
+        }
     }
 }

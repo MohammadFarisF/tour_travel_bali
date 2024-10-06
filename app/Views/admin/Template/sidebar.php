@@ -5,7 +5,7 @@
                 <div class="nav accordion" id="accordionSidenav">
                     <div class="sidenav-menu-heading"></div>
                     <!-- Sidenav Accordion (Dashboard)-->
-                    <a class="nav-link" href="javascript:void(0);">
+                    <a class="nav-link" href="<?= base_url() ?>bali">
                         <div class="nav-link-icon"><i data-feather="activity"></i></div>
                         Dashboards
                     </a>
@@ -42,9 +42,9 @@
                     </a>
                     <div class="collapse" id="collapseTransaction" data-bs-parent="#accordionSidenav">
                         <nav class="sidenav-menu-nested nav">
-                            <a class="nav-link" href="multi-tenant-select.html">Pemesanan</a>
-                            <a class="nav-link" href="wizard.html">Pembayaran</a>
-                            <a class="nav-link" href="invoice.html">Refund</a>
+                            <a class="nav-link" href="<?= base_url() ?>bali/booking">Pemesanan</a>
+                            <a class="nav-link" href="<?= base_url() ?>bali/payment">Pembayaran</a>
+                            <a class="nav-link" href="<?= base_url() ?>bali/refund">Refund</a>
                         </nav>
                     </div>
                     <!-- Sidenav Heading (UI Toolkit)-->
@@ -63,9 +63,9 @@
                         <div class="nav-link-icon"><i data-feather="smile"></i></div>
                         Ulasan Pelanggan
                     </a>
-                    <a class="nav-link" href="javascript:void(0);">
+                    <a class="nav-link" href="<?= base_url() ?>bali/report">
                         <div class="nav-link-icon"><i data-feather="printer"></i></div>
-                        Laporan
+                        Laporan Transaksi
                     </a>
 
                     <!-- Sidenav Accordion (Components)-->

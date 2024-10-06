@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="#!">Lihat Pembayaran</a>
+                            <a class="text-white stretched-link" href="<?= base_url() ?>bali/pembayaran">Lihat Pembayaran</a>
                             <div class="text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="#!">Lihat Kendaraan</a>
+                            <a class="text-white stretched-link" href="<?= base_url() ?>bali/kendaraan">Lihat Kendaraan</a>
                             <div class="text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -70,7 +70,7 @@
                             </div>
                         </div>
                         <div class="card-footer d-flex align-items-center justify-content-between small">
-                            <a class="text-white stretched-link" href="#!">Lihat Refund</a>
+                            <a class="text-white stretched-link" href="<?= base_url() ?>bali/refund">Lihat Refund</a>
                             <div class="text-white"><i class="fas fa-angle-right"></i></div>
                         </div>
                     </div>
@@ -81,7 +81,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Paket Perjalanan</span>
                     <!-- Button berada di ujung kanan -->
-                    <a href="#" class="btn btn-primary">Detail Paket</a>
+                    <a href="<?= base_url() ?>bali/paket" class="btn btn-primary">Detail Paket</a>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
@@ -95,12 +95,26 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                            <?php if (!empty($packages) && is_array($packages)): ?>
+                                <?php foreach ($packages as $package): ?>
+                                    <tr>
+                                        <td><?= esc($package['package_id']); ?></td>
+                                        <td><?= esc($package['package_name']); ?></td>
+                                        <td>
+                                            <?php
+                                            if ($package['package_type'] === 'single_destination') {
+                                                echo 'Single Day';
+                                            } elseif ($package['package_type'] === 'multiple_day') {
+                                                echo 'Multiple Day';
+                                            } else {
+                                                echo esc($package['package_type']);
+                                            }
+                                            ?>
+                                        </td>
+                                        <td><?= esc($package['description']); ?></td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -109,7 +123,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Destinasi</span>
                     <!-- Button berada di ujung kanan -->
-                    <a href="#" class="btn btn-primary">Detail Destinasi</a>
+                    <a href="<?= base_url() ?>bali/destinasi" class="btn btn-primary">Detail Destinasi</a>
                 </div>
                 <div class="card-body">
                     <table id="datatablesPaket">
@@ -124,11 +138,11 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                             </tr>
                         </tbody>
                     </table>
