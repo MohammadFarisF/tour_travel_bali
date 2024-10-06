@@ -4,32 +4,45 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class AdminModel extends Model
+class adminmodel extends Model
 {
-    // Menentukan nama tabel
     protected $table = 'users';
 
-    // Menentukan primary key tabel
+    // Menetapkan primary key
     protected $primaryKey = 'user_id';
+    protected $useAutoIncrement = false;
 
-    // Field yang dapat dimodifikasi
+    // Fields that can be modified
+
+    
     protected $allowedFields = [
-        'user_id', 'full_name', 'email', 'phone_number', 'password', 'user_role', 'created_at', 'updated_at'
+        'user_id',
+        'full_name',
+        'email',
+        'password',
+        'phone_number',
+        'user_role',
+        'status',
+        'created_at',
+        'updated_at'
     ];
 
-    // Fungsi untuk mendapatkan semua data customer
-    public function getAdmin($id = null)
-    {
-        if ($id === null) {
-            return $this->findAll(); // Mengambil semua data
+        // Method untuk mengambil data admin saja
+        public function getAdmin($id = null)
+        {
+            if ($id === null) {
+                // Hanya ambil pengguna dengan role admin
+                return $this->where('user_role', 'admin')->findAll();
+            } else {
+                // Ambil data admin berdasarkan ID, jika diberikan
+                return $this->where(['user_role' => 'admin', 'user_id' => $id])->first();
+            }
         }
-
-        return $this->where(['user_id' => $id])->first(); // Mengambil data berdasarkan ID
-    }
-
-    // Fungsi untuk menghapus data customer
-    public function deleteUser($id)
+    
+    
+    
+    public function hapus($id)
     {
-        return $this->delete($id); // Menghapus berdasarkan ID
+        return $this->delete($id);
     }
 }

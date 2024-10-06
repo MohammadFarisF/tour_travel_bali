@@ -18,33 +18,34 @@ class Customer extends BaseController
     // Method untuk menampilkan data customer
     public function index()
     {
-        // Mengambil data customer dari model
+        // Cek apakah user memiliki role admin
+        if (!session()->get('user_role') || session()->get('user_role') !== 'customer') {
+        }
+    
+        // Ambil data customer dari model
         $data = [
             'title' => 'Data Customer',
-            'customer' => $this->userModel->findAll(), // Mendapatkan semua data customer
+            'customer' => $this->userModel->getUser(), // Panggil method getAdmin() untuk mendapatkan admin saja
         ];
-
-        // Memuat view
-        echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
-        echo view('admin/customer', $data); // Menampilkan data ke tabel customer
-        echo view('admin/Template/footer');
+    
+        // Tampilkan tampilan template dengan data admin
+        echo view('admin/Template/header', $data);   // Header dengan judul halaman
+        echo view('admin/Template/sidebar');         // Sidebar yang digunakan
+        echo view('admin/customer', $data);             // Isi halaman admin dengan data admin yang diambil
+        echo view('admin/Template/footer');          // Footer
     }
 
     // Method untuk menghapus data customer
     public function delete($id)
     {
-        // Mencari data customer berdasarkan ID
-        $customer = $this->userModel->find($id);
-
-        if ($customer) {
-            // Jika data customer ditemukan, hapus
-            $this->userModel->deleteCustomer($id);
-            // Redirect dengan pesan sukses
-            return redirect()->to('dashboard/customer')->with('message', 'Data customer berhasil dihapus.');
+        // Mengecek apakah data ada sebelum menghapus
+        if (!$this->userModel->find($id)) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Customer tidak ditemukan');
         }
-
-        // Jika data tidak ditemukan, beri pesan error
-        return redirect()->to('dashboard/customer')->with('error', 'Data customer tidak ditemukan.');
+        
+        // Menghapus destinasi berdasarkan ID
+        $this->userModel->delete($id);
+        return redirect()->to('/bali/customer');
     }
+
 }

@@ -51,8 +51,20 @@ $routes->get('/bali/destinasi/create', 'Dashboard\Destinasi::create');
 $routes->post('/bali/destinasi/store', 'Dashboard\Destinasi::store');
 $routes->get('/bali/destinasi/delete/(:any)', 'Dashboard\Destinasi::delete/$1');
 $routes->get('/bali/destinasi/edit/(:any)', 'Dashboard\Destinasi::edit/$1');
-$routes->post('/bali/destinasi/update', 'Dashboard\Destinasi::update'); 
+$routes->post('/bali/destinasi/update', 'Dashboard\Destinasi::update');
 
+$routes->get('/dashboard/admin', 'Dashboard\Admin::index');
+$routes->get('/bali/admin', 'Dashboard\Admin::index');
+$routes->get('/bali/admin/create', 'Dashboard\Admin::create'); // Tambah prefix Dashboard
+$routes->post('/bali/admin/store', 'Dashboard\Admin::store');;
+$routes->post('/bali/admin/delete/(:any)', 'Dashboard\Admin::delete/$1'); // Tambah prefix Dashboard
+$routes->get('/bali/admin/edit/(:num)', 'Dashboard\Admin::edit/$1'); // Tambah prefix Dashboard
+$routes->post('/bali/admin/update/(:num)', 'Dashboard\Admin::update/$1');
+
+
+
+
+$routes->post('/dashboard/customer/delete/(:any)', 'Dashboard\Customer::delete/$1');
 $routes->get('/bali/kendaraan/create', 'Dashboard\Kendaraan::create');
 $routes->post('/bali/kendaraan/store', 'Dashboard\Kendaraan::store');
 $routes->get('/bali/kendaraan/edit/(:num)', 'Dashboard\Kendaraan::edit/$1');
