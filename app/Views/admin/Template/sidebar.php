@@ -18,7 +18,7 @@
                     </a>
                     <div class="collapse" id="collapseUser" data-bs-parent="#accordionSidenav">
                         <nav class="sidenav-menu-nested nav">
-                            <a class="nav-link" href="<?= base_url() ?>bali/customer">Admin</a>
+                            <a class="nav-link" href="<?= base_url() ?>bali/admin">Admin</a>
                             <a class="nav-link" href="<?= base_url() ?>bali/customer">Customer</a>
                         </nav>
                     </div>

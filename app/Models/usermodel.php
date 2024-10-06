@@ -21,10 +21,12 @@ class UserModel extends Model
     public function getUser($id = null)
     {
         if ($id === null) {
-            return $this->findAll(); // Mengambil semua data
+            // Hanya ambil pengguna dengan role admin
+            return $this->where('user_role', 'customer')->findAll();
+        } else {
+            // Ambil data admin berdasarkan ID, jika diberikan
+            return $this->where(['user_role' => 'customer', 'user_id' => $id])->first();
         }
-
-        return $this->where(['user_id' => $id])->first(); // Mengambil data berdasarkan ID
     }
 
     // Fungsi untuk menghapus data customer
