@@ -47,7 +47,7 @@ class Kendaraan extends BaseController
         if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
             // Pindahkan file ke folder uploads dengan nama asli
             $fileName = $filePhoto->getRandomName(); // Buat nama file acak
-            $filePhoto->move('uploads', $fileName); // Simpan file ke folder uploads
+            $filePhoto->move('uploads/kendaraan', $fileName); // Simpan file ke folder uploads
         }
 
         // Simpan data ke database
@@ -104,7 +104,7 @@ class Kendaraan extends BaseController
         if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
             // Hapus foto lama jika ada
             if (!empty($kendaraan['vehicle_photo'])) {
-                $oldFilePath = 'uploads/' . $kendaraan['vehicle_photo'];
+                $oldFilePath = 'uploads/kendaraan/' . $kendaraan['vehicle_photo'];
                 if (file_exists($oldFilePath)) {
                     unlink($oldFilePath); // Menghapus file lama
                 }
@@ -112,7 +112,7 @@ class Kendaraan extends BaseController
 
             // Pindahkan file ke folder uploads dengan nama baru
             $fileName = $filePhoto->getRandomName(); // Buat nama file acak
-            $filePhoto->move('uploads', $fileName); // Simpan file ke folder uploads
+            $filePhoto->move('uploads/kendaraan', $fileName); // Simpan file ke folder uploads
             $data['vehicle_photo'] = $fileName; // Tambahkan nama file baru ke data
         } else {
             // Jika tidak ada file baru, tetap gunakan foto lama

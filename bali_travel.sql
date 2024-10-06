@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Sep 28, 2024 at 05:47 AM
+-- Generation Time: Oct 06, 2024 at 09:28 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -81,43 +81,9 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `calculateRefund` (IN `p_booking_id`
     END IF;
     
     -- Simpan informasi refund ke tabel refunds
-    INSERT INTO refunds (booking_id, user_id, refund_amount, refund_reason, refund_status)
-    SELECT b.booking_id, b.user_id, refund_amount, 'Booking cancelled', 'pending'
+    INSERT INTO refunds (booking_id, user_id, refund_amount, refund_status)
+    SELECT b.booking_id, b.user_id, refund_amount, 'pending'
     FROM bookings b WHERE b.booking_id = p_booking_id;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `calculateTotalAmount` (IN `p_booking_id` INT)   BEGIN
-    DECLARE total_people INT;
-    DECLARE price_per_person DECIMAL(10, 2);
-    DECLARE num_destinations INT;
-    DECLARE base_amount DECIMAL(10, 2);
-    DECLARE total_amount DECIMAL(10, 2);
-    
-    -- Ambil jumlah orang dan harga per orang dari pemesanan
-    SELECT total_people, price_per_person INTO total_people, price_per_person
-    FROM bookings b
-    JOIN packages p ON b.package_id = p.package_id
-    WHERE b.booking_id = p_booking_id;
-    
-    -- Hitung jumlah destinasi yang dipilih (hanya untuk single destination package)
-    SELECT COUNT(*) INTO num_destinations
-    FROM booking_destinations
-    WHERE booking_id = p_booking_id;
-    
-    -- Jika destinasi lebih sedikit dari maksimal, sesuaikan harga
-    IF num_destinations < 4 THEN
-        SET base_amount = price_per_person * num_destinations;  -- Harga berdasarkan destinasi yang dipilih
-    ELSE
-        SET base_amount = price_per_person * 4;  -- Harga maksimal untuk 4 destinasi
-    END IF;
-    
-    -- Hitung total biaya
-    SET total_amount = base_amount * total_people;
-    
-    -- Update total amount di bookings
-    UPDATE bookings
-    SET total_amount = total_amount
-    WHERE booking_id = p_booking_id;
 END$$
 
 CREATE DEFINER=`root`@`localhost` PROCEDURE `update_transaction_amount` (IN `transaction_id` INT, IN `payment_method` ENUM('bank_transfer','other'))   BEGIN
@@ -184,7 +150,7 @@ CREATE TABLE `bank_travel` (
 --
 
 CREATE TABLE `bookings` (
-  `booking_id` int NOT NULL,
+  `booking_id` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `user_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `package_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `address` text COLLATE utf8mb4_general_ci NOT NULL,
@@ -193,7 +159,7 @@ CREATE TABLE `bookings` (
   `return_date` date DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
   `booking_status` enum('pending','confirmed','cancelled','completed') COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `payment_status` enum('pending','paid','cancelled','refund_requested','refund_processed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `payment_status` enum('pending','paid','refund_processed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -222,7 +188,7 @@ DELIMITER ;
 
 CREATE TABLE `booking_destinations` (
   `booking_destination_id` int NOT NULL,
-  `booking_id` int DEFAULT NULL,
+  `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `destination_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -255,7 +221,7 @@ DELIMITER ;
 
 CREATE TABLE `booking_vehicles` (
   `booking_vehicle_id` int NOT NULL,
-  `booking_id` int DEFAULT NULL,
+  `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `vehicle_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -267,9 +233,11 @@ CREATE TABLE `booking_vehicles` (
 
 CREATE TABLE `destinations` (
   `destination_id` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `package_id` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `destination_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `location` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `description` text COLLATE utf8mb4_general_ci,
+  `foto` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -289,6 +257,13 @@ CREATE TABLE `packages` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `packages`
+--
+
+INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `description`, `created_at`, `updated_at`) VALUES
+('P01', 'Wisata Bali 3 Hari 4 Malam', 'multiple_day', 'Wisata Bali', '2024-10-05 21:41:35', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -297,10 +272,8 @@ CREATE TABLE `packages` (
 
 CREATE TABLE `payments` (
   `payment_id` int NOT NULL,
-  `booking_id` int DEFAULT NULL,
-  `user_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `payment_method` enum('bank_transfer','other') COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `payment_amount` decimal(10,2) DEFAULT NULL,
   `payment_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `payment_status` enum('pending','validated','failed') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `proof_of_payment` text COLLATE utf8mb4_general_ci
@@ -310,12 +283,19 @@ CREATE TABLE `payments` (
 -- Triggers `payments`
 --
 DELIMITER $$
-CREATE TRIGGER `payment_validation_trigger` AFTER UPDATE ON `payments` FOR EACH ROW BEGIN
-    IF NEW.payment_status = 'validated' THEN
-        -- Update status booking menjadi 'confirmed' jika pembayaran tervalidasi
+CREATE TRIGGER `update_booking_status` AFTER UPDATE ON `payments` FOR EACH ROW BEGIN
+    -- Jika status pembayaran telah selesai ('paid'), maka update booking status menjadi 'confirmed'
+    IF NEW.payment_status = 'paid' THEN
         UPDATE bookings
         SET booking_status = 'confirmed'
-        WHERE booking_id = NEW.booking_id;
+        WHERE bookings.booking_id = NEW.booking_id;
+    END IF;
+
+    -- Jika status pembayaran di payments sudah divalidasi, maka update payment_status menjadi 'paid' di bookings
+    IF NEW.payment_status = 'validated' THEN
+        UPDATE bookings
+        SET payment_status = 'paid'
+        WHERE bookings.booking_id = NEW.booking_id;
     END IF;
 END
 $$
@@ -329,13 +309,11 @@ DELIMITER ;
 
 CREATE TABLE `refunds` (
   `refund_id` int NOT NULL,
-  `booking_id` int DEFAULT NULL,
-  `user_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `custbank_id` int DEFAULT NULL,
   `refund_amount` decimal(10,2) DEFAULT NULL,
   `refund_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `refund_reason` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `refund_status` enum('pending','processed','rejected') COLLATE utf8mb4_general_ci DEFAULT NULL
+  `refund_status` enum('completed','processed','rejected') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -359,6 +337,7 @@ DELIMITER ;
 
 CREATE TABLE `reviews` (
   `review_id` int NOT NULL,
+  `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `user_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `package_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `rating` tinyint NOT NULL,
@@ -383,6 +362,13 @@ CREATE TABLE `users` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `full_name`, `email`, `password`, `phone_number`, `user_role`, `created_at`, `updated_at`) VALUES
+('U01', 'Mohammad Faris Fawwaz', 'farisfawwaz123@gmail.com', 'Faris1811.', '0812545584444', 'customer', '2024-10-06 04:42:26', '2024-10-06 04:42:26');
+
 -- --------------------------------------------------------
 
 --
@@ -400,6 +386,13 @@ CREATE TABLE `vehicles` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `vehicles`
+--
+
+INSERT INTO `vehicles` (`vehicle_id`, `vehicle_name`, `license_plate`, `capacity`, `vehicle_type`, `vehicle_photo`, `status`, `created_at`, `updated_at`) VALUES
+(7, 'Avanza Black', 'BK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'maintenance', '2024-09-30 21:44:20', '2024-09-30 22:09:38');
 
 --
 -- Indexes for dumped tables
@@ -422,24 +415,24 @@ ALTER TABLE `bank_travel`
 --
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`booking_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `package_id` (`package_id`);
+  ADD KEY `bookings_ibfk_1` (`user_id`),
+  ADD KEY `bookings_ibfk_2` (`package_id`);
 
 --
 -- Indexes for table `booking_destinations`
 --
 ALTER TABLE `booking_destinations`
   ADD PRIMARY KEY (`booking_destination_id`),
-  ADD KEY `booking_id` (`booking_id`),
-  ADD KEY `destination_id` (`destination_id`);
+  ADD KEY `booking_destinations_ibfk_2` (`destination_id`),
+  ADD KEY `booking_destinations_ibfk_1` (`booking_id`);
 
 --
 -- Indexes for table `booking_vehicles`
 --
 ALTER TABLE `booking_vehicles`
   ADD PRIMARY KEY (`booking_vehicle_id`),
-  ADD KEY `booking_id` (`booking_id`),
-  ADD KEY `vehicle_id` (`vehicle_id`);
+  ADD KEY `booking_vehicles_ibfk_2` (`vehicle_id`),
+  ADD KEY `booking_vehicles_ibfk_1` (`booking_id`);
 
 --
 -- Indexes for table `destinations`
@@ -458,25 +451,24 @@ ALTER TABLE `packages`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`payment_id`),
-  ADD KEY `booking_id` (`booking_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `payments_ibfk_1` (`booking_id`);
 
 --
 -- Indexes for table `refunds`
 --
 ALTER TABLE `refunds`
   ADD PRIMARY KEY (`refund_id`),
-  ADD KEY `booking_id` (`booking_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `refunds_ibfk_3` (`custbank_id`);
+  ADD KEY `refunds_ibfk_3` (`custbank_id`),
+  ADD KEY `refunds_ibfk_1` (`booking_id`);
 
 --
 -- Indexes for table `reviews`
 --
 ALTER TABLE `reviews`
   ADD PRIMARY KEY (`review_id`),
-  ADD KEY `user_id` (`user_id`),
-  ADD KEY `package_id` (`package_id`);
+  ADD KEY `booking_id` (`booking_id`),
+  ADD KEY `reviews_ibfk_1` (`user_id`),
+  ADD KEY `reviews_ibfk_2` (`package_id`);
 
 --
 -- Indexes for table `users`
@@ -508,34 +500,28 @@ ALTER TABLE `bank_travel`
   MODIFY `trabank_id` int NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `bookings`
---
-ALTER TABLE `bookings`
-  MODIFY `booking_id` int NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `booking_destinations`
 --
 ALTER TABLE `booking_destinations`
-  MODIFY `booking_destination_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `booking_destination_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `booking_vehicles`
 --
 ALTER TABLE `booking_vehicles`
-  MODIFY `booking_vehicle_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `booking_vehicle_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `refunds`
 --
 ALTER TABLE `refunds`
-  MODIFY `refund_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `refund_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `reviews`
@@ -547,7 +533,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `vehicles`
 --
 ALTER TABLE `vehicles`
-  MODIFY `vehicle_id` int NOT NULL AUTO_INCREMENT;
+  MODIFY `vehicle_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Constraints for dumped tables
@@ -557,44 +543,49 @@ ALTER TABLE `vehicles`
 -- Constraints for table `bookings`
 --
 ALTER TABLE `bookings`
-  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `packages` (`package_id`);
+  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `packages` (`package_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `booking_destinations`
 --
 ALTER TABLE `booking_destinations`
-  ADD CONSTRAINT `booking_destinations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`),
-  ADD CONSTRAINT `booking_destinations_ibfk_2` FOREIGN KEY (`destination_id`) REFERENCES `destinations` (`destination_id`);
+  ADD CONSTRAINT `booking_destinations_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `booking_destinations_ibfk_2` FOREIGN KEY (`destination_id`) REFERENCES `destinations` (`destination_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `booking_vehicles`
 --
 ALTER TABLE `booking_vehicles`
-  ADD CONSTRAINT `booking_vehicles_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`),
-  ADD CONSTRAINT `booking_vehicles_ibfk_2` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`vehicle_id`);
+  ADD CONSTRAINT `booking_vehicles_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `booking_vehicles_ibfk_2` FOREIGN KEY (`vehicle_id`) REFERENCES `vehicles` (`vehicle_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `destinations`
+--
+ALTER TABLE `destinations`
+  ADD CONSTRAINT `fk_destinasi_paket` FOREIGN KEY (`destination_id`) REFERENCES `packages` (`package_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `payments`
 --
 ALTER TABLE `payments`
-  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`),
-  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`);
+  ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `refunds`
 --
 ALTER TABLE `refunds`
-  ADD CONSTRAINT `refunds_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`),
-  ADD CONSTRAINT `refunds_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `refunds_ibfk_3` FOREIGN KEY (`custbank_id`) REFERENCES `bank_customer` (`custbank_id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `refunds_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `refunds_ibfk_3` FOREIGN KEY (`custbank_id`) REFERENCES `bank_customer` (`custbank_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`),
-  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `packages` (`package_id`);
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `packages` (`package_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

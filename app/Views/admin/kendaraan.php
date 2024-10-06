@@ -45,7 +45,7 @@
                                     <td><?php echo esc($vehicle['vehicle_type']); ?></td>
                                     <td>
                                         <?php if (!empty($vehicle['vehicle_photo'])): ?>
-                                            <img src="<?= base_url('uploads/' . esc($vehicle['vehicle_photo'])); ?>" alt="Foto Kendaraan" style="width: 100px; height: auto;">
+                                            <img src="<?= base_url('uploads/kendaraan/' . esc($vehicle['vehicle_photo'])); ?>" alt="Foto Kendaraan" style="width: 100px; height: auto;">
                                         <?php else: ?>
                                             No Image
                                         <?php endif; ?>
