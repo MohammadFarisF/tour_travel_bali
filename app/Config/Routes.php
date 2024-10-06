@@ -74,6 +74,9 @@ $routes->post('/bali/kendaraan/delete/(:any)', 'Dashboard\Kendaraan::delete/$1')
 $routes->get('/bali/customer', 'Dashboard\Customer::index');
 $routes->post('/dashboard/customer/delete/(:any)', 'Dashboard\Customer::delete/$1');
 
+$routes->get('/bali/review', 'Dashboard\Review::index');
+$routes->post('/dashboard/review/delete/(:any)', 'Dashboard\Review::delete/$1');
+
 $routes->get('/bali/bankpelanggan', 'Dashboard\Bank_Pelanggan::index');
 $routes->get('/bali/bankpelanggan/delete/(:num)', 'Dashboard\Bank_Pelanggan::delete/$1');
 

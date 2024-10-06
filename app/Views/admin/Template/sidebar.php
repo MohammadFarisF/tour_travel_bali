@@ -59,7 +59,7 @@
                             <a class="nav-link" href="<?= base_url() ?>bali/bankpelanggan">Pelanggan</a>
                         </nav>
                     </div>
-                    <a class="nav-link" href="javascript:void(0);">
+                    <a class="nav-link" href="<?= base_url() ?>bali/review">
                         <div class="nav-link-icon"><i data-feather="smile"></i></div>
                         Ulasan Pelanggan
                     </a>
