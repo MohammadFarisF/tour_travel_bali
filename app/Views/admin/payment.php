@@ -26,7 +26,8 @@
                         <thead>
                             <tr>
                                 <th>Kode Booking</th>
-                                <th>Nama Pemesan</th>
+                                <th>Nama Akun Pembayaran</th>
+                                <th>Nomor Akun Pembayaran</th>
                                 <th>Metode Pembayaran</th>
                                 <th>Tanggal Pembayaran</th>
                                 <th>Status Pembayaran</th>
@@ -38,7 +39,8 @@
                             <?php foreach ($payments as $payment): ?>
                                 <tr>
                                     <td><?= $payment['booking_id']; ?></td>
-                                    <td><?= $payment['user_name']; ?></td>
+                                    <td><?= $payment['account_number']; ?></td>
+                                    <td><?= $payment['account_holder_name']; ?></td>
                                     <td><?= $payment['payment_date']; ?></td>
                                     <td><?= $payment['payment_method']; ?></td>
                                     <td><?= $payment['payment_status']; ?></td>

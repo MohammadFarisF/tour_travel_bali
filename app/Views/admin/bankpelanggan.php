@@ -27,7 +27,6 @@
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
-                                <th>Kode Bank</th>
                                 <th>Nama Akun</th>
                                 <th>Nomor Akun</th>
                                 <th>Nama Pemegang Akun</th>
@@ -37,15 +36,24 @@
                         </thead>
                         <tbody>
                             <!-- Looping data destinasi -->
-                            <?php foreach ($bankpelanggan as $bankpelanggan): ?>
+                            <?php foreach ($bankpelanggan as $bp): ?>
                                 <tr>
-                                    <td><?php echo esc($bankpelanggan['custbank_id']); ?></td>
-                                    <td><?php echo esc($bankpelanggan['account_name']); ?></td>
-                                    <td><?php echo esc($bankpelanggan['account_number']); ?></td>
-                                    <td><?php echo esc($bankpelanggan['account_holder_name']); ?></td>
-                                    <td><?php echo esc($bankpelanggan['account_type']); ?></td>
+                                    <td><?php echo esc($bp['account_name']); ?></td>
+                                    <td><?php echo esc($bp['account_number']); ?></td>
+                                    <td><?php echo esc($bp['account_holder_name']); ?></td>
                                     <td>
-                                    <a href="<?= site_url('bali/bankpelanggan/delete/' . $bankpelanggan['custbank_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus bank ini?');">Hapus</a>
+                                        <?php
+                                        if ($bp['account_type'] === 'bank account') {
+                                            echo 'Akun Bank';
+                                        } elseif ($bp['account_type'] === 'other') {
+                                            echo 'Lainnya';
+                                        } else {
+                                            echo esc($bp['account_type']);
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                    <a href="<?= site_url('bali/bankpelanggan/delete/' . $bp['custbank_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus bank ini?');">Hapus</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

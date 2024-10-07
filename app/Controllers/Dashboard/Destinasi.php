@@ -70,7 +70,7 @@ class Destinasi extends BaseController
                 // Tentukan nama acak untuk setiap file
                 $fileName = $filePhoto->getRandomName();
                 // Pindahkan file ke folder uploads
-                $filePhoto->move('uploads/destinasi', $fileName);
+                $filePhoto->move('uploads/destinasi/', $fileName);
                 // Simpan nama file ke array
                 $fileNames[] = $fileName;
             }
