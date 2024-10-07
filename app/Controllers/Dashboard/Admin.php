@@ -3,7 +3,7 @@
 namespace App\Controllers\Dashboard;
 
 use App\Controllers\BaseController;
-use App\Models\adminmodel;
+use App\Models\usermodel;
 
 class Admin extends BaseController
 {
@@ -11,7 +11,7 @@ class Admin extends BaseController
 
     public function __construct()
     {
-        $this->adminModel = new adminModel();
+        $this->adminModel = new usermodel();
     }
 
     public function index()
@@ -64,7 +64,7 @@ class Admin extends BaseController
             'email' => $this->request->getPost('email'),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT), // Hash password untuk keamanan
             'phone_number' => $this->request->getPost('phone_number'),
-            'user_role' => 'admin', // Menyimpan role sebagai admin
+            'user_role' => $this->request->getPost('user_role'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);

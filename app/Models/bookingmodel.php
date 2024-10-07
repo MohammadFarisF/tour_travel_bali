@@ -61,7 +61,11 @@ class BookingModel extends Model
         return $this->select('bookings.*, 
                              GROUP_CONCAT(destinations.destination_name) as destination_names, 
                              MAX(vehicles.vehicle_name) as vehicle_name, 
-                             COALESCE(MAX(refunds.refund_status), "-") as refund_status')
+                             COALESCE(MAX(refunds.refund_status), "-") as refund_status,
+                             users.full_name AS user_name,
+                             packages.package_name')
+            ->join('packages', 'packages.package_id = bookings.package_id', 'left')
+            ->join('users', 'users.user_id = bookings.user_id', 'left')
             ->join('booking_destinations', 'booking_destinations.booking_id = bookings.booking_id', 'left')
             ->join('destinations', 'destinations.destination_id = booking_destinations.destination_id', 'left')
             ->join('booking_vehicles', 'booking_vehicles.booking_id = bookings.booking_id', 'left')
@@ -78,7 +82,11 @@ class BookingModel extends Model
         $builder->select('bookings.*, 
                           GROUP_CONCAT(destinations.destination_name) as destination_names, 
                           MAX(vehicles.vehicle_name) as vehicle_name, 
-                          COALESCE(MAX(refunds.refund_status), "-") as refund_status');
+                          COALESCE(MAX(refunds.refund_status), "-") as refund_status,
+                          users.full_name AS user_name,
+                          packages.package_name');
+        $builder->join('users', 'users.user_id = bookings.user_id', 'left');
+        $builder->join('packages', 'packages.package_id = bookings.package_id', 'left');
         $builder->join('booking_destinations', 'booking_destinations.booking_id = bookings.booking_id', 'left');
         $builder->join('destinations', 'destinations.destination_id = booking_destinations.destination_id', 'left');
         $builder->join('booking_vehicles', 'booking_vehicles.booking_id = bookings.booking_id', 'left');

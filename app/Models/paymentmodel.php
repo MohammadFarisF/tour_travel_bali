@@ -22,12 +22,15 @@ class PaymentModel extends Model
         $builder->select('
             payments.*, 
             bookings.booking_id,
-            users.full_name AS user_name,
             bookings.total_amount,
-            bookings.booking_status
+            bookings.booking_status,
+            bank_customer.custbank_id,
+            bank_customer.account_number,
+            bank_customer.account_holder_name,
+
         ');
         $builder->join('bookings', 'bookings.booking_id = payments.booking_id', 'left');
-        $builder->join('users', 'users.user_id = bookings.user_id', 'left');
+        $builder->join('bank_customer', 'bank_customer.custbank_id = payments.custbank_id', 'left');
 
         return $builder->get()->getResultArray();
     }

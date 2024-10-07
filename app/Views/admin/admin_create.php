@@ -51,6 +51,15 @@
                                     <input type="number" class="form-control" id="phone_number" name="phone_number" placeholder="Masukkan Nomor HP..." required>
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="user_role" class="form-label">Role User</label>
+                                    <select class="form-control" id="user_role" name="user_role" required>
+                                        <option disabled selected>Pilih Role User</option>
+                                        <option value="owner">Super Admin</option>
+                                        <option value="admin">Admin</option>
+                                    </select>
+                                </div>
+
                                 <button type="submit" class="btn btn-success">Simpan</button>
                                 <a href="<?= base_url(); ?>/bali/admin" class="btn btn-secondary">Batal</a>
                             </form>
@@ -60,3 +69,16 @@
             </div>
         </div>
     </main>
+
+    <script>
+        document.getElementById('formdata').addEventListener('submit', function(event) {
+            // Ambil value dari user_role
+            var userRole = document.getElementById('user_role').value;
+
+            // Cek apakah value tidak valid
+            if (userRole !== 'owner' && userRole !== 'admin') {
+                event.preventDefault(); // Mencegah form dari submit
+                alert('Pilih role yang valid: Super Admin atau Admin'); // Tampilkan pesan error
+            }
+        });
+    </script>

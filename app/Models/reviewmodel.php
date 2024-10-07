@@ -17,17 +17,34 @@ class ReviewModel extends Model
 
     // Field yang dapat dimodifikasi
     protected $allowedFields = [
-        'review_id', 'user_id', 'package_id', 'rating', 'review_text', 'review_date', 'created_at', 'updated_at'
+        'review_id',
+        'user_id',
+        'package_id',
+        'rating',
+        'review_text',
+        'review_date',
+        'created_at',
+        'updated_at'
     ];
 
     // Fungsi untuk mendapatkan semua data customer
     public function getReview($id = false)
     {
-        if ($id === false) {
-            return $this->findAll();
-        }
+        $builder = $this->db->table($this->table);
+        $builder->select('
+            reviews.*, 
+            bookings.booking_id,
+            users.user_id,
+            users.full_name,
+            packages.package_id,
+            packages.package_name
 
-        return $this->where(['review_id' => $id])->first();
+        ');
+        $builder->join('bookings', 'bookings.booking_id = reviews.booking_id', 'left');
+        $builder->join('users', 'users.user_id = reviews.user_id', 'left');
+        $builder->join('packages', 'packages.package_id = reviews.package_id', 'left');
+
+        return $builder->get()->getResultArray();
     }
 
     // Fungsi untuk menghapus data customer

@@ -11,10 +11,18 @@ class UserModel extends Model
 
     // Menentukan primary key tabel
     protected $primaryKey = 'user_id';
+    protected $useAutoIncrement = false;
 
     // Field yang dapat dimodifikasi
     protected $allowedFields = [
-        'user_id', 'full_name', 'email', 'phone_number', 'password', 'user_role', 'created_at', 'updated_at'
+        'user_id',
+        'full_name',
+        'email',
+        'phone_number',
+        'password',
+        'user_role',
+        'created_at',
+        'updated_at'
     ];
 
     // Fungsi untuk mendapatkan semua data customer
@@ -33,5 +41,23 @@ class UserModel extends Model
     public function deleteUser($id)
     {
         return $this->delete($id); // Menghapus berdasarkan ID
+    }
+
+    public function getAdmin($id = null)
+    {
+        if ($id === null) {
+            // Ambil semua pengguna dengan role admin atau owner
+            return $this->whereIn('user_role', ['admin', 'owner'])->findAll();
+        } else {
+            // Ambil data admin atau owner berdasarkan ID, jika diberikan
+            return $this->whereIn('user_role', ['admin', 'owner'])->where('user_id', $id)->first();
+        }
+    }
+
+
+
+    public function hapus($id)
+    {
+        return $this->delete($id);
     }
 }

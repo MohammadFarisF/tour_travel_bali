@@ -18,7 +18,7 @@
         <!-- Main page content-->
         <div class="container-xl px-4 mt-n10">
             <div class="card mb-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Data Admin</span>
                     <!-- Button berada di ujung kanan -->
                     <a href="<?= base_url(); ?>/bali/admin/create" class="btn btn-primary">Tambah Admin</a>
@@ -31,24 +31,36 @@
                                 <th>Nama Admin</th>
                                 <th>Email</th>
                                 <th>Nomor HP</th>
+                                <th>Role User</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                                <?php foreach ($admin as $user): ?>
+                            <?php foreach ($admin as $user): ?>
                                 <tr>
                                     <td><?php echo esc($user['user_id']); ?></td>
                                     <td><?php echo esc($user['full_name']); ?></td>
                                     <td><?php echo esc($user['email']); ?></td>
                                     <td><?php echo esc($user['phone_number']); ?></td>
                                     <td>
-                                    <a href="<?php echo site_url('/bali/admin/edit/' . $user['user_id']); ?>" class="btn btn-warning">Edit</a>
+                                        <?php
+                                        if ($user['user_role'] === 'owner') {
+                                            echo 'Super Admin';
+                                        } elseif ($user['user_role'] === 'admin') {
+                                            echo 'Admin';
+                                        } else {
+                                            echo esc($user['user_role']);
+                                        }
+                                        ?>
+                                    </td>
+                                    <td>
+                                        <a href="<?php echo site_url('/bali/admin/edit/' . $user['user_id']); ?>" class="btn btn-warning">Edit</a>
                                         <form action="<?php echo site_url('/bali/admin/delete/' . $user['user_id']); ?>" method="post" style="display:inline;">
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this admin?');">Delete</button>
                                         </form>
                                     </td>
-                                    </tr>
-                                <?php endforeach; ?>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>

@@ -32,6 +32,7 @@
                                 <th>Nama Destinasi</th>
                                 <th>Lokasi</th>
                                 <th>Deskripsi</th>
+                                <th>Foto</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -40,13 +41,26 @@
                             <?php foreach ($destinasi as $destinasi): ?>
                                 <tr>
                                     <td><?php echo esc($destinasi['destination_id']); ?></td>
-                                    <td></td>
+                                    <td><?php echo esc($destinasi['package_id']); ?></td>
                                     <td><?php echo esc($destinasi['destination_name']); ?></td>
                                     <td><?php echo esc($destinasi['location']); ?></td>
                                     <td><?php echo esc($destinasi['description']); ?></td>
                                     <td>
-                                    <a href="<?= site_url('bali/destinasi/edit/' . $destinasi['destination_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="<?= site_url('bali/destinasi/delete/' . $destinasi['destination_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus destinasi ini?');">Hapus</a>
+                                        <!-- Cek apakah ada foto -->
+                                        <?php if (!empty($destinasi['foto'])): ?>
+                                            <?php
+                                            $photos = explode(',', $destinasi['foto']); // Mengambil semua foto jika ada lebih dari satu
+                                            foreach ($photos as $photo):
+                                            ?>
+                                                <img src="<?= base_url('uploads/destinasi/' . $photo); ?>" alt="Foto Destinasi" style="width: 100px; height: auto;">
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            Tidak ada foto
+                                        <?php endif; ?>
+                                    </td>
+                                    <td>
+                                        <a href="<?= site_url('bali/destinasi/edit/' . $destinasi['destination_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
+                                        <a href="<?= site_url('bali/destinasi/delete/' . $destinasi['destination_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus destinasi ini?');">Hapus</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

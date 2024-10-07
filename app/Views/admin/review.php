@@ -17,7 +17,7 @@
                 </div>
             </div>
         </header>
-        
+
         <!-- Main page content -->
         <div class="container-xl px-4 mt-n10">
             <div class="card mb-4">
@@ -25,9 +25,9 @@
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
-                                <th>ID Review</th>
-                                <th>ID Customer</th>
-                                <th>ID Package</th>
+                                <th>Kode Booking</th>
+                                <th>Nama Customer</th>
+                                <th>Nama Paket</th>
                                 <th>Rating</th>
                                 <th>Review Text</th>
                                 <th>Review Date</th>
@@ -36,19 +36,19 @@
                         </thead>
                         <tbody>
                             <?php foreach ($review as $ulasan): ?>
-                            <tr>
-                                <td><?php echo esc($ulasan['review_id']); ?></td>
-                                <td><?php echo esc($ulasan['user_id']); ?></td>
-                                <td><?php echo esc($ulasan['package_id']); ?></td>
-                                <td><?php echo esc($ulasan['rating']); ?></td>
-                                <td><?php echo esc($ulasan['review_text']); ?></td>
-                                <td><?php echo esc($ulasan['review_date']); ?></td>
-                                <td>
-                                    <form action="<?php echo site_url('dashboard/review/delete/' . $ulasan['review_id']); ?>" method="post" style="display:inline;">
-                                        <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this review?');">Delete</button>
-                                    </form>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td><?php echo esc($ulasan['booking_id']); ?></td>
+                                    <td><?php echo esc($ulasan['full_name']); ?></td>
+                                    <td><?php echo esc($ulasan['package_name']); ?></td>
+                                    <td><?php echo esc($ulasan['rating']); ?></td>
+                                    <td><?php echo esc($ulasan['review_text']); ?></td>
+                                    <td><?php echo esc($ulasan['review_date']); ?></td>
+                                    <td>
+                                        <form action="<?php echo site_url('dashboard/review/delete/' . $ulasan['review_id']); ?>" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this review?');">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
                             <?php endforeach; ?>
                         </tbody>
                     </table>

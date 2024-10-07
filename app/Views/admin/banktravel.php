@@ -27,7 +27,6 @@
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
-                                <th>Kode Bank</th>
                                 <th>Nomor Akun</th>
                                 <th>Nama Pemegang Akun</th>
                                 <th>Nama Bank</th>
@@ -39,7 +38,6 @@
                             <!-- Looping data destinasi -->
                             <?php foreach ($banktravel as $banktravel): ?>
                                 <tr>
-                                    <td><?php echo esc($banktravel['trabank_id']); ?></td>
                                     <td><?php echo esc($banktravel['account_number']); ?></td>
                                     <td><?php echo esc($banktravel['account_holder_name']); ?></td>
                                     <td><?php echo esc($banktravel['bank_name']); ?></td>
@@ -48,10 +46,11 @@
                                             <img src="<?= base_url('uploads/banktravel/' . esc($banktravel['photo'])); ?>" alt="Foto Bank" style="width: 100px; height: auto;">
                                         <?php else: ?>
                                             No Image
-                                        <?php endif; ?></td>
+                                        <?php endif; ?>
+                                    </td>
                                     <td>
-                                    <a href="<?= site_url('bali/banktravel/edit/' . $banktravel['trabank_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
-                                    <a href="<?= site_url('bali/banktravel/delete/' . $banktravel['trabank_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus bank ini?');">Hapus</a>
+                                        <a href="<?= site_url('bali/banktravel/edit/' . $banktravel['trabank_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
+                                        <a href="<?= site_url('bali/banktravel/delete/' . $banktravel['trabank_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus bank ini?');">Hapus</a>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>
