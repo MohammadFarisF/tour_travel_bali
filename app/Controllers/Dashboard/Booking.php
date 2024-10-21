@@ -17,15 +17,17 @@ class Booking extends BaseController
 
     public function index()
     {
+        $roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
         // Mengambil semua data bank pelanggan
         $data = [
             'title' => 'Pemesanan',
-            'bookings' => $this->bookingModel->getBooking(), // Mengambil semua bank pelanggan
+            'bookings' => $this->bookingModel->getBooking(),
+            'roleLabel' => $roleLabel, // Mengambil semua bank pelanggan
         ];
 
         // Menampilkan view dengan data bank pelanggan
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/booking', $data); // Pastikan view ini ada untuk menampilkan daftar bank pelanggan
         echo view('admin/Template/footer');
     }

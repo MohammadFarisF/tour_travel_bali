@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 07, 2024 at 10:11 AM
+-- Generation Time: Oct 21, 2024 at 10:33 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -184,14 +184,6 @@ CREATE TABLE `bookings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `bookings`
---
-
-INSERT INTO `bookings` (`booking_id`, `user_id`, `package_id`, `address`, `total_people`, `departure_date`, `return_date`, `total_amount`, `booking_status`, `payment_status`, `created_at`, `updated_at`) VALUES
-('B001', 'U003', 'P02', 'Jl. Bali', 5, '2024-10-09', '2024-10-14', '10000000.00', 'cancelled', 'refund_processed', '2024-10-07 09:45:40', '2024-10-07 09:56:45'),
-('B002', 'U003', 'P01', 'Jl. Medan', 2, '2024-11-14', '2024-11-20', '10000000.00', 'pending', 'pending', '2024-10-07 09:50:14', '2024-10-07 09:51:04');
-
---
 -- Triggers `bookings`
 --
 DELIMITER $$
@@ -218,16 +210,6 @@ CREATE TABLE `booking_destinations` (
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `destination_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `booking_destinations`
---
-
-INSERT INTO `booking_destinations` (`booking_destination_id`, `booking_id`, `destination_id`) VALUES
-(2, 'B001', 'D03'),
-(3, 'B001', 'D04'),
-(4, 'B002', 'D01'),
-(5, 'B002', 'D02');
 
 --
 -- Triggers `booking_destinations`
@@ -261,14 +243,6 @@ CREATE TABLE `booking_vehicles` (
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `vehicle_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `booking_vehicles`
---
-
-INSERT INTO `booking_vehicles` (`booking_vehicle_id`, `booking_id`, `vehicle_id`) VALUES
-(2, 'B001', 9),
-(3, 'B002', 10);
 
 -- --------------------------------------------------------
 
@@ -337,14 +311,6 @@ CREATE TABLE `payments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `payments`
---
-
-INSERT INTO `payments` (`payment_id`, `booking_id`, `custbank_id`, `payment_method`, `payment_date`, `payment_status`, `proof_of_payment`) VALUES
-(3, 'B001', 1, 'bank_transfer', '2024-10-07 09:53:19', 'pending', 'bukti_tf1.jpg'),
-(4, 'B001', 2, 'bank_transfer', '2024-10-07 09:53:56', 'validated', 'bukti_tf2.jpg');
-
---
 -- Triggers `payments`
 --
 DELIMITER $$
@@ -382,13 +348,6 @@ CREATE TABLE `refunds` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `refunds`
---
-
-INSERT INTO `refunds` (`refund_id`, `booking_id`, `custbank_id`, `refund_amount`, `refund_date`, `refund_status`) VALUES
-(2, 'B001', 2, '10000000.00', '2024-10-07 09:57:16', 'completed');
-
---
 -- Triggers `refunds`
 --
 DELIMITER $$
@@ -417,13 +376,6 @@ CREATE TABLE `reviews` (
   `review_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `reviews`
---
-
-INSERT INTO `reviews` (`review_id`, `booking_id`, `user_id`, `package_id`, `rating`, `review_text`, `review_date`) VALUES
-(1, 'B002', 'U003', 'P02', 5, 'Bagus, Perjalanan yang Menyenangkan', '2024-10-07 10:04:38');
-
 -- --------------------------------------------------------
 
 --
@@ -446,9 +398,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `full_name`, `email`, `password`, `phone_number`, `user_role`, `created_at`, `updated_at`) VALUES
+('C003', 'Muhammad Firjatullah', 'mfirjatullah123@gmail.com', '$2y$10$3a30novDoKO5RhKHJzQxPe5Vf1VNCh9pzVf165JC0AwWlI3EhUI2W', '081234513423', 'customer', '2024-10-21 15:30:39', '2024-10-21 22:30:39'),
 ('U001', 'Mohammad Faris Fawwaz', 'farisfawwaz123@gmail.com', '$2y$10$2PQlScjiE2ZcDzYibWmLoerml.f2K008MAGlm9k9t8wN3JWtb0qsW', '081234567891', 'owner', '2024-10-07 02:03:00', '2024-10-07 02:03:00'),
-('U002', 'Muhammad Fauzan Azhar', 'mfauzanazhar12@gmail.com', '$2y$10$CCrIoiQ77QgPRrON3e8//OaMHrdauZZ3HWxjMDd6w4R1PQQsUBy8a', '081234513134', 'admin', '2024-10-07 02:07:29', '2024-10-07 02:07:29'),
-('U003', 'Muhammad Firjatullah', 'mfirjatullah123@gmail.com', 'Firja123', '0812545584444', 'customer', '2024-10-07 09:09:08', '2024-10-07 09:09:08');
+('U002', 'Muhammad Fauzan Azhar', 'mfauzanazhar12@gmail.com', '$2y$10$CCrIoiQ77QgPRrON3e8//OaMHrdauZZ3HWxjMDd6w4R1PQQsUBy8a', '081234513134', 'admin', '2024-10-07 02:07:29', '2024-10-07 02:07:29');
 
 -- --------------------------------------------------------
 

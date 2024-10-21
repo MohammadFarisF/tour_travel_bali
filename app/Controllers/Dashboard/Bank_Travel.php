@@ -8,11 +8,15 @@ use App\Models\banktravelmodel;
 class Bank_Travel extends BaseController
 {
     protected $banktravelModel;
+    protected $roleLabel; // Declare roleLabel as a class property
 
     public function __construct()
     {
         // Inisialisasi model travelModel
         $this->banktravelModel = new banktravelmodel();
+
+        // Set the role label based on the session
+        $this->roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
     }
 
     public function index()
@@ -21,11 +25,12 @@ class Bank_Travel extends BaseController
         $data = [
             'title' => 'Bank Travel',
             'banktravel' => $this->banktravelModel->getbanktravel(), // Mengambil semua travel
+            'roleLabel' => $this->roleLabel, // Use the class property
         ];
 
         // Menampilkan view dengan data travel
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/banktravel', $data); // Pastikan view ini ada untuk menampilkan daftar travel
         echo view('admin/Template/footer');
     }
@@ -33,12 +38,13 @@ class Bank_Travel extends BaseController
     public function create()
     {
         $data['title'] = 'Tambah Bank Travel';
+        $data['roleLabel'] = $this->roleLabel; // Include roleLabel in the data
+
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/banktravel_create'); // Create this view for adding new vehicle
         echo view('admin/Template/footer');
     }
-
 
     public function store()
     {
@@ -76,8 +82,10 @@ class Bank_Travel extends BaseController
         }
 
         $data['title'] = 'Edit Bank Travel';
+        $data['roleLabel'] = $this->roleLabel; // Include roleLabel in the data
+
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/banktravel_edit', $data); // Buat view ini untuk form edit travel
         echo view('admin/Template/footer');
     }
@@ -107,8 +115,6 @@ class Bank_Travel extends BaseController
         // Redirect ke halaman daftar bank travel setelah update
         return redirect()->to('/bali/banktravel');
     }
-
-
 
     public function delete($id)
     {

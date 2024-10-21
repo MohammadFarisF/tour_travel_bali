@@ -48,8 +48,6 @@
                                             echo 'Super Admin';
                                         } elseif ($user['user_role'] === 'admin') {
                                             echo 'Admin';
-                                        } else {
-                                            echo esc($user['user_role']);
                                         }
                                         ?>
                                     </td>

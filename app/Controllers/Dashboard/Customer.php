@@ -19,18 +19,18 @@ class Customer extends BaseController
     public function index()
     {
         // Cek apakah user memiliki role admin
-        if (!session()->get('user_role') || session()->get('user_role') !== 'customer') {
-        }
-    
+        $roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
+
         // Ambil data customer dari model
         $data = [
             'title' => 'Data Customer',
-            'customer' => $this->userModel->getUser(), // Panggil method getAdmin() untuk mendapatkan admin saja
+            'customer' => $this->userModel->getUser(),
+            'roleLabel' => $roleLabel,
         ];
-    
+
         // Tampilkan tampilan template dengan data admin
         echo view('admin/Template/header', $data);   // Header dengan judul halaman
-        echo view('admin/Template/sidebar');         // Sidebar yang digunakan
+        echo view('admin/Template/sidebar', $data);       // Sidebar yang digunakan
         echo view('admin/customer', $data);             // Isi halaman admin dengan data admin yang diambil
         echo view('admin/Template/footer');          // Footer
     }
@@ -42,10 +42,9 @@ class Customer extends BaseController
         if (!$this->userModel->find($id)) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Customer tidak ditemukan');
         }
-        
+
         // Menghapus destinasi berdasarkan ID
         $this->userModel->delete($id);
         return redirect()->to('/bali/customer');
     }
-
 }

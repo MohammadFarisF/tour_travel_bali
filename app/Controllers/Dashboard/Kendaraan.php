@@ -8,10 +8,13 @@ use App\Models\kendaraanmodel;
 class Kendaraan extends BaseController
 {
     protected $kendaraanModel;
+    protected $roleLabel;
 
     public function __construct()
     {
         $this->kendaraanModel = new kendaraanmodel();
+        // Set roleLabel based on the session role
+        $this->roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
     }
 
     public function index()
@@ -19,19 +22,24 @@ class Kendaraan extends BaseController
         $data = [
             'title' => 'Kendaraan',
             'kendaraan' => $this->kendaraanModel->getkendaraan(),
+            'roleLabel' => $this->roleLabel, // Use the roleLabel
         ];
 
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/kendaraan', $data); // Make sure this view displays the vehicle list
         echo view('admin/Template/footer');
     }
 
     public function create()
     {
-        $data['title'] = 'Tambah Kendaraan';
+        $data = [
+            'title' => 'Tambah Kendaraan',
+            'roleLabel' => $this->roleLabel
+        ];
+
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/kendaraan_create'); // Create this view for adding new vehicle
         echo view('admin/Template/footer');
     }
@@ -72,9 +80,13 @@ class Kendaraan extends BaseController
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
         }
 
-        $data['title'] = 'Edit Kendaraan';
+        $data = [
+            'title' => 'Edit Kendaraan',
+            'roleLabel' => $this->roleLabel
+        ];
+
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/kendaraan_edit', $data); // Create this view for editing
         echo view('admin/Template/footer');
     }
