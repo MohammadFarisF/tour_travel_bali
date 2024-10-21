@@ -21,7 +21,10 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
+        'adminFilter'   => \App\Filters\AdminFilter::class,
+        'userFilter'    => \App\Filters\UserFilter::class
     ];
+
 
     /**
      * List of filter aliases that are always

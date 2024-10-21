@@ -8,11 +8,13 @@ use App\Models\paketmodel;
 class Paket extends BaseController
 {
     protected $paketModel;
+    protected $roleLabel;
 
     public function __construct()
     {
         // Inisialisasi model PaketModel
         $this->paketModel = new paketmodel();
+        $this->roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
     }
 
     public function index()
@@ -20,12 +22,13 @@ class Paket extends BaseController
         // Mengambil semua data paket
         $data = [
             'title' => 'Paket Perjalanan',
-            'packages' => $this->paketModel->getpaket(), // Mengambil semua paket
+            'packages' => $this->paketModel->getpaket(),
+            'roleLabel' => $this->roleLabel
         ];
 
         // Menampilkan view dengan data paket
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/paket', $data); // Pastikan view ini ada untuk menampilkan daftar paket
         echo view('admin/Template/footer');
     }
@@ -48,8 +51,9 @@ class Paket extends BaseController
         // Kirim data ke view
         $data['newPackageId'] = $newPackageId;
         $data['title'] = 'Tambah Paket';
+        $data['roleLabel'] = $this->roleLabel;
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/paket_create', $data); // Pastikan view ini ada
         echo view('admin/Template/footer');
     }
@@ -80,8 +84,9 @@ class Paket extends BaseController
         }
 
         $data['title'] = 'Edit Paket';
+        $data['role_label'] = $this->roleLabel;
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/paket_edit', $data); // Buat view ini untuk form edit paket
         echo view('admin/Template/footer');
     }

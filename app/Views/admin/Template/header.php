@@ -57,8 +57,8 @@
                     <h6 class="dropdown-header d-flex align-items-center">
                         <img class="dropdown-user-img" src="<?= base_url() ?>asset_admin/assets/img/illustrations/profiles/profile-2.png" />
                         <div class="dropdown-user-details">
-                            <div class="dropdown-user-details-name">Mohammad Faris Fawwaz</div>
-                            <div class="dropdown-user-details-email">farisf@gmail.com</div>
+                            <div class="dropdown-user-details-name"><?= session()->userName ?></div>
+                            <div class="dropdown-user-details-email"><?= session()->userEmail ?></div>
                         </div>
                     </h6>
                     <div class="dropdown-divider"></div>
@@ -66,7 +66,7 @@
                         <div class="dropdown-item-icon"><i data-feather="settings"></i></div>
                         Account
                     </a>
-                    <a class="dropdown-item" href="#!">
+                    <a class="dropdown-item" href="<?= base_url() ?>logout">
                         <div class="dropdown-item-icon"><i data-feather="log-out"></i></div>
                         Logout
                     </a>

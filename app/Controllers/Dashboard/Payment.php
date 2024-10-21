@@ -8,22 +8,25 @@ use App\Models\PaymentModel;
 class Payment extends BaseController
 {
     protected $paymentModel;
+    protected $roleLabel;
 
     public function __construct()
     {
         // Inisialisasi model bank pelangganModel
         $this->paymentModel = new paymentmodel();
+        $this->roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
     }
     public function index()
     {
         $data = [
             'title' => 'Pembayaran',
-            'payments' => $this->paymentModel->getPayments(), // Mengambil semua bank pelanggan
+            'payments' => $this->paymentModel->getPayments(),
+            'roleLabel' => $this->roleLabel
         ];
 
         // Menampilkan view dengan data bank pelanggan
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/payment', $data); // Pastikan view ini ada untuk menampilkan daftar bank pelanggan
         echo view('admin/Template/footer');
     }

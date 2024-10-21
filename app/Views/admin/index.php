@@ -9,7 +9,7 @@
                                 <div class="page-header-icon"><i data-feather="activity"></i></div>
                                 Dashboard
                             </h1>
-                            <div class="page-header-subtitle">Hai admin, Selamat Datang :)</div>
+                            <div class="page-header-subtitle">Hai <?= $roleLabel; ?>, Selamat Datang :)</div>
                         </div>
                         <div class="col-12 col-xl-auto mt-4">
                             <div class="input-group input-group-joined border-0" style="width: 16.5rem">
@@ -30,7 +30,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="me-3">
                                     <div class="text-white-100 small fw-bold">Perlu Konfirmasi Pembayaran</div>
-                                    <div class="text-lg fw-bold">4</div>
+                                    <div class="text-lg fw-bold"><?= esc($pendingPayments); ?></div>
                                 </div>
                                 <i class="feather-xl text-white-50" data-feather="calendar"></i>
                             </div>
@@ -47,7 +47,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="me-3">
                                     <div class="text-white-100 small fw-bold">Ketersediaan Kendaraan</div>
-                                    <div class="text-lg fw-bold">4</div>
+                                    <div class="text-lg fw-bold"><?= esc($availableVehicles); ?></div>
                                 </div>
                                 <i class="feather-xl text-white-50" data-feather="truck"></i>
                             </div>
@@ -64,7 +64,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="me-3">
                                     <div class="text-white-100 small fw-bold">Refund Pending</div>
-                                    <div class="text-lg fw-bold">5</div>
+                                    <div class="text-lg fw-bold"><?= esc($pendingRefunds); ?></div>
                                 </div>
                                 <i class="feather-xl text-white-50" data-feather="dollar-sign"></i>
                             </div>
@@ -91,7 +91,6 @@
                                 <th>Nama Paket</th>
                                 <th>Tipe Paket</th>
                                 <th>Deskripsi Paket</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -111,7 +110,7 @@
                                             }
                                             ?>
                                         </td>
-                                        <td><?= esc($package['description']); ?></td>
+                                        <td><?= substr(esc($package['description']), 0, strlen($package['description']) / 2); ?>...</td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -134,16 +133,32 @@
                                 <th>Nama Destinasi</th>
                                 <th>Lokasi</th>
                                 <th>Deskripsi</th>
+                                <th>Foto</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
+                            <?php foreach ($destinations as $destinasi): ?>
+                                <tr>
+                                    <td><?php echo esc($destinasi['destination_id']); ?></td>
+                                    <td><?php echo esc($destinasi['package_id']); ?></td>
+                                    <td><?php echo esc($destinasi['destination_name']); ?></td>
+                                    <td><?php echo esc($destinasi['location']); ?></td>
+                                    <td><?php echo esc($destinasi['description']); ?></td>
+                                    <td>
+                                        <!-- Cek apakah ada foto -->
+                                        <?php if (!empty($destinasi['foto'])): ?>
+                                            <?php
+                                            $photos = explode(',', $destinasi['foto']); // Mengambil semua foto jika ada lebih dari satu
+                                            foreach ($photos as $photo):
+                                            ?>
+                                                <img src="<?= base_url('uploads/destinasi/' . $photo); ?>" alt="Foto Destinasi" style="width: 100px; height: auto;">
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            Tidak ada foto
+                                        <?php endif; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>

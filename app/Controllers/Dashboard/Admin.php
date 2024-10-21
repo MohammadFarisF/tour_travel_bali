@@ -8,49 +8,51 @@ use App\Models\usermodel;
 class Admin extends BaseController
 {
     protected $adminModel;
+    protected $roleLabel; // Add a property for roleLabel
 
     public function __construct()
     {
         $this->adminModel = new usermodel();
+        // Set roleLabel once during construction
+        $this->roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
     }
 
     public function index()
     {
-        // Cek apakah user memiliki role admin
-        if (!session()->get('user_role') || session()->get('user_role') !== 'admin') {
-        }
-    
         // Ambil data admin dari model
         $data = [
             'title' => 'Admin',
             'admin' => $this->adminModel->getAdmin(), // Panggil method getAdmin() untuk mendapatkan admin saja
+            'roleLabel' => $this->roleLabel, // Use the property for role label
         ];
-    
+
         // Tampilkan tampilan template dengan data admin
         echo view('admin/Template/header', $data);   // Header dengan judul halaman
-        echo view('admin/Template/sidebar');         // Sidebar yang digunakan
-        echo view('admin/admin', $data);             // Isi halaman admin dengan data admin yang diambil
-        echo view('admin/Template/footer');          // Footer
+        echo view('admin/Template/sidebar', $data);   // Sidebar yang digunakan
+        echo view('admin/admin', $data);              // Isi halaman admin dengan data admin yang diambil
+        echo view('admin/Template/footer');            // Footer
     }
 
     public function create()
     {
-                // Ambil kode destinasi terakhir
-                $lastadmin = $this->adminModel->orderBy('user_id', 'DESC')->first();
+        // Ambil kode destinasi terakhir
+        $lastadmin = $this->adminModel->orderBy('user_id', 'DESC')->first();
 
-                // Jika ada kode destinasi, increment. Jika tidak, mulai dari P01.
-                if ($lastadmin) {
-                    $lastIdNumber = (int)substr($lastadmin['user_id'], 1); // Ambil angka setelah 'P'
-                    $newIdNumber = $lastIdNumber + 1; // Increment angka
-                    $newIdUser = 'U' . str_pad($newIdNumber, 3, '0', STR_PAD_LEFT); // Format menjadi P01, P02, dll.
-                } else {
-                    // Jika belum ada data, mulai dari P01
-                    $newIdUser = 'U001';
-                }        
+        // Jika ada kode destinasi, increment. Jika tidak, mulai dari U001.
+        if ($lastadmin) {
+            $lastIdNumber = (int)substr($lastadmin['user_id'], 1); // Ambil angka setelah 'U'
+            $newIdNumber = $lastIdNumber + 1; // Increment angka
+            $newIdUser = 'U' . str_pad($newIdNumber, 3, '0', STR_PAD_LEFT); // Format menjadi U001, U002, dll.
+        } else {
+            // Jika belum ada data, mulai dari U001
+            $newIdUser = 'U001';
+        }
+
         $data['title'] = 'Tambah Admin';
         $data['newIdUser'] = $newIdUser;
+        $data['roleLabel'] = $this->roleLabel; // Use the property for role label
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data); // Pass roleLabel to sidebar
         echo view('admin/admin_create'); // View untuk menambah admin baru
         echo view('admin/Template/footer');
     }
@@ -68,11 +70,10 @@ class Admin extends BaseController
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
-    
+
         // Redirect ke halaman daftar admin setelah berhasil menyimpan
         return redirect()->to('/bali/admin')->with('message', 'Admin berhasil ditambahkan');
     }
-    
 
     public function edit($id)
     {
@@ -82,8 +83,9 @@ class Admin extends BaseController
         }
 
         $data['title'] = 'Edit Admin';
+        $data['roleLabel'] = $this->roleLabel; // Use the property for role label
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data); // Pass roleLabel to sidebar
         echo view('admin/admin_edit', $data); // View untuk mengedit admin
         echo view('admin/Template/footer');
     }

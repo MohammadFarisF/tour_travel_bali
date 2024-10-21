@@ -10,10 +10,12 @@ use Dompdf\Options;
 class Report extends BaseController
 {
     protected $bookingModel;
+    protected $roleLabel;
 
     public function __construct()
     {
         $this->bookingModel = new BookingModel();
+        $this->roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
     }
 
     // Method untuk menampilkan form laporan
@@ -21,10 +23,11 @@ class Report extends BaseController
     {
         $data = [
             'title' => 'Laporan',
+            'roleLabel' => $this->roleLabel
         ];
 
         echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar');
+        echo view('admin/Template/sidebar', $data);
         echo view('admin/report');
         echo view('admin/Template/footer');
     }

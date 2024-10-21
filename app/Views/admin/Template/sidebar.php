@@ -75,7 +75,8 @@
             <div class="sidenav-footer">
                 <div class="sidenav-footer-content">
                     <div class="sidenav-footer-subtitle">Logged in as:</div>
-                    <div class="sidenav-footer-title">Mohammad Faris Fawwaz</div>
+                    <div class="sidenav-footer-title"><?= session()->userName ?></div>
+                    <div class="sidenav-footer-title"><?= $roleLabel; ?></div>
                 </div>
             </div>
         </nav>

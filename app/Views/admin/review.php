@@ -44,7 +44,7 @@
                                     <td><?php echo esc($ulasan['review_text']); ?></td>
                                     <td><?php echo esc($ulasan['review_date']); ?></td>
                                     <td>
-                                        <form action="<?php echo site_url('dashboard/review/delete/' . $ulasan['review_id']); ?>" method="post" style="display:inline;">
+                                        <form action="<?php echo site_url('bali/review/delete/' . $ulasan['review_id']); ?>" method="post" style="display:inline;">
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this review?');">Delete</button>
                                         </form>
                                     </td>

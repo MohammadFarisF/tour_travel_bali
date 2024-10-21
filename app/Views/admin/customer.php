@@ -30,19 +30,19 @@
                             </tr>
                         </thead>
                         <tbody>
-                                <?php foreach ($customer as $user): ?>
+                            <?php foreach ($customer as $user): ?>
                                 <tr>
                                     <td><?php echo esc($user['user_id']); ?></td>
                                     <td><?php echo esc($user['full_name']); ?></td>
                                     <td><?php echo esc($user['email']); ?></td>
                                     <td><?php echo esc($user['phone_number']); ?></td>
                                     <td>
-                                        <form action="<?php echo site_url('dashboard/customer/delete/' . $user['user_id']); ?>" method="post" style="display:inline;">
+                                        <form action="<?php echo site_url('bali/customer/delete/' . $user['user_id']); ?>" method="post" style="display:inline;">
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this customer?');">Delete</button>
                                         </form>
                                     </td>
-                                    </tr>
-                                <?php endforeach; ?>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                     </table>
                 </div>
