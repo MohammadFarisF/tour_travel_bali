@@ -33,6 +33,8 @@
                                 <th>Nama Paket</th>
                                 <th>Tipe Paket</th>
                                 <th>Deskripsi Paket</th>
+                                <th>Foto Paket</th>
+                                <th>Harga Paket</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -44,16 +46,23 @@
                                         <td><?= esc($package['package_name']); ?></td>
                                         <td>
                                             <?php
-                                                if ($package['package_type'] === 'single_destination') {
-                                                    echo 'Single Day';
-                                                } elseif ($package['package_type'] === 'multiple_day') {
-                                                    echo 'Multiple Day';
-                                                } else {
-                                                    echo esc($package['package_type']);
-                                                }
-                                                ?>
+                                            if ($package['package_type'] === 'single_destination') {
+                                                echo 'Single Day';
+                                            } elseif ($package['package_type'] === 'multiple_day') {
+                                                echo 'Multiple Day';
+                                            } else {
+                                                echo esc($package['package_type']);
+                                            }
+                                            ?>
                                         </td>
                                         <td><?= esc($package['description']); ?></td>
+                                        <td> <?php if (!empty($package['foto'])): ?>
+                                                <img src="<?= base_url('uploads/paket/' . esc($package['foto'])); ?>" alt="Foto Paket" style="width: 100px; height: auto;">
+                                            <?php else: ?>
+                                                No Image
+                                            <?php endif; ?>
+                                        </td>
+                                        <td><?= "Rp " . number_format($package['harga'], 0, ',', '.') ?></td>
                                         <td>
                                             <a href="<?= site_url('bali/paket/edit/' . $package['package_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
                                             <a href="<?= site_url('bali/paket/delete/' . $package['package_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus paket ini?');">Hapus</a>

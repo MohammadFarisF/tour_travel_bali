@@ -42,13 +42,23 @@
                                     <select class="form-select" id="package_type" name="package_type" required>
                                         <option disable selected>Pilih Tipe Paket</option>
                                         <option value="single_destination">Single Day</option>
-                                        <option value="multiple_day" >Multiple Day</option>
+                                        <option value="multiple_day">Multiple Day</option>
                                     </select>
                                 </div>
 
                                 <div class="mb-3">
                                     <label for="description" class="form-label">Deskripsi</label>
                                     <input type="text" class="form-control" id="description" name="description" placeholder="Masukkan Deskripsi Paket..." required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="foto" class="form-label">Foto</label>
+                                    <input class="form-control" type="file" id="foto" name="foto" accept="image/*" multiple>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="harga">Harga Paket</label>
+                                    <input class="form-control" name="harga" id="harga" type="text" value="Rp. " onkeyup="formatHarga(this)" required />
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Simpan</button>
@@ -62,3 +72,22 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function formatHarga(input) {
+            // menghilangkan semua karakter kecuali angka
+            let harga = input.value.replace(/\D/g, '');
+
+            // memformat angka sebagai harga
+            harga = new Intl.NumberFormat('id-ID').format(harga);
+
+
+            // menambahkan simbol euro pada depan harga
+            input.value = 'Rp. ' + harga;
+
+            // jika nilai input kosong, isi dengan simbol euro dan spasi
+            if (input.value === '') {
+                input.value = 'Rp. ';
+            }
+        }
+    </script>

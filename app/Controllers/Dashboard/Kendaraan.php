@@ -75,19 +75,20 @@ class Kendaraan extends BaseController
 
     public function edit($id)
     {
-        $data['kendaraan'] = $this->kendaraanModel->getkendaraan($id);
-        if (empty($data['kendaraan'])) {
+        $kendaraan = $this->kendaraanModel->getkendaraan($id); // Ambil data kendaraan
+        if (empty($kendaraan)) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
         }
 
         $data = [
             'title' => 'Edit Kendaraan',
+            'kendaraan' => $kendaraan, // Tambahkan variabel kendaraan ke array data
             'roleLabel' => $this->roleLabel
         ];
 
         echo view('admin/Template/header', $data);
         echo view('admin/Template/sidebar', $data);
-        echo view('admin/kendaraan_edit', $data); // Create this view for editing
+        echo view('admin/kendaraan_edit', $data); // Pastikan data kendaraan dikirim ke view
         echo view('admin/Template/footer');
     }
 
@@ -147,7 +148,7 @@ class Kendaraan extends BaseController
             $fotoPath = $kendaraan['vehicle_photo'];
 
             // Tentukan lokasi file di folder 'uploads'
-            $filePath = WRITEPATH . '../public/uploads/' . $fotoPath;
+            $filePath = FCPATH . 'uploads/kendaraan/' . $fotoPath;
 
             // Cek apakah file ada di folder dan hapus file tersebut
             if (file_exists($filePath) && !empty($fotoPath)) {

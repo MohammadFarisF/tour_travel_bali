@@ -75,8 +75,8 @@ $routes->group('bali', ['filter' => 'adminFilter'], function ($routes) {
     $routes->get('kendaraan', 'Dashboard\Kendaraan::index');
     $routes->get('kendaraan/create', 'Dashboard\Kendaraan::create');
     $routes->post('kendaraan/store', 'Dashboard\Kendaraan::store');
-    $routes->get('kendaraan/edit/(:num)', 'Dashboard\Kendaraan::edit/$1');
-    $routes->post('kendaraan/update/(:num)', 'Dashboard\Kendaraan::update/$1');
+    $routes->get('kendaraan/edit/(:any)', 'Dashboard\Kendaraan::edit/$1');
+    $routes->post('kendaraan/update/(:any)', 'Dashboard\Kendaraan::update/$1');
     $routes->post('kendaraan/delete/(:any)', 'Dashboard\Kendaraan::delete/$1');
 
     $routes->get('customer', 'Dashboard\Customer::index');
@@ -86,14 +86,14 @@ $routes->group('bali', ['filter' => 'adminFilter'], function ($routes) {
     $routes->post('review/delete/(:any)', 'Dashboard\Review::delete/$1');
 
     $routes->get('bankpelanggan', 'Dashboard\Bank_Pelanggan::index');
-    $routes->get('bankpelanggan/delete/(:num)', 'Dashboard\Bank_Pelanggan::delete/$1');
+    $routes->get('bankpelanggan/delete/(:any)', 'Dashboard\Bank_Pelanggan::delete/$1');
 
     $routes->get('banktravel', 'Dashboard\Bank_Travel::index');
     $routes->get('banktravel/create/', 'Dashboard\Bank_Travel::create');
     $routes->post('banktravel/store', 'Dashboard\Bank_Travel::store');
-    $routes->get('banktravel/delete/(:num)', 'Dashboard\Bank_Travel::delete/$1');
-    $routes->get('banktravel/edit/(:num)', 'Dashboard\Bank_Travel::edit/$1');
-    $routes->post('banktravel/update/(:num)', 'Dashboard\Bank_Travel::update/$1');
+    $routes->get('banktravel/delete/(:any)', 'Dashboard\Bank_Travel::delete/$1');
+    $routes->get('banktravel/edit/(:any)', 'Dashboard\Bank_Travel::edit/$1');
+    $routes->post('banktravel/update/(:any)', 'Dashboard\Bank_Travel::update/$1');
 
     $routes->get('booking', 'Dashboard\Booking::index');
 

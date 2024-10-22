@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 21, 2024 at 10:33 PM
+-- Generation Time: Oct 22, 2024 at 03:46 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -261,16 +261,6 @@ CREATE TABLE `destinations` (
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `destinations`
---
-
-INSERT INTO `destinations` (`destination_id`, `package_id`, `destination_name`, `location`, `description`, `foto`, `created_at`, `updated_at`) VALUES
-('D01', 'P01', 'Rice Terrace Swing', 'Ubud', 'the most popular choice in Bali recently. The tourist destination is located on the north side of Ubud Village, Gianyar Regency.', '1728290633_f794b50c5e6b9de39b2c.png,1728290633_71dc02545f3f055da0ef.jpg', '2024-10-07 01:43:53', '2024-10-07 01:43:53'),
-('D02', 'P01', 'Goa Gajah Temple', 'Ubud', 'famously with a historical temple, an archaelogical place. An Archaelogical and Historical Temple in Bali.', '1728292342_98c69274d97b2866c264.jpg,1728292342_43481d1f27bc0c842032.jpg', '2024-10-07 02:12:22', '2024-10-07 02:12:22'),
-('D03', 'P02', 'Banyumala Waterfall', 'Bedugul', 'Banyumala Waterfall is a beautiful waterfall and has 3 water drop formations. The biggest one is in the middle. The smalles ones are on the left and right. ', '1728292599_8fdf13d66b377014186b.jpg,1728292599_d46f477e69e4c61b02e4.jpg', '2024-10-07 02:16:39', '2024-10-07 02:16:39'),
-('D04', 'P02', 'Tanah Lot', 'Bedugul', 'Tanah Lot is a rock formation off the Indonesian island of Bali. It is home to the ancient Hindu pilgrimage temple Pura Tanah Lot. Tanah Lot is claimed to be the work of the 16th-century Dang Hyang Nirartha.', '1728292633_905beba9d3755dfd8ecf.jpg,1728292633_49905d615ba71ae12663.jpg', '2024-10-07 02:17:13', '2024-10-07 02:17:13');
-
 -- --------------------------------------------------------
 
 --
@@ -282,6 +272,8 @@ CREATE TABLE `packages` (
   `package_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `package_type` enum('single_destination','multiple_day') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `description` text COLLATE utf8mb4_general_ci,
+  `harga` decimal(10,2) NOT NULL,
+  `foto` text COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -290,9 +282,9 @@ CREATE TABLE `packages` (
 -- Dumping data for table `packages`
 --
 
-INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `description`, `created_at`, `updated_at`) VALUES
-('P01', 'Paket Wisata Ubud', 'single_destination', 'Ubud is a unique and captivating tourist destination that offers a perfect blend of nature, culture, and art. Despite its increasing popularity, Ubud has managed to preserve its traditional charm and serene atmosphere, which are hallmarks of the area. With its stunning natural beauty, rich cultural heritage, and peaceful environment, Ubud stands out as one of Bali\'s hidden gems and is a must-visit for travelers.', '2024-10-07 01:32:27', NULL),
-('P02', 'Paket Wisata Bedugul', 'single_destination', 'Bedugul is a famous mountain tourist area in Bali, Indonesia. Located in Tabanan Regency, about 50 kilometers from Denpasar, Bedugul is a favorite destination because of its cool air and beautiful natural views. Bedugul is surrounded by green hills, lakes and lush gardens.', '2024-10-07 02:13:54', NULL);
+INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `description`, `harga`, `foto`, `created_at`, `updated_at`) VALUES
+('P01', 'Paket Wisata Ubud', 'single_destination', 'Ubud is a unique and captivating tourist destination that offers a perfect blend of nature, culture, and art. Despite its increasing popularity, Ubud has managed to preserve its traditional charm and serene atmosphere, which are hallmarks of the area. With its stunning natural beauty, rich cultural heritage, and peaceful environment, Ubud stands out as one of Bali\'s hidden gems and is a must-visit for travelers.', '3000000.00', '1729568758_e309f0d7e9cae72dcd8a.jpg', '2024-10-21 20:45:58', NULL),
+('P02', 'Paket Wisata Bedugul', 'single_destination', 'Bedugul is a famous mountain tourist area in Bali, Indonesia. Located in Tabanan Regency, about 50 kilometers from Denpasar, Bedugul is a favorite destination because of its cool air and beautiful natural views. Bedugul is surrounded by green hills, lakes and lush gardens.', '3500000.00', '1729568779_5b6aa544ebe5b64901ab.jpg', '2024-10-21 20:46:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -427,8 +419,7 @@ CREATE TABLE `vehicles` (
 INSERT INTO `vehicles` (`vehicle_id`, `vehicle_name`, `license_plate`, `capacity`, `vehicle_type`, `vehicle_photo`, `status`, `created_at`, `updated_at`) VALUES
 (7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'maintenance', '2024-09-30 21:44:20', '2024-10-07 02:20:11'),
 (9, 'Suzuki APV Putih', 'DK 1234 ABC', 8, 'APV', '1728292802_0e76ce8c9e2331e8ddef.png', 'available', '2024-10-07 02:20:02', '2024-10-07 09:20:02'),
-(10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'in_use', '2024-10-07 02:21:40', '2024-10-07 02:21:50'),
-(11, 'Toyota Alphard Black', 'DK 1209 FGH', 5, 'MPV', '1728292974_a6ec7c3a270f23b43d98.png', 'available', '2024-10-07 02:22:54', '2024-10-07 09:22:54');
+(10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'in_use', '2024-10-07 02:21:40', '2024-10-21 19:48:53');
 
 --
 -- Indexes for dumped tables
@@ -571,7 +562,7 @@ ALTER TABLE `reviews`
 -- AUTO_INCREMENT for table `vehicles`
 --
 ALTER TABLE `vehicles`
-  MODIFY `vehicle_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `vehicle_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables

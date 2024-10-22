@@ -61,12 +61,27 @@ class Paket extends BaseController
 
     public function store()
     {
+
+        $harga = $this->request->getPost('harga');
+        $harga = str_replace(['Rp. ', '.', ','], ['', '', '.'], $harga);
+
+        $filePhoto = $this->request->getFile('foto');
+
+        // Tentukan nama file yang akan disimpan
+        $fileName = '';
+        if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
+            // Pindahkan file ke folder uploads dengan nama asli
+            $fileName = $filePhoto->getRandomName(); // Buat nama file acak
+            $filePhoto->move('uploads/paket', $fileName); // Simpan file ke folder uploads
+        }
         // Menyimpan data paket ke database
         $this->paketModel->save([
             'package_id' => $this->request->getPost('package_id'),
             'package_name' => $this->request->getPost('package_name'),
             'package_type' => $this->request->getPost('package_type'),
             'description' => $this->request->getPost('description'),
+            'harga' => $harga,
+            'foto' => $fileName,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => NULL
         ]);
@@ -84,7 +99,7 @@ class Paket extends BaseController
         }
 
         $data['title'] = 'Edit Paket';
-        $data['role_label'] = $this->roleLabel;
+        $data['roleLabel'] = $this->roleLabel;
         echo view('admin/Template/header', $data);
         echo view('admin/Template/sidebar', $data);
         echo view('admin/paket_edit', $data); // Buat view ini untuk form edit paket
@@ -95,6 +110,10 @@ class Paket extends BaseController
     {
         // Mengupdate data paket berdasarkan ID
         $id = $this->request->getPost('package_id');
+        $package = $this->paketModel->find($id);
+        if (!$package) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
+        }
         $data = [
             'package_name' => $this->request->getPost('package_name'),
             'package_type' => $this->request->getPost('package_type'),
@@ -102,6 +121,28 @@ class Paket extends BaseController
             'created_at' => $this->request->getPost('created_at'), // Bisa disesuaikan
             'updated_at' => date('Y-m-d H:i:s')
         ];
+
+        $filePhoto = $this->request->getFile('foto');
+
+        // Jika ada file foto baru yang diunggah
+        if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
+            // Hapus foto lama jika ada
+            if (!empty($package['foto'])) {
+                $oldFilePath = 'uploads/paket/' . $package['foto'];
+                if (file_exists($oldFilePath)) {
+                    unlink($oldFilePath); // Menghapus file lama
+                }
+            }
+
+            // Pindahkan file ke folder uploads dengan nama baru
+            $fileName = $filePhoto->getRandomName(); // Buat nama file acak
+            $filePhoto->move('uploads/paket', $fileName); // Simpan file ke folder uploads
+            $data['foto'] = $fileName; // Tambahkan nama file baru ke data
+        } else {
+            // Jika tidak ada file baru, tetap gunakan foto lama
+            $data['foto'] = $package['foto'];
+        }
+
         $this->paketModel->update($id, $data);
 
         // Redirect ke halaman daftar paket setelah update
@@ -111,7 +152,27 @@ class Paket extends BaseController
     public function delete($id)
     {
         // Menghapus paket berdasarkan ID
-        $this->paketModel->hapus($id);
-        return redirect()->to('/bali/paket');
+        $package = $this->paketModel->find($id);
+
+        if ($package) {
+            // Ambil nama file foto dari database
+            $fotoPath = $package['foto'];
+
+            // Tentukan lokasi file di folder 'uploads'
+            $filePath = FCPATH . 'uploads/paket/' . $fotoPath;
+
+            // Cek apakah file ada di folder dan hapus file tersebut
+            if (file_exists($filePath) && !empty($fotoPath)) {
+                unlink($filePath); // Menghapus file
+            }
+
+            // Hapus data kendaraan dari database
+            $this->paketModel->delete($id);
+
+            // Redirect setelah penghapusan berhasil
+            return redirect()->to('/bali/paket')->with('message', 'Data paket dan foto berhasil dihapus');
+        } else {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Paket tidak ditemukan');
+        }
     }
 }
