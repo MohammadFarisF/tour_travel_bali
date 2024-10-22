@@ -37,7 +37,8 @@ $routes->get('/booking', 'User::booking');
 $routes->get('/contact', 'User::contact');
 $routes->get('/payment', 'User::payment');
 
-$routes->get('profile/change', 'User::change');
+
+$routes->get('profile/payment', 'User::Payment');
 $routes->get('profile/order_data', 'User::order_data');
 $routes->get('profile/review', 'User::review');
 
