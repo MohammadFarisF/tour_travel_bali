@@ -12,22 +12,22 @@
                 <h4 class="text-white mb-3">Gallery</h4>
                 <div class="row g-2 pt-2">
                     <div class="col-4">
-                        <img class="img-fluid bg-light p-1" src="img/dokumentasi8.jpeg" alt="">
+                        <img class="img-fluid bg-light p-1" src="asset_user/img/dokumentasi8.jpeg" alt="">
                     </div>
                     <div class="col-4">
-                        <img class="img-fluid bg-light p-1" src="img/dokumentasi2.jpeg" alt="">
+                        <img class="img-fluid bg-light p-1" src="asset_user/img/dokumentasi2.jpeg" alt="">
                     </div>
                     <div class="col-4">
-                        <img class="img-fluid bg-light p-1" src="img/dokumentasi6.jpeg" alt="">
+                        <img class="img-fluid bg-light p-1" src="asset_user/img/dokumentasi6.jpeg" alt="">
                     </div>
                     <div class="col-4">
-                        <img class="img-fluid bg-light p-1" src="img/dokumentasi5.jpeg" alt="">
+                        <img class="img-fluid bg-light p-1" src="asset_user/img/dokumentasi5.jpeg" alt="">
                     </div>
                     <div class="col-4">
-                        <img class="img-fluid bg-light p-1" src="img/dokumentasi4.jpeg" alt="">
+                        <img class="img-fluid bg-light p-1" src="asset_user/img/dokumentasi4.jpeg" alt="">
                     </div>
                     <div class="col-4">
-                        <img class="img-fluid bg-light p-1" src="img/dokumentasi3.jpeg" alt="">
+                        <img class="img-fluid bg-light p-1" src="asset_user/img/dokumentasi3.jpeg" alt="">
                     </div>
                 </div>
             </div>

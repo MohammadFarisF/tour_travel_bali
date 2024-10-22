@@ -61,7 +61,6 @@
                 <div class="navbar-nav ms-auto py-0">
                     <a href="<?= base_url() ?>" class="nav-item nav-link <?= (uri_string() == '') ? 'active' : '' ?>">Home</a>
                     <a href="<?= base_url() ?>about" class="nav-item nav-link <?= (uri_string() == 'about') ? 'active' : '' ?>">About</a>
-                    <a href="<?= base_url() ?>payment" class="nav-item nav-link <?= (uri_string() == 'payment') ? 'active' : '' ?>">Payment</a>
                     <a href="<?= base_url() ?>booking" class="nav-item nav-link <?= (uri_string() == 'booking') ? 'active' : '' ?>">Booking</a>
                     <a href="<?= base_url() ?>contact" class="nav-item nav-link <?= (uri_string() == 'contact') ? 'active' : '' ?>">Contact</a>
 
@@ -75,10 +74,10 @@
                             <!-- Dropdown untuk Customer -->
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle <?= (in_array(uri_string(), ['profile/change', 'profile/order_data', 'profile/review'])) ? 'active' : '' ?>" data-bs-toggle="dropdown">
-                                    <i class="fas fa-cog"></i> <!-- Ikon Profil -->
+                                     <i class="fas fa-user-circle" style="font-size: 30px;"></i> <!-- Ikon Profil -->
                                 </a>
                                 <div class="dropdown-menu m-0">
-                                    <a href="<?= base_url() ?>profile/change" class="dropdown-item <?= (uri_string() == 'profile/change') ? 'active' : '' ?>">Change Password</a>
+                                    <a href="<?= base_url() ?>profile/payment" class="dropdown-item <?= (uri_string() == 'profile/payment') ? 'active' : '' ?>">Payment</a>
                                     <a href="<?= base_url() ?>profile/order_data" class="dropdown-item <?= (uri_string() == 'profile/order_data') ? 'active' : '' ?>">Order Data</a>
                                     <a href="<?= base_url() ?>profile/review" class="dropdown-item <?= (uri_string() == 'profile/review') ? 'active' : '' ?>">Review</a>
 
@@ -88,6 +87,7 @@
                                     </form>
                                 </div>
                             </div>
+
                         <?php endif; ?>
                     <?php else: // Jika belum login 
                     ?>
