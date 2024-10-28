@@ -77,8 +77,8 @@
                                      <i class="fas fa-user-circle" style="font-size: 30px;"></i> <!-- Ikon Profil -->
                                 </a>
                                 <div class="dropdown-menu m-0">
+                                <a href="<?= base_url() ?>profile/my_account" class="dropdown-item <?= (uri_string() == 'profile/my_account') ? 'active' : '' ?>">My Account</a>
                                     <a href="<?= base_url() ?>profile/payment" class="dropdown-item <?= (uri_string() == 'profile/payment') ? 'active' : '' ?>">Payment</a>
-                                    <a href="<?= base_url() ?>profile/order_data" class="dropdown-item <?= (uri_string() == 'profile/order_data') ? 'active' : '' ?>">Order Data</a>
                                     <a href="<?= base_url() ?>profile/review" class="dropdown-item <?= (uri_string() == 'profile/review') ? 'active' : '' ?>">Review</a>
 
                                     <!-- Logout Button -->
