@@ -853,7 +853,7 @@
                         <h5 class="mt-4">Choose A Destination</h5>
                         <hr class="w-25 mx-auto bg-primary mb-1">
                         <hr class="w-50 mx-auto bg-primary mt-0">
-                        <p class="mb-0">Explore the wonders of Bali and select your dream destination! From stunning beaches and vibrant nightlife to serene temples and lush rice terraces, we offer a variety of locations to suit your desires. Let us help you find the perfect spot for your next adventure.</p>
+                        <p class="mb-0">Choose your perfect destination and embark on an unforgettable journey through Bali’s most captivating spots, from vibrant beaches to tranquil temples and scenic terraces. Discover the magic of Bali, crafted just for you.</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.3s">
@@ -864,7 +864,7 @@
                         <h5 class="mt-4">Pay Online</h5>
                         <hr class="w-25 mx-auto bg-primary mb-1">
                         <hr class="w-50 mx-auto bg-primary mt-0">
-                        <p class="mb-0">Enjoy a hassle-free booking experience with our secure online payment system. Simply choose your destination, book your trip, and pay online with ease. Your dream vacation is just a few clicks away!</p>
+                        <p class="mb-0">Enjoy a hassle-free booking experience with our secure online payment system. Simply select your destination, book your trip, and send proof of payment easily. Your dream vacation is just a few clicks away!</p>
                     </div>
                 </div>
                 <div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.5s">
