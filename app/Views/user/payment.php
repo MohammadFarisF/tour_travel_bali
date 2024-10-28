@@ -41,7 +41,7 @@
                                     <td><?= esc($bayar['account_holder_name']); ?></td>
                                     <td><?= esc($bayar['account_number']); ?></td>
                                     <td><?= esc($bayar['payment_method']); ?></td>
-                                    <td><?= date('d F Y', strtotime($bayar['created_at'])); ?></td>
+                                    <td></td>
                                     <td>
                                         <?php if ($bayar['payment_status'] == 'pending'): ?>
                                             <span class="badge bg-warning text-white">Pending</span>
@@ -53,10 +53,10 @@
                                     </td>
                                     <td>
                                         <?php if (!empty($bayar['proof_of_payment'])): ?>
-                                            <img src="<?= base_url('uploads/payments/' . $bayar['proof_of_payment']); ?>" 
-                                                    alt="Bukti Pembayaran" 
-                                                    style="width: 100px; height: auto;"
-                                                    onclick="window.open(this.src)">
+                                            <img src="<?= base_url('uploads/payments/' . $bayar['proof_of_payment']); ?>"
+                                                alt="Bukti Pembayaran"
+                                                style="width: 100px; height: auto;"
+                                                onclick="window.open(this.src)">
                                         <?php else: ?>
                                             Tidak ada bukti
                                         <?php endif; ?>
@@ -64,11 +64,11 @@
                                     <td>
                                         <?php if ($bayar['payment_status'] == 'pending'): ?>
                                             <div class="dropdown">
-                                                <button class="btn btn-sm btn-light dropdown-toggle" 
-                                                        type="button" 
-                                                        id="dropdownMenuButton" 
-                                                        data-bs-toggle="dropdown" 
-                                                        aria-expanded="false">
+                                                <button class="btn btn-sm btn-light dropdown-toggle"
+                                                    type="button"
+                                                    id="dropdownMenuButton"
+                                                    data-bs-toggle="dropdown"
+                                                    aria-expanded="false">
                                                     Aksi
                                                 </button>
                                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -97,7 +97,7 @@
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
-                        
+
                     </table>
                 </div>
             </div>

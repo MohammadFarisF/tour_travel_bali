@@ -44,14 +44,15 @@ class Payment extends BaseController
         return redirect()->to('/bali/payment');
     }
 
-    public function cust_index(){
+    public function cust_index()
+    {
+        $userId = session()->get('userid'); // Dapatkan user_id dari session
         $data = [
             'title' => 'Pembayaran',
-            'payments' => $this->paymentModel->getPayments(),
+            'pembayaran' => $this->paymentModel->getPayment($userId), // Kirim userId ke fungsi getPayments
         ];
 
         echo view('user/template/header');
-        echo view('user/pembayaran', $data);
-        echo view('user/template/footer');
-    }
+        echo view('user/payment', $data);
+        echo view('user/template/footer');   }
 }

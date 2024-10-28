@@ -74,7 +74,7 @@
                             <!-- Dropdown untuk Customer -->
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle <?= (in_array(uri_string(), ['profile/change', 'profile/order_data', 'profile/review'])) ? 'active' : '' ?>" data-bs-toggle="dropdown">
-                                     <i class="fas fa-user-circle" style="font-size: 30px;"></i> <!-- Ikon Profil -->
+                                    <i class="fas fa-user-circle" style="font-size: 30px;"></i> <!-- Ikon Profil -->
                                 </a>
                                 <div class="dropdown-menu m-0">
                                     <a href="<?= base_url() ?>profile/payment" class="dropdown-item <?= (uri_string() == 'profile/payment') ? 'active' : '' ?>">Payment</a>
