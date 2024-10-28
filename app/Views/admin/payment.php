@@ -39,11 +39,33 @@
                             <?php foreach ($payments as $payment): ?>
                                 <tr>
                                     <td><?= $payment['booking_id']; ?></td>
-                                    <td><?= $payment['account_number']; ?></td>
                                     <td><?= $payment['account_holder_name']; ?></td>
-                                    <td><?= $payment['payment_date']; ?></td>
-                                    <td><?= $payment['payment_method']; ?></td>
-                                    <td><?= $payment['payment_status']; ?></td>
+                                    <td><?= $payment['account_number']; ?></td>
+                                    <td>
+                                        <?php
+                                        // Assuming there's a method to determine the payment method
+                                        echo $payment['payment_method'] === 'bank_transfer' ? 'Bank Transfer' : 'Lainnya';
+                                        ?>
+                                    </td>
+                                    <td><?= date('l, d F Y', strtotime($payment['payment_date'])); ?></td> <!-- Format Tanggal Pembayaran -->
+                                    <td>
+                                        <?php
+                                        switch ($payment['payment_status']) {
+                                            case 'validated':
+                                                echo 'Sudah terkonfirmasi';
+                                                break;
+                                            case 'pending':
+                                                echo 'Belum dikonfirmasi';
+                                                break;
+                                            case 'failed':
+                                                echo 'Pembayaran gagal';
+                                                break;
+                                            default:
+                                                echo 'Status tidak diketahui';
+                                                break;
+                                        }
+                                        ?>
+                                    </td>
                                     <td>
                                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#proofModal<?= $payment['payment_id']; ?>">
                                             Lihat
@@ -87,8 +109,9 @@
                                                     <div class="mb-3">
                                                         <label for="status" class="form-label">Pilih Status</label>
                                                         <select class="form-select" name="status" required>
-                                                            <option value="validated">Validated</option>
-                                                            <option value="failed">Failed</option>
+                                                            <option value="validated">Sudah terkonfirmasi</option>
+                                                            <option value="pending">Belum dikonfirmasi</option>
+                                                            <option value="failed">Pembayaran gagal</option>
                                                         </select>
                                                     </div>
                                                 </div>

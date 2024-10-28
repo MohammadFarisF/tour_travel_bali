@@ -50,6 +50,9 @@ $routes->post('logout/proses', 'Auth::logout');
 $routes->group('bali', ['filter' => 'adminFilter'], function ($routes) {
     $routes->get('/', 'Dashboard::index');
 
+    $routes->get('profile', 'Dashboard\Admin::profile');
+    $routes->post('updateProfile', 'Dashboard\Admin::updateProfile');
+
     $routes->get('paket', 'Dashboard\Paket::index');
     $routes->get('paket/create', 'Dashboard\Paket::create');
     $routes->post('paket/store', 'Dashboard\Paket::store');
@@ -77,6 +80,7 @@ $routes->group('bali', ['filter' => 'adminFilter'], function ($routes) {
     $routes->get('kendaraan/edit/(:any)', 'Dashboard\Kendaraan::edit/$1');
     $routes->post('kendaraan/update/(:any)', 'Dashboard\Kendaraan::update/$1');
     $routes->post('kendaraan/delete/(:any)', 'Dashboard\Kendaraan::delete/$1');
+    $routes->post('kendaraan/updatestatus/(:any)', 'Dashboard\Kendaraan::updateStatus/$1');
 
     $routes->get('customer', 'Dashboard\Customer::index');
     $routes->post('customer/delete/(:any)', 'Dashboard\Customer::delete/$1');

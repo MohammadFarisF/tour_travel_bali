@@ -21,7 +21,9 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Data Kendaraan</span>
                     <!-- Button berada di ujung kanan -->
-                    <a href="<?= base_url(); ?>/bali/kendaraan/create" class="btn btn-primary">Tambah Kendaraan</a>
+                    <?php if (session()->get('user_role') === 'owner'): ?>
+                        <a href="<?= base_url(); ?>/bali/kendaraan/create" class="btn btn-primary">Tambah Kendaraan</a>
+                    <?php endif; ?>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
@@ -64,11 +66,19 @@
                                         ?>
                                     </td>
                                     <td>
-                                        <a href="<?php echo site_url('/bali/kendaraan/edit/' . $vehicle['vehicle_id']); ?>" class="btn btn-warning">Edit</a>
-                                        <form action="<?php echo site_url('/bali/kendaraan/delete/' . $vehicle['vehicle_id']); ?>" method="post" style="display:inline;">
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this vehicle?');">Delete</button>
-                                        </form>
+                                        <?php if (session()->get('user_role') === 'owner'): ?>
+                                            <a href="<?php echo site_url('/bali/kendaraan/edit/' . $vehicle['vehicle_id']); ?>" class="btn btn-warning">Edit</a>
+                                            <form action="<?php echo site_url('/bali/kendaraan/delete/' . $vehicle['vehicle_id']); ?>" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this vehicle?');">Delete</button>
+                                            </form>
+                                        <?php endif; ?>
+                                        <?php if (session()->get('user_role') === 'admin'): ?>
+                                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#statusModal" data-id="<?= $vehicle['vehicle_id']; ?>">
+                                                Update Status
+                                            </button>
+                                        <?php endif; ?>
                                     </td>
+
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
@@ -78,3 +88,40 @@
             </div>
         </div>
     </main>
+
+    <!-- Modal untuk Update Status Kendaraan -->
+    <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="statusModalLabel">Update Status Kendaraan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="<?= site_url('/bali/kendaraan/updatestatus/' . $vehicle['vehicle_id']); ?>" method="post">
+                    <div class="modal-body">
+                        <label for="status">Status:</label>
+                        <select name="status" class="form-select">
+                            <option value="available">Tersedia</option>
+                            <option value="in_use">Sedang Digunakan</option>
+                            <option value="maintenance">Pemeliharaan</option>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const statusModal = document.getElementById('statusModal');
+            statusModal.addEventListener('show.bs.modal', function(event) {
+                const button = event.relatedTarget;
+                const vehicleId = button.getAttribute('data-id');
+                const form = statusModal.querySelector('form');
+                form.action = `<?= site_url('/bali/kendaraan/updatestatus/'); ?>${vehicleId}`;
+            });
+        });
+    </script>

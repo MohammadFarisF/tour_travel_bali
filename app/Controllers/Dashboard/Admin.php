@@ -19,6 +19,9 @@ class Admin extends BaseController
 
     public function index()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Ambil data admin dari model
         $data = [
             'title' => 'Admin',
@@ -35,6 +38,9 @@ class Admin extends BaseController
 
     public function create()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Ambil kode destinasi terakhir
         $lastadmin = $this->adminModel->orderBy('user_id', 'DESC')->first();
 
@@ -59,6 +65,19 @@ class Admin extends BaseController
 
     public function store()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
+
+        $filePhoto = $this->request->getFile('photo');
+
+        // Tentukan nama file yang akan disimpan
+        $fileName = '';
+        if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
+            // Pindahkan file ke folder uploads dengan nama asli
+            $fileName = $filePhoto->getRandomName(); // Buat nama file acak
+            $filePhoto->move('uploads/user', $fileName); // Simpan file ke folder uploads
+        }
         // Menyimpan data admin ke database
         $this->adminModel->save([
             'user_id' => $this->request->getPost('user_id'),
@@ -67,16 +86,20 @@ class Admin extends BaseController
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT), // Hash password untuk keamanan
             'phone_number' => $this->request->getPost('phone_number'),
             'user_role' => $this->request->getPost('user_role'),
+            'photo' => $this->request->getPost('photo'),
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ]);
 
         // Redirect ke halaman daftar admin setelah berhasil menyimpan
-        return redirect()->to('/bali/admin')->with('message', 'Admin berhasil ditambahkan');
+        return redirect()->to(base_url('/bali/admin'))->with('create', 'Admin berhasil ditambahkan');
     }
 
     public function edit($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         $data['admin'] = $this->adminModel->getAdmin($id);
         if (empty($data['admin'])) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Admin tidak ditemukan');
@@ -92,6 +115,9 @@ class Admin extends BaseController
 
     public function update($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Cek apakah admin dengan ID yang diberikan ada
         $admin = $this->adminModel->find($id);
         if (!$admin) {
@@ -111,11 +137,14 @@ class Admin extends BaseController
         $this->adminModel->update($id, $data);
 
         // Redirect setelah sukses
-        return redirect()->to('/bali/admin')->with('message', 'Admin berhasil diupdate');
+        return redirect()->to(base_url('/bali/admin'))->with('update', 'Admin berhasil diupdate');
     }
 
     public function delete($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Cek apakah admin dengan ID yang diberikan ada di database
         $admin = $this->adminModel->find($id);
         if (!$admin) {
@@ -126,6 +155,60 @@ class Admin extends BaseController
         $this->adminModel->delete($id);
 
         // Redirect setelah sukses dihapus
-        return redirect()->to('/bali/admin')->with('message', 'Admin berhasil dihapus');
+        return redirect()->to(base_url('/bali/admin'))->with('delete', 'Admin berhasil dihapus');
+    }
+    public function profile()
+    {
+        // Mendapatkan data pengguna berdasarkan session login
+        $userId = session()->get('userid');
+        $data['user'] = $this->adminModel->find($userId);
+
+        $data['title'] = 'Account Settings - Profile';
+        $data['roleLabel'] = $this->roleLabel;
+
+        echo view('admin/Template/header', $data);
+        echo view('admin/Template/sidebar', $data);
+        echo view('admin/account', $data);
+        echo view('admin/Template/footer');
+    }
+
+    public function updateProfile()
+    {
+        $userId = session()->get('userid');
+        $fullName = $this->request->getPost('full_name');
+        $phone = $this->request->getPost('phone_number');
+
+        // Menghapus awalan +62 dan mengubah kembali ke format 08...
+        if (substr($phone, 0, 3) === '+62') {
+            $phone = '0' . substr($phone, 3);
+        }
+
+        // Mengambil data pengguna saat ini
+        $userData = $this->adminModel->find($userId);
+        $oldPhoto = $userData['photo'];
+        $filePhoto = $this->request->getFile('photo');
+        $fileName = '';
+
+        if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
+            $fileName = $filePhoto->getRandomName();
+            $filePhoto->move('uploads/user', $fileName);
+
+            if ($oldPhoto && file_exists(FCPATH . 'uploads/user/' . $oldPhoto)) {
+                unlink(FCPATH . 'uploads/user/' . $oldPhoto);
+            }
+        }
+
+        $updateData = [
+            'full_name' => $fullName,
+            'phone_number' => $phone,
+        ];
+
+        if ($fileName) {
+            $updateData['photo'] = $fileName;
+        }
+
+        $this->adminModel->update($userId, $updateData);
+
+        return redirect()->to(base_url('/bali/profile'))->with('message', 'Profile updated successfully');
     }
 }

@@ -20,7 +20,9 @@ class Customer extends BaseController
     {
         // Cek apakah user memiliki role admin
         $roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
-
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Ambil data customer dari model
         $data = [
             'title' => 'Data Customer',
@@ -38,6 +40,9 @@ class Customer extends BaseController
     // Method untuk menghapus data customer
     public function delete($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Mengecek apakah data ada sebelum menghapus
         if (!$this->userModel->find($id)) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Customer tidak ditemukan');
@@ -45,6 +50,6 @@ class Customer extends BaseController
 
         // Menghapus destinasi berdasarkan ID
         $this->userModel->delete($id);
-        return redirect()->to('/bali/customer');
+        return redirect()->to(base_url('/bali/customer'));
     }
 }

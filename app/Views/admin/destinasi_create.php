@@ -46,9 +46,17 @@
                                     <input type="text" class="form-control" id="destination_name" name="destination_name" placeholder="Masukkan Nama Destinasi..." required>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="location" class="form-label">Lokasi</label>
-                                    <input type="text" class="form-control" id="location" name="location" placeholder="Masukkan Lokasi Destinasi..." required>
+                                <div class="row gx-3 mb-3">
+
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="latitude">Latitude</label>
+                                        <input class="form-control" id="latitude" type="text" name="latitude" placeholder="Masukkan Titik Latitude" required />
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="longitude">Longitude</label>
+                                        <input class="form-control" id="longitude" type="text" name="longitude" placeholder="Masukkan Titik Longitude" required />
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -63,6 +71,11 @@
                                     <input class="form-control" type="file" id="foto" name="foto[]" accept="image/*" multiple>
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="harga">Harga Destinasi</label>
+                                    <input class="form-control" name="harga" id="harga" type="text" value="Rp " onkeyup="formatHarga(this)" required />
+                                </div>
+
                                 <button type="submit" class="btn btn-success">Simpan</button>
                                 <a href="<?= base_url(); ?>/bali/destinasi" class="btn btn-secondary">Batal</a>
                             </form>
@@ -72,3 +85,22 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function formatHarga(input) {
+            // menghilangkan semua karakter kecuali angka
+            let harga = input.value.replace(/\D/g, '');
+
+            // memformat angka sebagai harga
+            harga = new Intl.NumberFormat('id-ID').format(harga);
+
+
+            // menambahkan simbol euro pada depan harga
+            input.value = 'Rp ' + harga;
+
+            // jika nilai input kosong, isi dengan simbol euro dan spasi
+            if (input.value === '') {
+                input.value = 'Rp ';
+            }
+        }
+    </script>

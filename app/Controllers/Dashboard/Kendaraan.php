@@ -33,6 +33,9 @@ class Kendaraan extends BaseController
 
     public function create()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         $data = [
             'title' => 'Tambah Kendaraan',
             'roleLabel' => $this->roleLabel
@@ -46,7 +49,9 @@ class Kendaraan extends BaseController
 
     public function store()
     {
-
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Mengambil file foto kendaraan dari form
         $filePhoto = $this->request->getFile('vehicle_photo');
 
@@ -69,12 +74,15 @@ class Kendaraan extends BaseController
             'created_at' => date('Y-m-d H:i:s')
         ]);
 
-        return redirect()->to('/bali/kendaraan');
+        return redirect()->to(base_url('/bali/kendaraan'));
     }
 
 
     public function edit($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         $kendaraan = $this->kendaraanModel->getkendaraan($id); // Ambil data kendaraan
         if (empty($kendaraan)) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
@@ -94,6 +102,9 @@ class Kendaraan extends BaseController
 
     public function update($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Ambil data kendaraan yang ada berdasarkan ID
         $kendaraan = $this->kendaraanModel->find($id);
         if (!$kendaraan) {
@@ -135,11 +146,14 @@ class Kendaraan extends BaseController
         // Update data ke database
         $this->kendaraanModel->update($id, $data);
 
-        return redirect()->to('/bali/kendaraan'); // Redirect setelah sukses
+        return redirect()->to(base_url('/bali/kendaraan')); // Redirect setelah sukses
     }
 
     public function delete($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Cari data kendaraan berdasarkan ID
         $kendaraan = $this->kendaraanModel->find($id);
 
@@ -159,9 +173,29 @@ class Kendaraan extends BaseController
             $this->kendaraanModel->delete($id);
 
             // Redirect setelah penghapusan berhasil
-            return redirect()->to('/bali/kendaraan')->with('message', 'Data kendaraan dan foto berhasil dihapus');
+            return redirect()->to(base_url('/bali/kendaraan'))->with('message', 'Data kendaraan dan foto berhasil dihapus');
         } else {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
         }
+    }
+    public function updateStatus($id)
+    {
+        if (session()->get('user_role') !== 'admin' && session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
+
+        // Ambil data kendaraan berdasarkan ID
+        $kendaraan = $this->kendaraanModel->find($id);
+        if (!$kendaraan) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
+        }
+
+        // Update hanya status kendaraan
+        $this->kendaraanModel->update($id, [
+            'status' => $this->request->getPost('status'),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
+
+        return redirect()->to(base_url('/bali/kendaraan'))->with('message', 'Status kendaraan berhasil diperbarui');
     }
 }

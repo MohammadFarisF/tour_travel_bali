@@ -32,6 +32,7 @@
                                 <th>Email</th>
                                 <th>Nomor HP</th>
                                 <th>Role User</th>
+                                <th>Foto Profil</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -50,6 +51,13 @@
                                             echo 'Admin';
                                         }
                                         ?>
+                                    </td>
+                                    <td>
+                                        <?php if (!empty($user['photo'])): ?>
+                                            <img src="<?= base_url('uploads/user/' . esc($user['photo'])); ?>" alt="Foto Profil" style="width: 100px; height: auto;">
+                                        <?php else: ?>
+                                            No Image
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <a href="<?php echo site_url('/bali/admin/edit/' . $user['user_id']); ?>" class="btn btn-warning">Edit</a>

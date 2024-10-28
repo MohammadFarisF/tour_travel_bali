@@ -37,6 +37,9 @@ class Destinasi extends BaseController
 
     public function create()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Ambil data packages
         $paketModel = new PaketModel();
         $data['packages'] = $paketModel->findAll(); // Ambil semua data packages
@@ -66,6 +69,12 @@ class Destinasi extends BaseController
 
     public function store()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
+        $harga = $this->request->getPost('harga');
+        $harga = str_replace(['Rp ', '.', ','], ['', '', '.'], $harga);
+
         $filePhotos = $this->request->getFiles(); // Dapatkan semua file
         $fileNames = []; // Array untuk menyimpan nama file yang berhasil diupload
 
@@ -101,9 +110,11 @@ class Destinasi extends BaseController
                 'destination_id' => $this->request->getPost('destination_id'), // Pastikan ini benar
                 'package_id' => $this->request->getPost('package_id'), // Foreign key yang valid
                 'destination_name' => $this->request->getPost('destination_name'),
-                'location' => $this->request->getPost('location'),
+                'latitude' => $this->request->getPost('latitude'), // Ubah field ini
+                'longitude' => $this->request->getPost('longitude'), // Ubah field ini
                 'description' => $this->request->getPost('description'),
                 'foto' => $foto,
+                'harga_per_orang' => $harga,
                 'created_at' => date('Y-m-d H:i:s')
             ];
 
@@ -111,11 +122,14 @@ class Destinasi extends BaseController
         }
 
         // Redirect ke halaman sukses atau tampilan lain
-        return redirect()->to('/bali/destinasi');
+        return redirect()->to(base_url('/bali/destinasi'));
     }
 
     public function edit($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Mengambil data destinasi berdasarkan ID untuk di-edit
         $data['destinasi'] = $this->destinasiModel->getDestinasi($id);
         if (empty($data['destinasi'])) {
@@ -132,23 +146,33 @@ class Destinasi extends BaseController
 
     public function update()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
+        $harga = $this->request->getPost('harga');
+        $harga = str_replace(['Rp ', '.', ','], ['', '', '.'], $harga);
         // Mengupdate data destinasi berdasarkan ID
         $id = $this->request->getPost('destination_id');
         $data = [
             'destination_name' => $this->request->getPost('destination_name'),
-            'location' => $this->request->getPost('location'),
+            'latitude' => $this->request->getPost('latitude'), // Ubah field ini
+            'longitude' => $this->request->getPost('longitude'), // Ubah field ini
             'description' => $this->request->getPost('description'),
+            'harga_per_orang' => $harga,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
         $this->destinasiModel->update($id, $data);
 
         // Redirect ke halaman daftar destinasi setelah update
-        return redirect()->to('/bali/destinasi');
+        return redirect()->to(base_url('/bali/destinasi'));
     }
 
     public function delete($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Mengecek apakah data ada sebelum menghapus
         if (!$this->destinasiModel->find($id)) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Destinasi tidak ditemukan');
@@ -156,6 +180,6 @@ class Destinasi extends BaseController
 
         // Menghapus destinasi berdasarkan ID
         $this->destinasiModel->delete($id);
-        return redirect()->to('/bali/destinasi');
+        return redirect()->to(base_url('/bali/destinasi'));
     }
 }

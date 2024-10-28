@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 22, 2024 at 03:46 AM
+-- Generation Time: Oct 28, 2024 at 04:39 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -184,6 +184,14 @@ CREATE TABLE `bookings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`booking_id`, `user_id`, `package_id`, `address`, `total_people`, `departure_date`, `return_date`, `total_amount`, `booking_status`, `payment_status`, `created_at`, `updated_at`) VALUES
+('B001', 'C003', 'P01', 'Jl. Bali No.1', 5, '2024-10-30', '2024-10-30', '10000000.00', 'pending', 'pending', '2024-10-28 16:16:32', '2024-10-28 16:16:32'),
+('B002', 'C003', 'P02', 'Jl. Medan Bali 1 No.9', 3, '2024-10-31', '2024-10-31', '2000000.00', 'confirmed', 'paid', '2024-10-28 16:26:11', '2024-10-28 16:26:11');
+
+--
 -- Triggers `bookings`
 --
 DELIMITER $$
@@ -210,6 +218,15 @@ CREATE TABLE `booking_destinations` (
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `destination_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `booking_destinations`
+--
+
+INSERT INTO `booking_destinations` (`booking_destination_id`, `booking_id`, `destination_id`) VALUES
+(1, 'B001', 'D01'),
+(2, 'B001', 'D02'),
+(3, 'B002', 'D03');
 
 --
 -- Triggers `booking_destinations`
@@ -244,6 +261,14 @@ CREATE TABLE `booking_vehicles` (
   `vehicle_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `booking_vehicles`
+--
+
+INSERT INTO `booking_vehicles` (`booking_vehicle_id`, `booking_id`, `vehicle_id`) VALUES
+(1, 'B001', 7),
+(2, 'B002', 10);
+
 -- --------------------------------------------------------
 
 --
@@ -254,12 +279,23 @@ CREATE TABLE `destinations` (
   `destination_id` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `package_id` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `destination_name` varchar(50) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `location` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `longitude` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `latitude` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `harga_per_orang` decimal(10,2) DEFAULT NULL,
   `description` text COLLATE utf8mb4_general_ci,
   `foto` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `destinations`
+--
+
+INSERT INTO `destinations` (`destination_id`, `package_id`, `destination_name`, `longitude`, `latitude`, `harga_per_orang`, `description`, `foto`, `created_at`, `updated_at`) VALUES
+('D01', 'P01', 'Rice Terrace Swing', '115.27914568465303', '-8.434760395434676', '500000.00', 'the most popular choice in Bali recently. The tourist destination is located on the north side of Ubud Village, Gianyar Regency.', '1730131800_146ff9732e20b166befb.png', '2024-10-28 09:10:00', '2024-10-28 09:10:00'),
+('D02', 'P01', 'Goa Gajah Temple', '115.2871319949841', '-8.52340219151913', '250000.00', 'famously with a historical temple, an archaelogical place. An Archaelogical and Historical Temple in Bali.', '1730131938_56b2a71e91c0be230bd7.jpg,1730131938_9d37b01be6047f3a35b0.jpg', '2024-10-28 09:12:18', '2024-10-28 09:12:18'),
+('D03', 'P02', 'Tanah Lot', '115.0868031452482', '-8.620999689160582', '750000.00', 'Bedugul is a famous mountain tourist area in Bali, Indonesia. Located in Tabanan Regency, about 50 kilometers from Denpasar, Bedugul is a favorite destination because of its cool air and beautiful natural views. Bedugul is surrounded by green hills, lakes and lush gardens.', '1730132001_25f9ee03d8ce6855a035.jpg', '2024-10-28 09:13:21', '2024-10-28 09:13:21');
 
 -- --------------------------------------------------------
 
@@ -272,7 +308,6 @@ CREATE TABLE `packages` (
   `package_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `package_type` enum('single_destination','multiple_day') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `description` text COLLATE utf8mb4_general_ci,
-  `harga` decimal(10,2) NOT NULL,
   `foto` text COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -282,9 +317,9 @@ CREATE TABLE `packages` (
 -- Dumping data for table `packages`
 --
 
-INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `description`, `harga`, `foto`, `created_at`, `updated_at`) VALUES
-('P01', 'Paket Wisata Ubud', 'single_destination', 'Ubud is a unique and captivating tourist destination that offers a perfect blend of nature, culture, and art. Despite its increasing popularity, Ubud has managed to preserve its traditional charm and serene atmosphere, which are hallmarks of the area. With its stunning natural beauty, rich cultural heritage, and peaceful environment, Ubud stands out as one of Bali\'s hidden gems and is a must-visit for travelers.', '3000000.00', '1729568758_e309f0d7e9cae72dcd8a.jpg', '2024-10-21 20:45:58', NULL),
-('P02', 'Paket Wisata Bedugul', 'single_destination', 'Bedugul is a famous mountain tourist area in Bali, Indonesia. Located in Tabanan Regency, about 50 kilometers from Denpasar, Bedugul is a favorite destination because of its cool air and beautiful natural views. Bedugul is surrounded by green hills, lakes and lush gardens.', '3500000.00', '1729568779_5b6aa544ebe5b64901ab.jpg', '2024-10-21 20:46:19', NULL);
+INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `description`, `foto`, `created_at`, `updated_at`) VALUES
+('P01', 'Paket Wisata Ubud', 'single_destination', 'Ubud is a unique and captivating tourist destination that offers a perfect blend of nature, culture, and art. Despite its increasing popularity, Ubud has managed to preserve its traditional charm and serene atmosphere, which are hallmarks of the area. With its stunning natural beauty, rich cultural heritage, and peaceful environment, Ubud stands out as one of Bali\'s hidden gems and is a must-visit for travelers.', '1729568758_e309f0d7e9cae72dcd8a.jpg', '2024-10-21 20:45:58', NULL),
+('P02', 'Paket Wisata Bedugul', 'single_destination', 'Bedugul is a famous mountain tourist area in Bali, Indonesia. Located in Tabanan Regency, about 50 kilometers from Denpasar, Bedugul is a favorite destination because of its cool air and beautiful natural views. Bedugul is surrounded by green hills, lakes and lush gardens.', '1729568779_5b6aa544ebe5b64901ab.jpg', '2024-10-21 20:46:19', NULL);
 
 -- --------------------------------------------------------
 
@@ -301,6 +336,13 @@ CREATE TABLE `payments` (
   `payment_status` enum('pending','validated','failed') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `proof_of_payment` text COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`payment_id`, `booking_id`, `custbank_id`, `payment_method`, `payment_date`, `payment_status`, `proof_of_payment`) VALUES
+(1, 'B002', 1, 'bank_transfer', '2024-10-28 16:28:10', 'validated', 'bukti_tf1.jpg');
 
 --
 -- Triggers `payments`
@@ -381,6 +423,7 @@ CREATE TABLE `users` (
   `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `phone_number` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `user_role` enum('customer','admin','owner') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `photo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -389,10 +432,10 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`user_id`, `full_name`, `email`, `password`, `phone_number`, `user_role`, `created_at`, `updated_at`) VALUES
-('C003', 'Muhammad Firjatullah', 'mfirjatullah123@gmail.com', '$2y$10$3a30novDoKO5RhKHJzQxPe5Vf1VNCh9pzVf165JC0AwWlI3EhUI2W', '081234513423', 'customer', '2024-10-21 15:30:39', '2024-10-21 22:30:39'),
-('U001', 'Mohammad Faris Fawwaz', 'farisfawwaz123@gmail.com', '$2y$10$2PQlScjiE2ZcDzYibWmLoerml.f2K008MAGlm9k9t8wN3JWtb0qsW', '081234567891', 'owner', '2024-10-07 02:03:00', '2024-10-07 02:03:00'),
-('U002', 'Muhammad Fauzan Azhar', 'mfauzanazhar12@gmail.com', '$2y$10$CCrIoiQ77QgPRrON3e8//OaMHrdauZZ3HWxjMDd6w4R1PQQsUBy8a', '081234513134', 'admin', '2024-10-07 02:07:29', '2024-10-07 02:07:29');
+INSERT INTO `users` (`user_id`, `full_name`, `email`, `password`, `phone_number`, `user_role`, `photo`, `created_at`, `updated_at`) VALUES
+('C003', 'Muhammad Firjatullah', 'mfirjatullah123@gmail.com', '$2y$10$3a30novDoKO5RhKHJzQxPe5Vf1VNCh9pzVf165JC0AwWlI3EhUI2W', '081234513423', 'customer', '', '2024-10-21 15:30:39', '2024-10-21 22:30:39'),
+('U001', 'Mohammad Faris Fawwaz', 'farisfawwaz123@gmail.com', '$2y$10$2PQlScjiE2ZcDzYibWmLoerml.f2K008MAGlm9k9t8wN3JWtb0qsW', '081234567891', 'owner', '1730129683_bf5804dbb1ce67bf8530.jpg', '2024-10-07 02:03:00', '2024-10-28 15:34:43'),
+('U002', 'Muhammad Fauzan Azhar', 'mfauzanazhar12@gmail.com', '$2y$10$CCrIoiQ77QgPRrON3e8//OaMHrdauZZ3HWxjMDd6w4R1PQQsUBy8a', '089843213412', 'admin', '1730128767_15f3f8e75d79db270b7d.png', '2024-10-07 02:07:29', '2024-10-28 15:19:27');
 
 -- --------------------------------------------------------
 
@@ -417,9 +460,9 @@ CREATE TABLE `vehicles` (
 --
 
 INSERT INTO `vehicles` (`vehicle_id`, `vehicle_name`, `license_plate`, `capacity`, `vehicle_type`, `vehicle_photo`, `status`, `created_at`, `updated_at`) VALUES
-(7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'maintenance', '2024-09-30 21:44:20', '2024-10-07 02:20:11'),
-(9, 'Suzuki APV Putih', 'DK 1234 ABC', 8, 'APV', '1728292802_0e76ce8c9e2331e8ddef.png', 'available', '2024-10-07 02:20:02', '2024-10-07 09:20:02'),
-(10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'in_use', '2024-10-07 02:21:40', '2024-10-21 19:48:53');
+(7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'in_use', '2024-09-30 21:44:20', '2024-10-28 09:24:43'),
+(9, 'Suzuki APV Putih', 'DK 1234 ABC', 8, 'APV', '1728292802_0e76ce8c9e2331e8ddef.png', 'available', '2024-10-07 02:20:02', '2024-10-28 09:24:53'),
+(10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'in_use', '2024-10-07 02:21:40', '2024-10-28 16:26:59');
 
 --
 -- Indexes for dumped tables

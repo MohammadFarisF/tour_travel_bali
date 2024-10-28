@@ -142,7 +142,7 @@
                                     <td><?php echo esc($destinasi['destination_id']); ?></td>
                                     <td><?php echo esc($destinasi['package_id']); ?></td>
                                     <td><?php echo esc($destinasi['destination_name']); ?></td>
-                                    <td><?php echo esc($destinasi['location']); ?></td>
+                                    <td><?php echo esc($destinasi['latitude'] . ', ' . $destinasi['longitude']); ?></td> <!-- Updated line -->
                                     <td><?php echo esc($destinasi['description']); ?></td>
                                     <td>
                                         <!-- Cek apakah ada foto -->

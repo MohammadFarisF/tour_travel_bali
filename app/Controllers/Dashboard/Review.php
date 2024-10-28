@@ -37,6 +37,9 @@ class Review extends BaseController
     // Method untuk menghapus data review
     public function delete($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Mengecek apakah data ada sebelum menghapus
         if (!$this->reviewModel->find($id)) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Ulasan Customer tidak ditemukan');
@@ -44,6 +47,6 @@ class Review extends BaseController
 
         // Menghapus destinasi berdasarkan ID
         $this->reviewModel->delete($id);
-        return redirect()->to('/bali/review');
+        return redirect()->to(base_url('/bali/review'));
     }
 }

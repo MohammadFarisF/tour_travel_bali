@@ -80,6 +80,7 @@ class Auth extends BaseController
                             'user_role' =>  $user['user_role'], // Set user_role sebagai admin
                             'userEmail' => $user['email'],
                             'userName' => $user['full_name'],
+                            'userPhoto' => $user['photo']
                         ]);
 
                         // Redirect ke halaman admin (/bali)
@@ -91,6 +92,7 @@ class Auth extends BaseController
                             'user_role' =>  $user['user_role'], // Set user_role sebagai customer
                             'userEmail' => $user['email'],
                             'userName' => $user['full_name'],
+                            'userPhoto' => $user['photo']
                         ]);
 
                         // Redirect ke halaman customer (/)
@@ -101,6 +103,7 @@ class Auth extends BaseController
                             'user_role' =>  $user['user_role'], // Set user_role sebagai customer
                             'userEmail' => $user['email'],
                             'userName' => $user['full_name'],
+                            'userPhoto' => $user['photo']
                         ]);
                         return redirect()->to(base_url(''));
                     }

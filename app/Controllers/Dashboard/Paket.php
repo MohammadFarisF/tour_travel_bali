@@ -35,6 +35,9 @@ class Paket extends BaseController
 
     public function create()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Ambil kode paket terakhir
         $lastPackage = $this->paketModel->orderBy('package_id', 'DESC')->first();
 
@@ -61,10 +64,9 @@ class Paket extends BaseController
 
     public function store()
     {
-
-        $harga = $this->request->getPost('harga');
-        $harga = str_replace(['Rp. ', '.', ','], ['', '', '.'], $harga);
-
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         $filePhoto = $this->request->getFile('foto');
 
         // Tentukan nama file yang akan disimpan
@@ -80,18 +82,20 @@ class Paket extends BaseController
             'package_name' => $this->request->getPost('package_name'),
             'package_type' => $this->request->getPost('package_type'),
             'description' => $this->request->getPost('description'),
-            'harga' => $harga,
             'foto' => $fileName,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => NULL
         ]);
 
         // Redirect ke halaman daftar paket setelah berhasil menyimpan
-        return redirect()->to('/bali/paket');
+        return redirect()->to(base_url('/bali/paket'));
     }
 
     public function edit($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Mengambil data paket berdasarkan ID untuk di-edit
         $data['package'] = $this->paketModel->getpaket($id);
         if (empty($data['package'])) {
@@ -108,6 +112,9 @@ class Paket extends BaseController
 
     public function update()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Mengupdate data paket berdasarkan ID
         $id = $this->request->getPost('package_id');
         $package = $this->paketModel->find($id);
@@ -146,11 +153,14 @@ class Paket extends BaseController
         $this->paketModel->update($id, $data);
 
         // Redirect ke halaman daftar paket setelah update
-        return redirect()->to('/bali/paket');
+        return redirect()->to(base_url('/bali/paket'));
     }
 
     public function delete($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Menghapus paket berdasarkan ID
         $package = $this->paketModel->find($id);
 
@@ -170,7 +180,7 @@ class Paket extends BaseController
             $this->paketModel->delete($id);
 
             // Redirect setelah penghapusan berhasil
-            return redirect()->to('/bali/paket')->with('message', 'Data paket dan foto berhasil dihapus');
+            return redirect()->to(base_url('/bali/paket'))->with('message', 'Data paket dan foto berhasil dihapus');
         } else {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Paket tidak ditemukan');
         }

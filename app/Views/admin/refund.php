@@ -40,9 +40,26 @@
                                     <td><?= $refund['account_number']; ?></td>
                                     <td><?= $refund['account_holder_name']; ?></td>
                                     <td><?= $refund['booking_id']; ?></td>
-                                    <td><?= $refund['refund_amount']; ?></td>
-                                    <td><?= $refund['refund_date']; ?></td>
-                                    <td><?= $refund['refund_status']; ?></td>
+                                    <td><?= "Rp " . number_format($refund['refund_amount'], 0, ',', '.'); ?></td> <!-- Format Rupiah -->
+                                    <td><?= date('l, d F Y', strtotime($refund['refund_date'])); ?></td> <!-- Format Tanggal Refund -->
+                                    <td>
+                                        <?php
+                                        switch ($refund['refund_status']) {
+                                            case 'processed':
+                                                echo 'Dalam Proses';
+                                                break;
+                                            case 'rejected':
+                                                echo 'Refund Ditolak';
+                                                break;
+                                            case 'completed':
+                                                echo 'Refund Selesai';
+                                                break;
+                                            default:
+                                                echo 'Status Tidak Diketahui';
+                                                break;
+                                        }
+                                        ?>
+                                    </td>
                                     <td>
                                         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalRefund<?= $refund['refund_id']; ?>">Ubah Status</button>
 
@@ -60,15 +77,15 @@
                                                             <div class="form-group">
                                                                 <label>Status Refund</label>
                                                                 <select name="status" class="form-control">
-                                                                    <option value="processed" <?= $refund['refund_status'] == 'processed' ? 'selected' : ''; ?>>Processed</option>
-                                                                    <option value="rejected" <?= $refund['refund_status'] == 'rejected' ? 'selected' : ''; ?>>Rejected</option>
-                                                                    <option value="completed" <?= $refund['refund_status'] == 'completed' ? 'selected' : ''; ?>>Completed</option>
+                                                                    <option value="processed" <?= $refund['refund_status'] == 'processed' ? 'selected' : ''; ?>>Dalam Proses</option>
+                                                                    <option value="rejected" <?= $refund['refund_status'] == 'rejected' ? 'selected' : ''; ?>>Ditolak</option>
+                                                                    <option value="completed" <?= $refund['refund_status'] == 'completed' ? 'selected' : ''; ?>>Selesai</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
-                                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Close</button>
-                                                            <button class="btn btn-primary" type="submit">Save changes</button>
+                                                            <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Tutup</button>
+                                                            <button class="btn btn-primary" type="submit">Simpan Perubahan</button>
                                                         </div>
                                                     </form>
                                                 </div>

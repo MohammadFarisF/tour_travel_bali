@@ -41,7 +41,7 @@ class Payment extends BaseController
         $this->paymentModel->update($paymentId, ['payment_status' => $status]);
 
         // Redirect or return response
-        return redirect()->to('/bali/payment');
+        return redirect()->to(base_url('/bali/payment'));
     }
 
     public function cust_index()
