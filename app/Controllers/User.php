@@ -45,10 +45,10 @@ class User extends BaseController
         echo view('user/change');
         echo view('user/template/footer');
     }
-    public function order_data()
+    public function my_account()
     {
         echo view('user/template/header');
-        echo view('user/order_data');
+        echo view('user/my_account');
         echo view('user/template/footer');
     }
     public function review()
