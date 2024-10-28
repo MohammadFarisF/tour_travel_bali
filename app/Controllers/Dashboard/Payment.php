@@ -43,4 +43,15 @@ class Payment extends BaseController
         // Redirect or return response
         return redirect()->to('/bali/payment');
     }
+
+    public function cust_index(){
+        $data = [
+            'title' => 'Pembayaran',
+            'payments' => $this->paymentModel->getPayments(),
+        ];
+
+        echo view('user/template/header');
+        echo view('user/pembayaran', $data);
+        echo view('user/template/footer');
+    }
 }
