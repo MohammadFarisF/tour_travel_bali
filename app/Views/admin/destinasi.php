@@ -21,7 +21,9 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Destinasi Perjalanan</span>
                     <!-- Button berada di ujung kanan -->
-                    <a href="<?= base_url(); ?>bali/destinasi/create" class="btn btn-primary">Tambah Destinasi</a>
+                    <?php if (session()->get('user_role') === 'owner'): ?>
+                        <a href="<?= base_url(); ?>bali/destinasi/create" class="btn btn-primary">Tambah Destinasi</a>
+                    <?php endif; ?>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
@@ -33,6 +35,7 @@
                                 <th>Lokasi</th>
                                 <th>Deskripsi</th>
                                 <th>Foto</th>
+                                <th>Harga Destinasi</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -43,7 +46,7 @@
                                     <td><?php echo esc($destinasi['destination_id']); ?></td>
                                     <td><?php echo esc($destinasi['package_id']); ?></td>
                                     <td><?php echo esc($destinasi['destination_name']); ?></td>
-                                    <td><?php echo esc($destinasi['location']); ?></td>
+                                    <td><?php echo esc($destinasi['latitude'] . ', ' . $destinasi['longitude']); ?></td> <!-- Updated line -->
                                     <td><?php echo esc($destinasi['description']); ?></td>
                                     <td>
                                         <!-- Cek apakah ada foto -->
@@ -58,10 +61,13 @@
                                             Tidak ada foto
                                         <?php endif; ?>
                                     </td>
-                                    <td>
-                                        <a href="<?= site_url('bali/destinasi/edit/' . $destinasi['destination_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
-                                        <a href="<?= site_url('bali/destinasi/delete/' . $destinasi['destination_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus destinasi ini?');">Hapus</a>
-                                    </td>
+                                    <td><?= "Rp " . number_format($destinasi['harga_per_orang'], 0, ',', '.') ?></td>
+                                    <?php if (session()->get('user_role') === 'owner'): ?>
+                                        <td>
+                                            <a href="<?= site_url('bali/destinasi/edit/' . $destinasi['destination_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
+                                            <a href="<?= site_url('bali/destinasi/delete/' . $destinasi['destination_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus destinasi ini?');">Hapus</a>
+                                        </td>
+                                    <?php endif; ?>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

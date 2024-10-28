@@ -20,6 +20,9 @@ class Bank_Pelanggan extends BaseController
         // Cek role dan tentukan label yang akan muncul
         $roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
         // Mengambil semua data bank pelanggan
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         $data = [
             'title' => 'Bank Pelanggan',
             'bankpelanggan' => $this->bankpelangganModel->getbankpelanggan(), // Mengambil semua bank pelanggan
@@ -35,6 +38,9 @@ class Bank_Pelanggan extends BaseController
 
     public function delete($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Menghapus bank pelanggan berdasarkan ID
         $this->bankpelangganModel->hapus($id);
         return redirect()->to('/bali/bankpelanggan');

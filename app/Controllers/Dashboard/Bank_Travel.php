@@ -21,6 +21,9 @@ class Bank_Travel extends BaseController
 
     public function index()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Mengambil semua data travel
         $data = [
             'title' => 'Bank Travel',
@@ -37,6 +40,9 @@ class Bank_Travel extends BaseController
 
     public function create()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         $data['title'] = 'Tambah Bank Travel';
         $data['roleLabel'] = $this->roleLabel; // Include roleLabel in the data
 
@@ -48,6 +54,9 @@ class Bank_Travel extends BaseController
 
     public function store()
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         $filePhoto = $this->request->getFile('photo');
 
         // Tentukan nama file yang akan disimpan
@@ -70,11 +79,14 @@ class Bank_Travel extends BaseController
         ]);
 
         // Redirect ke halaman daftar travel setelah berhasil menyimpan
-        return redirect()->to('/bali/banktravel');
+        return redirect()->to(base_url('/bali/banktravel'));
     }
 
     public function edit($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Mengambil data travel berdasarkan ID untuk di-edit
         $data['banktravel'] = $this->banktravelModel->getbanktravel($id);
         if (empty($data['banktravel'])) {
@@ -92,6 +104,9 @@ class Bank_Travel extends BaseController
 
     public function update($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Tangani upload file foto baru (jika ada)
         $filePhoto = $this->request->getFile('photo');
         if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
@@ -113,11 +128,14 @@ class Bank_Travel extends BaseController
         ]);
 
         // Redirect ke halaman daftar bank travel setelah update
-        return redirect()->to('/bali/banktravel');
+        return redirect()->to(base_url('/bali/banktravel'));
     }
 
     public function delete($id)
     {
+        if (session()->get('user_role') !== 'owner') {
+            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
+        }
         // Cari data kendaraan berdasarkan ID
         $banktravel = $this->banktravelModel->find($id);
 
@@ -137,7 +155,7 @@ class Bank_Travel extends BaseController
             $this->banktravelModel->delete($id);
 
             // Redirect setelah penghapusan berhasil
-            return redirect()->to('/bali/banktravel')->with('message', 'Data Travel bank dan foto berhasil dihapus');
+            return redirect()->to(base_url('/bali/banktravel'))->with('message', 'Data Travel bank dan foto berhasil dihapus');
         } else {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Akun Travel tidak ditemukan');
         }

@@ -60,6 +60,11 @@
                                     </select>
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="photo" class="form-label">Foto Profil</label>
+                                    <input class="form-control" type="file" id="photo" name="photo" accept="image/*">
+                                </div>
+
                                 <button type="submit" class="btn btn-success">Simpan</button>
                                 <a href="<?= base_url(); ?>/bali/admin" class="btn btn-secondary">Batal</a>
                             </form>

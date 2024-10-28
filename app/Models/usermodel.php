@@ -21,6 +21,7 @@ class UserModel extends Model
         'phone_number',
         'password',
         'user_role',
+        'photo',
         'created_at',
         'updated_at'
     ];

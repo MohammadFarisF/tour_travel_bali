@@ -21,9 +21,9 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Paket Perjalanan</span>
                     <!-- Button berada di ujung kanan -->
-
-                    <a href="<?= base_url(); ?>bali/paket/create" class="btn btn-primary">Tambah Paket</a>
-
+                    <?php if (session()->get('user_role') === 'owner'): ?>
+                        <a href="<?= base_url(); ?>bali/paket/create" class="btn btn-primary">Tambah Paket</a>
+                    <?php endif; ?>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
@@ -34,8 +34,9 @@
                                 <th>Tipe Paket</th>
                                 <th>Deskripsi Paket</th>
                                 <th>Foto Paket</th>
-                                <th>Harga Paket</th>
-                                <th>Aksi</th>
+                                <?php if (session()->get('user_role') === 'owner'): ?>
+                                    <th>Aksi</th> <!-- Hanya tampil jika user_role adalah owner -->
+                                <?php endif; ?>
                             </tr>
                         </thead>
                         <tbody>
@@ -62,11 +63,15 @@
                                                 No Image
                                             <?php endif; ?>
                                         </td>
-                                        <td><?= "Rp " . number_format($package['harga'], 0, ',', '.') ?></td>
-                                        <td>
-                                            <a href="<?= site_url('bali/paket/edit/' . $package['package_id']); ?>" class="btn btn-warning btn-sm">Edit</a>
-                                            <a href="<?= site_url('bali/paket/delete/' . $package['package_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus paket ini?');">Hapus</a>
-                                        </td>
+                                        <?php if (session()->get('user_role') === 'owner'): ?>
+                                            <td>
+                                                <a href="/bali/paket/edit/<?= $package['package_id'] ?>" class="btn btn-warning">Edit</a>
+                                                <form action="/bali/paket/delete/<?= $package['package_id'] ?>" method="post" style="display:inline;">
+                                                    <?= csrf_field() ?>
+                                                    <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin ingin menghapus?')">Hapus</button>
+                                                </form>
+                                            </td>
+                                        <?php endif; ?>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php endif; ?>

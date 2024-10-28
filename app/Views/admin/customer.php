@@ -26,6 +26,7 @@
                                 <th>Nama Customer</th>
                                 <th>Email</th>
                                 <th>Nomor HP</th>
+                                <th>Foto Profil</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -36,6 +37,13 @@
                                     <td><?php echo esc($user['full_name']); ?></td>
                                     <td><?php echo esc($user['email']); ?></td>
                                     <td><?php echo esc($user['phone_number']); ?></td>
+                                    <td>
+                                        <?php if (!empty($user['photo'])): ?>
+                                            <img src="<?= base_url('uploads/user/' . esc($user['photo'])); ?>" alt="Foto Profil" style="width: 100px; height: auto;">
+                                        <?php else: ?>
+                                            No Image
+                                        <?php endif; ?>
+                                    </td>
                                     <td>
                                         <form action="<?php echo site_url('bali/customer/delete/' . $user['user_id']); ?>" method="post" style="display:inline;">
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this customer?');">Delete</button>

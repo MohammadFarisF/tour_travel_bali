@@ -9,19 +9,26 @@
                         <div class="nav-link-icon"><i data-feather="activity"></i></div>
                         Dashboards
                     </a>
+                    <?php if (session()->getFlashdata('dilarang_masuk')) : ?>
+                        <script>
+                            alert('<?= session()->getFlashdata('dilarang_masuk') ?>');
+                        </script>
+                    <?php endif; ?>
                     <!-- Sidenav Heading (Custom)-->
                     <!-- Sidenav Accordion (Pages)-->
-                    <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseUser" aria-expanded="false" aria-controls="collapseUser">
-                        <div class="nav-link-icon"><i data-feather="user"></i></div>
-                        Manajemen Pengguna
-                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapseUser" data-bs-parent="#accordionSidenav">
-                        <nav class="sidenav-menu-nested nav">
-                            <a class="nav-link" href="<?= base_url() ?>bali/admin">Admin</a>
-                            <a class="nav-link" href="<?= base_url() ?>bali/customer">Customer</a>
-                        </nav>
-                    </div>
+                    <?php if (session()->get('user_role') === 'owner'): ?>
+                        <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseUser" aria-expanded="false" aria-controls="collapseUser">
+                            <div class="nav-link-icon"><i data-feather="user"></i></div>
+                            Manajemen Pengguna
+                            <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseUser" data-bs-parent="#accordionSidenav">
+                            <nav class="sidenav-menu-nested nav">
+                                <a class="nav-link" href="<?= base_url() ?>bali/admin">Admin</a>
+                                <a class="nav-link" href="<?= base_url() ?>bali/customer">Customer</a>
+                            </nav>
+                        </div>
+                    <?php endif; ?>
                     <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapsePaket" aria-expanded="false" aria-controls="collapsePaket">
                         <div class="nav-link-icon"><i data-feather="briefcase"></i></div>
                         Manajemen Paket
@@ -48,17 +55,19 @@
                         </nav>
                     </div>
                     <!-- Sidenav Heading (UI Toolkit)-->
-                    <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseBank" aria-expanded="false" aria-controls="collapseBank">
-                        <div class="nav-link-icon"><i data-feather="credit-card"></i></div>
-                        Manajemen Bank
-                        <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapseBank" data-bs-parent="#accordionSidenav">
-                        <nav class="sidenav-menu-nested nav">
-                            <a class="nav-link" href="<?= base_url() ?>bali/banktravel">Travel</a>
-                            <a class="nav-link" href="<?= base_url() ?>bali/bankpelanggan">Pelanggan</a>
-                        </nav>
-                    </div>
+                    <?php if (session()->get('user_role') === 'owner'): ?>
+                        <a class="nav-link collapsed" href="javascript:void(0);" data-bs-toggle="collapse" data-bs-target="#collapseBank" aria-expanded="false" aria-controls="collapseBank">
+                            <div class="nav-link-icon"><i data-feather="credit-card"></i></div>
+                            Manajemen Bank
+                            <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseBank" data-bs-parent="#accordionSidenav">
+                            <nav class="sidenav-menu-nested nav">
+                                <a class="nav-link" href="<?= base_url() ?>bali/banktravel">Travel</a>
+                                <a class="nav-link" href="<?= base_url() ?>bali/bankpelanggan">Pelanggan</a>
+                            </nav>
+                        </div>
+                    <?php endif; ?>
                     <a class="nav-link" href="<?= base_url() ?>bali/review">
                         <div class="nav-link-icon"><i data-feather="smile"></i></div>
                         Ulasan Pelanggan

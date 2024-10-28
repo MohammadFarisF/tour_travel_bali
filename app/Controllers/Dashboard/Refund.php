@@ -39,6 +39,6 @@ class Refund extends BaseController
         // Update status refund
         $this->refundModel->update($refundId, ['refund_status' => $status]);
 
-        return redirect()->to('/bali/refund');
+        return redirect()->to(base_url('/bali/refund'));
     }
 }

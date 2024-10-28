@@ -24,7 +24,7 @@
                 <div class="card-body">
                     <div class="sbp-preview">
                         <div class="sbp-preview-content">
-                        <form id="formdata" action="<?= base_url(); ?>/bali/admin/update/<?= $admin['user_id']; ?>" method="post" enctype="multipart/form-data">
+                            <form id="formdata" action="<?= base_url(); ?>/bali/admin/update/<?= $admin['user_id']; ?>" method="post" enctype="multipart/form-data">
 
                                 <div class="mb-3">
                                     <label for="full_name" class="form-label">Nama Admin</label>
@@ -44,6 +44,14 @@
                                 <div class="mb-3">
                                     <label for="phone_number" class="form-label">No HP</label>
                                     <input type="phone_number" class="form-control" id="phone_number" name="phone_number" value="<?= esc($admin['phone_number']); ?>" placeholder="Masukkan No HP..." required>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="vehicle_photo" class="form-label">Foto Kendaraan</label>
+                                    <?php if (!empty($admin['photo'])): ?>
+                                        <img src="<?= base_url('uploads/user/' . esc($admin['photo'])); ?>" alt="Foto Profil" style="width: 100px; height: auto;">
+                                    <?php endif; ?>
+                                    <input class="form-control" type="file" id="photo" name="photo" accept="image/*">
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Simpan</button>

@@ -16,9 +16,11 @@ class DestinasiModel extends Model
     protected $allowedFields = [
         'package_id',
         'destination_name',
-        'location',
+        'latitude',
+        'longitude',
         'description',
         'foto',
+        'harga_per_orang',
         'created_at',
         'updated_at'
     ];
