@@ -4,10 +4,10 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class UserModel extends Model
+class AdminModel extends Model
 {
     // Menentukan nama tabel
-    protected $table = 'users';
+    protected $table = 'admin';
 
     // Menentukan primary key tabel
     protected $primaryKey = 'user_id';
@@ -26,23 +26,6 @@ class UserModel extends Model
         'updated_at'
     ];
 
-    // Fungsi untuk mendapatkan semua data customer
-    public function getUser($id = null)
-    {
-        if ($id === null) {
-            // Hanya ambil pengguna dengan role admin
-            return $this->where('user_role', 'customer')->findAll();
-        } else {
-            // Ambil data admin berdasarkan ID, jika diberikan
-            return $this->where(['user_role' => 'customer', 'user_id' => $id])->first();
-        }
-    }
-
-    // Fungsi untuk menghapus data customer
-    public function deleteUser($id)
-    {
-        return $this->delete($id); // Menghapus berdasarkan ID
-    }
 
     public function getAdmin($id = null)
     {
@@ -54,8 +37,6 @@ class UserModel extends Model
             return $this->whereIn('user_role', ['admin', 'owner'])->where('user_id', $id)->first();
         }
     }
-
-
 
     public function hapus($id)
     {

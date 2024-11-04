@@ -33,12 +33,12 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'User::index');
 $routes->get('/about', 'User::about');
-$routes->get('/booking', 'User::booking');
+$routes->get('/booking', 'User::booking', ['filter' => 'userFilter']);
 $routes->get('/contact', 'User::contact');
 
 $routes->get('profile/payment', 'Dashboard\Payment::cust_index', ['filter' => 'userFilter']);
-$routes->get('profile/my_account', 'User::my_account');
-$routes->get('profile/review', 'User::review');
+$routes->get('profile/my_account', 'User::my_account', ['filter' => 'userFilter']);
+$routes->get('profile/review', 'User::review', ['filter' => 'userFilter']);
 
 $routes->get('login', 'Auth::login');
 $routes->post('login/proses', 'Auth::loginPost');
@@ -52,6 +52,7 @@ $routes->group('bali', ['filter' => 'adminFilter'], function ($routes) {
 
     $routes->get('profile', 'Dashboard\Admin::profile');
     $routes->post('updateProfile', 'Dashboard\Admin::updateProfile');
+    $routes->post('updatePassword', 'Dashboard\Admin::updatePassword');
 
     $routes->get('paket', 'Dashboard\Paket::index');
     $routes->get('paket/create', 'Dashboard\Paket::create');

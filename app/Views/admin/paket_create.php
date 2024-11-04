@@ -56,11 +56,6 @@
                                     <input class="form-control" type="file" id="foto" name="foto" accept="image/*" multiple>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="harga">Harga Paket</label>
-                                    <input class="form-control" name="harga" id="harga" type="text" value="Rp. " onkeyup="formatHarga(this)" required />
-                                </div>
-
                                 <button type="submit" class="btn btn-success">Simpan</button>
 
                                 <a href="<?= base_url(); ?>bali/paket" class="btn btn-secondary">Batal</a>
@@ -72,22 +67,3 @@
             </div>
         </div>
     </main>
-
-    <script>
-        function formatHarga(input) {
-            // menghilangkan semua karakter kecuali angka
-            let harga = input.value.replace(/\D/g, '');
-
-            // memformat angka sebagai harga
-            harga = new Intl.NumberFormat('id-ID').format(harga);
-
-
-            // menambahkan simbol euro pada depan harga
-            input.value = 'Rp. ' + harga;
-
-            // jika nilai input kosong, isi dengan simbol euro dan spasi
-            if (input.value === '') {
-                input.value = 'Rp. ';
-            }
-        }
-    </script>

@@ -21,16 +21,16 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <span>Bank Pelanggan</span>
                     <!-- Button berada di ujung kanan -->
-                
+
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple">
                         <thead>
                             <tr>
+                                <th>Nama Customer</th>
                                 <th>Nama Akun</th>
                                 <th>Nomor Akun</th>
                                 <th>Nama Pemegang Akun</th>
-                                <th>Tipe Akun</th>
                                 <th>Aksi</th>
                             </tr>
                         </thead>
@@ -38,23 +38,10 @@
                             <!-- Looping data destinasi -->
                             <?php foreach ($bankpelanggan as $bp): ?>
                                 <tr>
+                                    <td><?php echo esc($bp['full_name']); ?></td>
                                     <td><?php echo esc($bp['account_name']); ?></td>
                                     <td><?php echo esc($bp['account_number']); ?></td>
                                     <td><?php echo esc($bp['account_holder_name']); ?></td>
-                                    <td>
-                                        <?php
-                                        if ($bp['account_type'] === 'bank account') {
-                                            echo 'Akun Bank';
-                                        } elseif ($bp['account_type'] === 'other') {
-                                            echo 'Lainnya';
-                                        } else {
-                                            echo esc($bp['account_type']);
-                                        }
-                                        ?>
-                                    </td>
-                                    <td>
-                                    <a href="<?= site_url('bali/bankpelanggan/delete/' . $bp['custbank_id']); ?>" class="btn btn-danger btn-sm" onclick="return confirm('Anda yakin ingin menghapus bank ini?');">Hapus</a>
-                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>

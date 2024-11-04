@@ -22,7 +22,7 @@ class PaymentModel extends Model
         $builder->select('
             payments.*, 
             bookings.booking_id,
-            bookings.user_id,
+            bookings.customer_id,
             bookings.total_amount,
             bookings.booking_status,
             bank_customer.custbank_id,
@@ -42,19 +42,19 @@ class PaymentModel extends Model
     $builder->select('
         payments.*, 
         bookings.booking_id,
-        bookings.user_id,
+        bookings.customer_id,
         bookings.total_amount,
         bookings.booking_status,
-        bank_customer.custbank_id,
-        bank_customer.account_number,
-        bank_customer.account_holder_name
+        customer.customer_id,
+        customer.account_number,
+        customer.account_holder_name
     ');
     $builder->join('bookings', 'bookings.booking_id = payments.booking_id', 'left');
-    $builder->join('bank_customer', 'bank_customer.custbank_id = payments.custbank_id', 'left');
+    $builder->join('customer', 'customer.customer_id = payments.customer_id', 'left');
 
     // Filter data berdasarkan user_id yang login
     if ($userId !== null) {
-        $builder->where('bookings.user_id', $userId);
+        $builder->where('bookings.customer_id', $userId);
     }
 
     return $builder->get()->getResultArray();

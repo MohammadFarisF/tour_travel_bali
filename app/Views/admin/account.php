@@ -25,7 +25,7 @@
                         <div class="card-header">Profile Picture Preview</div>
                         <div class="card-body text-center">
                             <!-- Profile picture image-->
-                            <img id="profilePicturePreview" class="img-account-profile rounded-circle mb-2" src="<?= base_url('uploads/user/' . $user['photo']) ?>" alt="Profile Picture" style="width: 150px; height: 150px; object-fit: cover;" />
+                            <img id="profilePicturePreview" class="img-account-profile rounded-circle mb-2" src="<?= base_url('uploads/admin/' . $user['photo']) ?>" alt="Profile Picture" style="width: 150px; height: 150px; object-fit: cover;" />
                             <!-- Profile picture help block-->
                             <div class="small font-italic text-muted mb-4">JPG atau PNG, maksimal ukuran 5 MB</div>
                             <!-- Profile picture upload form-->
@@ -38,8 +38,21 @@
                 <div class="col-xl-8">
                     <!-- Account details card-->
                     <div class="card mb-4">
-                        <div class="card-header">Account Details</div>
+                        <div class="card-header d-flex justify-content-between align-items-center">Account Details
+                            <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                                Ubah Password
+                            </button>
+                        </div>
                         <div class="card-body">
+                            <?php if (session()->getFlashdata('message')): ?>
+                                <div class="alert alert-success" role="alert">
+                                    <?= session()->getFlashdata('message') ?>
+                                </div>
+                            <?php elseif (session()->getFlashdata('error')): ?>
+                                <div class="alert alert-danger" role="alert">
+                                    <?= session()->getFlashdata('error') ?>
+                                </div>
+                            <?php endif; ?>
                             <div class="mb-3">
                                 <label class="small mb-1" for="inputfullname">Full Name</label>
                                 <input class="form-control" id="inputfullname" type="text" name="full_name" value="<?= $user['full_name'] ?>" placeholder="Enter your fullname" />
@@ -59,7 +72,39 @@
 
                             <button class="btn btn-primary" type="submit">Save changes</button>
                             </form>
+
+                            <!-- Button untuk membuka modal ubah password -->
+
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="changePasswordModalLabel">Ubah Password</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="changePasswordForm" action="<?= base_url('bali/updatePassword') ?>" method="post">
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">Password Lama</label>
+                                <input type="password" class="form-control" id="currentPassword" name="current_password" placeholder="Masukkan Password Lama..." required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">Password Baru</label>
+                                <input type="password" class="form-control" id="newPassword" name="new_password" placeholder="Masukkan Password Baru..." required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmNewPassword" class="form-label">Konfirmasi Password Baru</label>
+                                <input type="password" class="form-control" id="confirmNewPassword" name="confirm_new_password" placeholder="Masukkan Kembali Password Baru..." required>
+                            </div>
+                            <div class="text-danger" id="passwordError" style="display: none;">Password baru tidak boleh sama dengan password lama.</div>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -90,4 +135,17 @@
             };
             reader.readAsDataURL(file);
         }
+
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const errorText = document.getElementById('passwordError');
+
+            if (currentPassword === newPassword) {
+                e.preventDefault(); // Mencegah form submit jika password baru sama dengan yang lama
+                errorText.style.display = 'block';
+            } else {
+                errorText.style.display = 'none';
+            }
+        });
     </script>
