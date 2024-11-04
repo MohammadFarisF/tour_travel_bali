@@ -33,7 +33,7 @@
                                         </div>
                                     <?php endif; ?>
                                     <!-- Login form-->
-                                    <form action="<?= base_url('login/proses') ?>" method="post">
+                                    <form action="<?= base_url() ?>login/proses" method="post">
                                         <!-- Form Group (email address / username) -->
                                         <div class="mb-3">
                                             <label class="small mb-1" for="inputEmail">Email</label>
@@ -69,8 +69,8 @@
             </footer>
         </div>
     </div>
-    <script src="<?= base_url() ?>https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-    <script src="<?= base_url() ?>js/scripts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="<?= base_url() ?>asset_admin/js/scripts.js"></script>
 </body>
 
 </html>

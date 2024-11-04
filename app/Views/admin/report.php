@@ -1,5 +1,3 @@
-<!-- app/Views/admin/paket_edit.php -->
-
 <div id="layoutSidenav_content">
     <main>
         <header class="page-header page-header-dark bg-gradient-primary-to-secondary pb-10">
@@ -16,6 +14,7 @@
                 </div>
             </div>
         </header>
+
         <!-- Main page content-->
         <div class="container-xxl px-4 mt-n10">
             <div class="card mb-4">
@@ -24,94 +23,77 @@
                     <div class="sbp-preview">
                         <div class="sbp-preview-content">
                             <form id="reportForm" method="post" action="<?= base_url() ?>bali/report/printReport" target="_blank">
-                                <div class="mb-3">
-                                    <label for="litepickerDaily">Pilih Tanggal Harian:</label>
-                                    <div class="input-group">
-                                        <input type="text" id="litepickerDaily" name="dailyDate" class="form-control" />
-                                        <input type="hidden" name="reportType" value="daily">
-                                        <button type="submit" class="btn btn-primary">Cetak Laporan Harian</button>
-                                    </div>
-                                </div>
+                                <div class="row g-3 align-items-center">
 
-                                <!-- Pilihan Bulanan -->
-                                <div class="mb-3">
-                                    <label for="litepickerMonthly">Pilih Rentang Bulan:</label>
-                                    <div class="input-group">
-                                        <input type="text" id="litepickerMonthly" name="monthlyRange" class="form-control" />
-                                        <input type="hidden" name="reportType" value="monthly">
-                                        <button type="submit" class="btn btn-primary">Cetak Laporan Bulanan</button>
+                                    <!-- Filter Status Booking -->
+                                    <div class="col-auto d-flex justify-content-between align-items-center">
+                                        <label for="statusFilter" class="form-label" style="padding-right: 2px;">Status:</label>
+                                        <select id="statusFilter" name="bookingStatus" class="form-select">
+                                            <option value="all" selected>All Statuses</option>
+                                            <option value="confirmed">Sudah Dibayar</option>
+                                            <option value="pending">Belum Dibayar</option>
+                                            <option value="cancelled">Dibatalkan</option>
+                                            <option value="completed">Selesai</option>
+                                        </select>
                                     </div>
-                                </div>
 
-                                <!-- Pilihan Tahunan -->
-                                <div class="mb-3">
-                                    <label for="litepickerYearly">Pilih Rentang Tahun:</label>
-                                    <div class="input-group">
-                                        <input type="text" id="litepickerYearly" name="yearlyRange" class="form-control" />
-                                        <input type="hidden" name="reportType" value="yearly">
-                                        <button type="submit" class="btn btn-primary">Cetak Laporan Tahunan</button>
+                                    <!-- Filter Time Period -->
+                                    <div class="col-auto d-flex justify-content-between align-items-center">
+                                        <label for="timeFilter" class="form-label">Time Period:</label>
+                                        <select id="timeFilter" name="timePeriod" class="form-select">
+                                            <option value="all" selected>All Time</option>
+                                            <option value="daily">Harian</option>
+                                            <option value="monthly">Bulanan</option>
+                                            <option value="yearly">Tahunan</option>
+                                        </select>
                                     </div>
-                                </div>
 
-                                <!-- All-time -->
-                                <div class="mb-3">
-                                    <label for="litepickerAlltime">Seluruh Data:</label>
-                                    <div class="input-group">
-                                        <input type="hidden" name="reportType" value="all-time">
-                                        <button type="submit" class="btn btn-primary">Cetak Semua Data</button>
+                                    <!-- Show Button -->
+                                    <div class="col-auto float-end">
+                                        <button type="submit" class="btn btn-primary">Print</button>
                                     </div>
+
                                 </div>
                             </form>
+
+                            <!-- Tabel Data Booking -->
+                            <div class="table-responsive mt-4">
+                                <table class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama Pemesan</th>
+                                            <th>Paket</th>
+                                            <th>Destinasi</th>
+                                            <th>Jumlah Orang</th>
+                                            <th>Tanggal Pelaksanaan</th>
+                                            <th>Kendaraan</th>
+                                            <th>Total Pembayaran</th>
+                                            <th>Status Pemesanan</th>
+                                            <th>Status Pembayaran</th>
+                                            <th>Status Refund</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php foreach ($reportData as $data): ?>
+                                            <tr>
+                                                <td><?= esc($data['user_name']) ?></td>
+                                                <td><?= esc($data['package_name']) ?></td>
+                                                <td><?= esc($data['destination_names']) ?></td>
+                                                <td><?= esc($data['total_people']) ?></td>
+                                                <td><?= esc($data['departure_date']) ?> - <?= esc($data['return_date']) ?></td>
+                                                <td><?= esc($data['vehicle_name']) ?></td>
+                                                <td><?= esc($data['total_amount']) ?></td>
+                                                <td><?= esc($data['booking_status']) ?></td>
+                                                <td><?= esc($data['payment_status']) ?></td>
+                                                <td><?= esc($data['refund_status']) ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-    <script>
-        window.addEventListener("DOMContentLoaded", (event) => {
-            // Litepicker untuk Tanggal Harian (default hari ini)
-            const litepickerDaily = document.getElementById("litepickerDaily");
-            if (litepickerDaily) {
-                new Litepicker({
-                    element: litepickerDaily,
-                    singleMode: true,
-                    format: "DD-MM-YYYY",
-                    startDate: new Date(), // Default ke hari ini
-                });
-            }
-
-            // Litepicker untuk Rentang Bulanan
-            const litepickerMonthly = document.getElementById("litepickerMonthly");
-            if (litepickerMonthly) {
-                new Litepicker({
-                    element: litepickerMonthly,
-                    singleMode: false, // Memungkinkan pemilihan rentang bulan
-                    format: "MMMM YYYY", // Format bulan
-                    numberOfMonths: 2, // Menampilkan 2 bulan sekaligus
-                    numberOfColumns: 2,
-                    dropdowns: {
-                        minYear: 2000,
-                        maxYear: new Date().getFullYear(),
-                        months: true,
-                        years: true,
-                    },
-                });
-            }
-
-            // Litepicker untuk Rentang Tahun
-            const litepickerYearly = document.getElementById("litepickerYearly");
-            if (litepickerYearly) {
-                new Litepicker({
-                    element: litepickerYearly,
-                    format: "YYYY", // Format hanya tahun
-                    dropdowns: {
-                        minYear: 2000,
-                        maxYear: new Date().getFullYear(),
-                        months: false, // Hanya menampilkan tahun
-                        years: true,
-                    },
-                });
-            }
-        });
-    </script>

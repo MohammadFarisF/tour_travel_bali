@@ -10,7 +10,7 @@ class RefundModel extends Model
     protected $primaryKey = 'refund_id';
 
     protected $allowedFields = [
-        'custbank_id', // ID dari tabel customer bank
+        'customer_id', // ID dari tabel customer bank
         'booking_id',  // ID dari tabel bookings
         'refund_amount',
         'refund_date',
@@ -20,8 +20,8 @@ class RefundModel extends Model
     // Fungsi untuk mendapatkan data refund beserta data terkait
     public function getRefunds()
     {
-        return $this->select('refunds.*, bank_customer.account_number, bank_customer.account_holder_name, bookings.booking_id, bookings.total_amount, bookings.created_at, bookings.booking_status')
-            ->join('bank_customer', 'bank_customer.custbank_id = refunds.custbank_id', 'left')
+        return $this->select('refunds.*, customer.account_number, customer.account_holder_name, bookings.booking_id, bookings.total_amount, bookings.created_at, bookings.booking_status')
+            ->join('customer', 'customer.customer_id = refunds.customer_id', 'left')
             ->join('bookings', 'bookings.booking_id = refunds.booking_id', 'left')
             ->get()
             ->getResultArray();

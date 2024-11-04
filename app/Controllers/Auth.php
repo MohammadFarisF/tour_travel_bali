@@ -3,54 +3,45 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
-use App\Models\usermodel;
+use App\Models\adminmodel;
+use App\Models\custmodel;
 
 class Auth extends BaseController
 {
     protected $userModel;
+    protected $customerModel;
 
     public function __construct()
     {
         // Inisialisasi model pengguna
-        $this->userModel = new usermodel();
+        $this->userModel = new adminmodel();
+        $this->customerModel = new CustModel();
     }
 
-    // Fungsi untuk login
     public function login()
     {
         if (session()->get('user_role')) {
-
-            // Jika sudah login, redirect berdasarkan role
-            if (session()->get('user_role') === 'admin') {
-                return redirect()->to('bali');
-            } elseif (session()->get('user_role') === 'owner') {
-                return redirect()->to('bali');
-            } elseif (session()->get('user_role') === 'customer') {
-                redirect()->to('');
-            }
+            return $this->redirectByRole(session()->get('user_role'));
         }
-        $data = [
-            'title' => 'Login',
-            'validation' => \Config\Services::validation(),
-        ];
-        return view('user/login', $data);
+
+        // Only initialize validation if POST method is detected
+        $data['validation'] = null;
+        if ($this->request->getMethod() === 'post') {
+            $data['validation'] = \Config\Services::validation();
+        }
+
+        echo view('auth/login', $data);
     }
 
-    // Fungsi untuk proses login
+
+    // Fungsi untuk login
     public function loginPost()
     {
-        // Cek jika sudah login
         if (session()->get('user_role')) {
-            if (session()->get('user_role') === 'admin') {
-                return redirect()->to('bali');
-            } elseif (session()->get('user_role') === 'owner') {
-                return redirect()->to('bali');
-            } elseif (session()->get('user_role') === 'customer') {
-                redirect()->to('');
-            }
+            return $this->redirectByRole(session()->get('user_role'));
         }
 
-        // Validasi input form login
+        // Validasi input login
         if ($this->validate([
             'email' => [
                 'rules' => 'required|valid_email',
@@ -66,82 +57,73 @@ class Auth extends BaseController
                 ]
             ]
         ])) {
-            // Ambil data pengguna berdasarkan email
-            $user = $this->userModel->where('email', $this->request->getPost('email'))->first();
+            $email = $this->request->getPost('email');
+            $password = $this->request->getPost('password');
 
-            if ($user) {
-                // Verifikasi password
-                if (password_verify($this->request->getPost('password'), $user['password'])) {
-                    // Cek role pengguna (misal 'admin' atau 'customer')
-                    if ($user['user_role'] === 'admin') {
-                        // Set sesi untuk admin
-                        session()->set([
-                            'userid' => $user['user_id'],
-                            'user_role' =>  $user['user_role'], // Set user_role sebagai admin
-                            'userEmail' => $user['email'],
-                            'userName' => $user['full_name'],
-                            'userPhoto' => $user['photo']
-                        ]);
+            // Cek di tabel admin terlebih dahulu
+            $user = $this->userModel->where('email', $email)->first();
 
-                        // Redirect ke halaman admin (/bali)
-                        return redirect()->to(base_url('/bali'));
-                    } elseif ($user['user_role'] === 'owner') {
-                        // Set sesi untuk customer
-                        session()->set([
-                            'userid' => $user['user_id'],
-                            'user_role' =>  $user['user_role'], // Set user_role sebagai customer
-                            'userEmail' => $user['email'],
-                            'userName' => $user['full_name'],
-                            'userPhoto' => $user['photo']
-                        ]);
+            if (!$user) {
+                // Jika tidak ditemukan di admin, cek di tabel customer
+                $user = $this->customerModel->where('email', $email)->first();
+            }
 
-                        // Redirect ke halaman customer (/)
-                        return redirect()->to(base_url('/bali'));
-                    } elseif ($user['user_role'] === 'customer') {
-                        session()->set([
-                            'userid' => $user['user_id'],
-                            'user_role' =>  $user['user_role'], // Set user_role sebagai customer
-                            'userEmail' => $user['email'],
-                            'userName' => $user['full_name'],
-                            'userPhoto' => $user['photo']
-                        ]);
-                        return redirect()->to(base_url(''));
-                    }
-                } else {
-                    // Password salah
-                    session()->setFlashdata('danger', 'Password tidak tepat.');
-                    return redirect()->to(base_url('login'));
+            if ($user && password_verify($password, $user['password'])) {
+                // Set session dasar
+                $sessionData = [
+                    'userid' => $user['user_id'] ?? $user['customer_id'],
+                    'user_role' => $user['user_role'],
+                    'userEmail' => $user['email'],
+                    'userName' => $user['full_name'],
+                    'userPhoto' => $user['photo'] ?? null
+                ];
+
+                // Tambahkan session tambahan jika role adalah customer
+                if ($user['user_role'] === 'customer') {
+                    $sessionData['gender'] = $user['gender'];
+                    $sessionData['phone_number'] = $user['phone_number'];
+                    $sessionData['tgl_lahir'] = $user['tgl_lahir'];
+                    $sessionData['citizen'] = $user['citizen'];
                 }
+
+                // Set semua session
+                session()->set($sessionData);
+
+                // Redirect berdasarkan role
+                return $this->redirectByRole($user['user_role']);
             } else {
-                // Pengguna tidak ditemukan
-                session()->setFlashdata('danger', 'Email tidak ditemukan.');
+                session()->setFlashdata('danger', 'Email atau password salah.');
                 return redirect()->to(base_url('login'));
             }
         } else {
             $data['validation'] = \Config\Services::validation();
-            return view('user/login', $data);
+            return view('auth/login', $data);
+        }
+    }
+
+    // Fungsi untuk redirect berdasarkan role
+    private function redirectByRole($role)
+    {
+        if ($role === 'admin') {
+            return redirect()->to(base_url('bali'));
+        } elseif ($role === 'owner') {
+            return redirect()->to(base_url('bali'));
+        } elseif ($role === 'customer') {
+            return redirect()->to(base_url(''));
         }
     }
 
     public function register()
     {
         if (session()->get('user_role')) {
-
-            // Jika sudah login, redirect berdasarkan role
-            if (session()->get('user_role') === 'admin') {
-                return redirect()->to('bali');
-            } elseif (session()->get('user_role') === 'owner') {
-                return redirect()->to('bali');
-            } elseif (session()->get('user_role') === 'customer') {
-                redirect()->to('');
-            }
+            return $this->redirectByRole(session()->get('user_role'));
         }
-        $data = [
-            'title' => 'Register',
-            'validation' => \Config\Services::validation(),
-        ];
+        $data['validation'] = null;
+        if ($this->request->getMethod() === 'post') {
+            $data['validation'] = \Config\Services::validation();
+        }
 
-        return view('user/register', $data);
+        echo view('auth/register', $data);
     }
 
     // Fungsi untuk proses registrasi
@@ -156,7 +138,7 @@ class Auth extends BaseController
                 ]
             ],
             'email' => [
-                'rules' => 'required|valid_email|is_unique[users.email]',
+                'rules' => 'required|valid_email|is_unique[customer.email]',
                 'errors' => [
                     'required' => 'Email tidak boleh kosong.',
                     'valid_email' => 'Format email tidak valid.',
@@ -192,9 +174,9 @@ class Auth extends BaseController
         }
 
         // Generate User ID otomatis
-        $lastUser = $this->userModel->orderBy('user_id', 'DESC')->first();
+        $lastUser = $this->customerModel->orderBy('customer_id', 'DESC')->first();
         if ($lastUser) {
-            $lastId = substr($lastUser['user_id'], 1); // Ambil angka setelah "C"
+            $lastId = substr($lastUser['customer_id'], 1); // Ambil angka setelah "C"
             $newId = 'C' . str_pad($lastId + 1, 3, '0', STR_PAD_LEFT); // Generate ID baru
         } else {
             $newId = 'C001'; // ID pertama
@@ -205,17 +187,17 @@ class Auth extends BaseController
 
         // Data yang akan disimpan ke database
         $data = [
-            'user_id' => $newId,
+            'customer_id' => $newId,
             'full_name' => $this->request->getPost('fullname'),
             'email' => $this->request->getPost('email'),
             'phone_number' => $this->request->getPost('no_hp'),
             'password' => $passwordHash,
-            'user_role' => 'customer', // Set user role ke 'customer'
+            'user_role' => 'customer',
             'created_at' => date('Y-m-d H:i:s'), // Set waktu pembuatan
         ];
 
         // Simpan data ke database
-        $this->userModel->insert($data);
+        $this->customerModel->insert($data);
 
         // Set flashdata alert bahwa akun berhasil dibuat
         session()->setFlashdata('success', 'Akun telah berhasil dibuat.');
