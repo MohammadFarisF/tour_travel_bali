@@ -7,7 +7,7 @@
                         <div class="col-auto mt-4">
                             <h1 class="page-header-title">
                                 <div class="page-header-icon"><i data-feather="briefcase"></i></div>
-                                Payment
+                                Pemesanan
                             </h1>
                         </div>
                     </div>
@@ -25,76 +25,112 @@
                         <thead>
                             <tr>
                                 <th>Kode Booking</th>
-                                <th>Nama Akun Pembayaran</th>
-                                <th>Nomor Akun Pembayaran</th>
-                                <th>Metode Pembayaran</th>
-                                <th>Tanggal Pembayaran</th>
-                                <th>Status Pembayaran</th>
-                                <th>Bukti Pembayaran</th>
-                                <th>Status</th>
+                                <th>Nama Paket</th>
+                                <th>Alamat</th>
+                                <th>Tanggal Pemesanan</th>
+                                <th>Total Bayar</th>
+                                <th>Status Pemesanan</th>
+                                <th>Gambar</th>
+                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <?php foreach ($pembayaran as $bayar): ?>
+                        <?php foreach ($bookings as $booking): ?>
                                 <tr>
-                                    <td><?= esc($bayar['booking_id']); ?></td>
-                                    <td><?= esc($bayar['account_holder_name']); ?></td>
-                                    <td><?= esc($bayar['account_number']); ?></td>
-                                    <td><?= esc($bayar['payment_method']); ?></td>
-                                    <td></td>
+                                    <td><?= $booking['booking_id']; ?></td>
+                                    <td><?= $booking['package_name']; ?></td>
+                                    <td><?= $booking['address']; ?></td>
+                                    <td><?= date('l, d F Y', strtotime($booking['created_at'])); ?></td> <!-- Format Tanggal Pemesanan -->
+                                    <td>Rp. <?= number_format($booking['total_amount'], 0, ',', '.'); ?></td> <!-- Format Total Bayar -->
                                     <td>
-                                        <?php if ($bayar['payment_status'] == 'pending'): ?>
-                                            <span class="badge bg-warning text-white">Pending</span>
-                                        <?php elseif ($bayar['payment_status'] == 'approved'): ?>
-                                            <span class="badge bg-success text-white">Approved</span>
-                                        <?php elseif ($bayar['payment_status'] == 'rejected'): ?>
-                                            <span class="badge bg-danger text-white">Rejected</span>
-                                        <?php endif; ?>
+                                        <?php
+                                        switch ($booking['booking_status']) {
+                                            case 'pending':
+                                                echo 'Belum dibayar';
+                                                break;
+                                            case 'confirmed':
+                                                echo 'Sudah dibayar';
+                                                break;
+                                            case 'cancelled':
+                                                echo 'Pesanan dibatalkan';
+                                                break;
+                                            case 'completed':
+                                                echo 'Trip selesai';
+                                                break;
+                                            default:
+                                                echo 'Status tidak diketahui';
+                                                break;
+                                        }
+                                        ?>
                                     </td>
+                                    <td>ini kolom gambar</td>
                                     <td>
-                                        <?php if (!empty($bayar['proof_of_payment'])): ?>
-                                            <img src="<?= base_url('uploads/payments/' . $bayar['proof_of_payment']); ?>"
-                                                alt="Bukti Pembayaran"
-                                                style="width: 100px; height: auto;"
-                                                onclick="window.open(this.src)">
-                                        <?php else: ?>
-                                            Tidak ada bukti
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if ($bayar['payment_status'] == 'pending'): ?>
-                                            <div class="dropdown">
-                                                <button class="btn btn-sm btn-light dropdown-toggle"
-                                                    type="button"
-                                                    id="dropdownMenuButton"
-                                                    data-bs-toggle="dropdown"
-                                                    aria-expanded="false">
-                                                    Aksi
-                                                </button>
-                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                                    <li>
-                                                        <form action="<?= base_url('bali/payment/updateStatus') ?>" method="post">
-                                                            <input type="hidden" name="payment_id" value="<?= $bayar['payment_id'] ?>">
-                                                            <input type="hidden" name="status" value="approved">
-                                                            <button type="submit" class="dropdown-item text-success">
-                                                                <i data-feather="check"></i> Approve
-                                                            </button>
-                                                        </form>
-                                                    </li>
-                                                    <li>
-                                                        <form action="<?= base_url('bali/payment/updateStatus') ?>" method="post">
-                                                            <input type="hidden" name="payment_id" value="<?= $bayar['payment_id'] ?>">
-                                                            <input type="hidden" name="status" value="rejected">
-                                                            <button type="submit" class="dropdown-item text-danger">
-                                                                <i data-feather="x"></i> Reject
-                                                            </button>
-                                                        </form>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        <?php endif; ?>
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal<?= $booking['booking_id']; ?>">
+                                            Detail
+                                        </button>
                                     </td>
                                 </tr>
+
+                                <!-- Modal untuk detail pemesanan -->
+                                <div class="modal fade" id="detailModal<?= $booking['booking_id']; ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Detail Pemesanan <?= $booking['booking_id']; ?></h5>
+                                                <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <p><strong>Nama Pemesan:</strong> <?= $booking['user_name']; ?></p>
+                                                <p><strong>Nama Paket:</strong> <?= $booking['package_name']; ?></p>
+                                                <p><strong>Destinasi Paket:</strong> <?= $booking['destination_names']; ?></p>
+                                                <p><strong>Alamat:</strong> <?= $booking['address']; ?></p>
+                                                <p><strong>Jumlah Orang:</strong> <?= $booking['total_people']; ?> Orang</p>
+                                                <p><strong>Tanggal Pelaksanaan:</strong> <?= date('l, d F Y', strtotime($booking['departure_date'])) . ' - ' . date('l, d F Y', strtotime($booking['return_date'])); ?></p> <!-- Format Tanggal Pelaksanaan -->
+                                                <p><strong>Kendaraan Digunakan:</strong> <?= $booking['vehicle_name']; ?></p>
+                                                <p><strong>Total Bayar:</strong> Rp. <?= number_format($booking['total_amount'], 0, ',', '.'); ?></p>
+                                                <p><strong>Status Pemesanan:</strong>
+                                                    <?php
+                                                    switch ($booking['booking_status']) {
+                                                        case 'pending':
+                                                            echo 'Belum dibayar';
+                                                            break;
+                                                        case 'confirmed':
+                                                            echo 'Sudah dibayar';
+                                                            break;
+                                                        case 'cancelled':
+                                                            echo 'Pesanan dibatalkan';
+                                                            break;
+                                                        case 'completed':
+                                                            echo 'Trip selesai';
+                                                            break;
+                                                    }
+                                                    ?>
+                                                </p>
+                                                <p><strong>Status Pembayaran:</strong>
+                                                    <?php
+                                                    switch ($booking['payment_status']) {
+                                                        case 'pending':
+                                                            echo 'Belum dikonfirmasi';
+                                                            break;
+                                                        case 'paid':
+                                                            echo 'Sudah dikonfirmasi';
+                                                            break;
+                                                        case 'refund_processed':
+                                                            echo 'Proses pengembalian dana';
+                                                            break;
+                                                        default:
+                                                            echo 'Status tidak diketahui';
+                                                            break;
+                                                    }
+                                                    ?>
+                                                </p>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button class="btn btn-secondary" type="button" data-bs-dismiss="modal">Tutup</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             <?php endforeach; ?>
                         </tbody>
 
