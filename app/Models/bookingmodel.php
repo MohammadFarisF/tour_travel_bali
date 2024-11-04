@@ -116,4 +116,31 @@ class BookingModel extends Model
         return $builder->get()->getResultArray();
 
     }
+
+    public function getBookingByUserId($userId)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('
+            bookings.*, 
+            users.full_name AS user_name, 
+            packages.package_name AS package_name, 
+            GROUP_CONCAT(destinations.destination_name ORDER BY destinations.destination_name SEPARATOR ", ") AS destination_names,  
+            MAX(vehicles.vehicle_name) AS vehicle_name
+        ');
+
+        // Join ke tabel terkait
+        $builder->join('users', 'users.user_id = bookings.user_id', 'left');
+        $builder->join('packages', 'packages.package_id = bookings.package_id', 'left');
+        $builder->join('booking_destinations', 'booking_destinations.booking_id = bookings.booking_id', 'left');
+        $builder->join('destinations', 'destinations.destination_id = booking_destinations.destination_id', 'left');
+        $builder->join('booking_vehicles', 'booking_vehicles.booking_id = bookings.booking_id', 'left');
+        $builder->join('vehicles', 'vehicles.vehicle_id = booking_vehicles.vehicle_id', 'left');
+
+        // Filter berdasarkan user_id
+        $builder->where('bookings.user_id', $userId);
+        $builder->groupBy('bookings.booking_id');
+
+        return $builder->get()->getResultArray();
+    }
+
 }

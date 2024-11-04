@@ -49,4 +49,18 @@ class Review extends BaseController
         $this->reviewModel->delete($id);
         return redirect()->to(base_url('/bali/review'));
     }
+
+    public function cust_index()
+{
+    $userId = session()->get('userid'); // Dapatkan user_id dari session
+    $data = [
+        'title' => 'Data Review',
+        'review' => $this->reviewModel->getReview($userId), // Mengambil review berdasarkan user_id
+    ];
+    
+    echo view('user/template/header', $data);
+    echo view('user/review', $data);
+    echo view('user/template/footer');
+}
+
 }

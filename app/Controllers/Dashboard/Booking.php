@@ -31,4 +31,18 @@ class Booking extends BaseController
         echo view('admin/booking', $data); // Pastikan view ini ada untuk menampilkan daftar bank pelanggan
         echo view('admin/Template/footer');
     }
+
+    public function cust_index()
+    {
+        $userId = session()->get('userid'); // Ambil user_id dari session
+        $data = [
+            'title' => 'Pemesanan',
+            'bookings' => $this->bookingModel->getBookingByUserId($userId),
+        ];
+    
+        echo view('user/template/header', $data);
+        echo view('user/payment', $data);
+        echo view('user/template/footer');   
+    }
+    
 }

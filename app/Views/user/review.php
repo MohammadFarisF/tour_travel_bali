@@ -30,11 +30,19 @@
                                 <th>Rating</th>
                                 <th>Review Text</th>
                                 <th>Review Date</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                        <?php foreach ($review as $ulasan): ?>
+                                <tr>
+                                    <td><?php echo esc($ulasan['booking_id']); ?></td>
+                                    <td><?php echo esc($ulasan['full_name']); ?></td>
+                                    <td><?php echo esc($ulasan['package_name']); ?></td>
+                                    <td><?php echo esc($ulasan['rating']); ?></td>
+                                    <td><?php echo esc($ulasan['review_text']); ?></td>
+                                    <td><?php echo esc($ulasan['review_date']); ?></td>
+                                </tr>
+                            <?php endforeach; ?>
                         </tbody>
                         
                     </table>

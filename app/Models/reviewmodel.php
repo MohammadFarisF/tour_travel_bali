@@ -13,8 +13,6 @@ class ReviewModel extends Model
     protected $primaryKey = 'review_id';
 
     protected $foreignKey = ['customer_id', 'package_id'];
-
-
     // Field yang dapat dimodifikasi
     protected $allowedFields = [
         'review_id',
@@ -28,8 +26,8 @@ class ReviewModel extends Model
         'updated_at'
     ];
 
-    // Fungsi untuk mendapatkan semua data customer
-    public function getReview($id = false)
+    // Fungsi untuk mendapatkan data review berdasarkan user_id
+    public function getReview($userId = false)
     {
         $builder = $this->db->table($this->table);
         $builder->select('
@@ -39,11 +37,15 @@ class ReviewModel extends Model
             customer.full_name,
             packages.package_id,
             packages.package_name
-
         ');
         $builder->join('bookings', 'bookings.booking_id = reviews.booking_id', 'left');
         $builder->join('customer', 'customer.customer_id = reviews.customer_id', 'left');
         $builder->join('packages', 'packages.package_id = reviews.package_id', 'left');
+
+        // Filter based on user_id if provided
+        if ($userId) {
+            $builder->where('reviews.user_id', $userId);
+        }
 
         return $builder->get()->getResultArray();
     }

@@ -36,6 +36,7 @@ $routes->get('/about', 'User::about');
 $routes->get('/booking', 'User::booking', ['filter' => 'userFilter']);
 $routes->get('/contact', 'User::contact');
 
+
 $routes->get('profile/payment', 'Dashboard\Payment::cust_index', ['filter' => 'userFilter']);
 $routes->get('profile/my_account', 'User::my_account', ['filter' => 'userFilter']);
 $routes->get('profile/review', 'User::review', ['filter' => 'userFilter']);
