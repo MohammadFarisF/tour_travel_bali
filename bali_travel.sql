@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Oct 28, 2024 at 04:39 PM
+-- Generation Time: Nov 04, 2024 at 11:27 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -114,27 +114,28 @@ DELIMITER ;
 -- --------------------------------------------------------
 
 --
--- Table structure for table `bank_customer`
+-- Table structure for table `admin`
 --
 
-CREATE TABLE `bank_customer` (
-  `custbank_id` int NOT NULL,
-  `account_name` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `account_number` varchar(50) COLLATE utf8mb4_general_ci NOT NULL,
-  `account_holder_name` varchar(100) COLLATE utf8mb4_general_ci NOT NULL,
-  `account_type` enum('bank account','other') COLLATE utf8mb4_general_ci NOT NULL,
+CREATE TABLE `admin` (
+  `user_id` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `full_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `phone_number` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_role` enum('customer','admin','owner') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `photo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `bank_customer`
+-- Dumping data for table `admin`
 --
 
-INSERT INTO `bank_customer` (`custbank_id`, `account_name`, `account_number`, `account_holder_name`, `account_type`, `created_at`, `updated_at`) VALUES
-(1, 'Bank Central Asia (BCA)', '1456325898', 'Muhammad Firjatullah', 'bank account', '2024-10-07 09:32:55', '2024-10-07 09:32:55'),
-(2, 'Bank Mandiri', '159456753852', 'Ahmad Basuri', 'bank account', '2024-10-07 09:36:27', '2024-10-07 09:36:27'),
-(3, 'Paypal', '0845675958641', 'Johnstone Tulehu', 'other', '2024-10-07 09:44:00', '2024-10-07 09:44:00');
+INSERT INTO `admin` (`user_id`, `full_name`, `email`, `password`, `phone_number`, `user_role`, `photo`, `created_at`, `updated_at`) VALUES
+('U001', 'Mohammad Faris Fawwaz', 'farisfawwaz123@gmail.com', '$2y$10$PgHv21Iba7PotRA.NeFla.HX1tNelgVlIAqmlPvdzK4WHd8QSLkia', '081234567891', 'owner', '1730129683_bf5804dbb1ce67bf8530.jpg', '2024-10-07 02:03:00', '2024-11-03 21:35:51'),
+('U002', 'Muhammad Fauzan Azhar', 'mfauzanazhar12@gmail.com', '$2y$10$CCrIoiQ77QgPRrON3e8//OaMHrdauZZ3HWxjMDd6w4R1PQQsUBy8a', '089843213412', 'admin', '1730128767_15f3f8e75d79db270b7d.png', '2024-10-07 02:07:29', '2024-10-28 15:19:27');
 
 -- --------------------------------------------------------
 
@@ -170,26 +171,19 @@ INSERT INTO `bank_travel` (`trabank_id`, `account_number`, `account_holder_name`
 
 CREATE TABLE `bookings` (
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `user_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `customer_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `package_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `address` text COLLATE utf8mb4_general_ci NOT NULL,
   `total_people` int DEFAULT NULL,
   `departure_date` date DEFAULT NULL,
   `return_date` date DEFAULT NULL,
   `total_amount` decimal(10,2) DEFAULT NULL,
+  `cust_request` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `booking_status` enum('pending','confirmed','cancelled','completed') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `payment_status` enum('pending','paid','refund_processed') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `bookings`
---
-
-INSERT INTO `bookings` (`booking_id`, `user_id`, `package_id`, `address`, `total_people`, `departure_date`, `return_date`, `total_amount`, `booking_status`, `payment_status`, `created_at`, `updated_at`) VALUES
-('B001', 'C003', 'P01', 'Jl. Bali No.1', 5, '2024-10-30', '2024-10-30', '10000000.00', 'pending', 'pending', '2024-10-28 16:16:32', '2024-10-28 16:16:32'),
-('B002', 'C003', 'P02', 'Jl. Medan Bali 1 No.9', 3, '2024-10-31', '2024-10-31', '2000000.00', 'confirmed', 'paid', '2024-10-28 16:26:11', '2024-10-28 16:26:11');
 
 --
 -- Triggers `bookings`
@@ -218,15 +212,6 @@ CREATE TABLE `booking_destinations` (
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `destination_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `booking_destinations`
---
-
-INSERT INTO `booking_destinations` (`booking_destination_id`, `booking_id`, `destination_id`) VALUES
-(1, 'B001', 'D01'),
-(2, 'B001', 'D02'),
-(3, 'B002', 'D03');
 
 --
 -- Triggers `booking_destinations`
@@ -261,13 +246,36 @@ CREATE TABLE `booking_vehicles` (
   `vehicle_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `booking_vehicles`
+-- Table structure for table `customer`
 --
 
-INSERT INTO `booking_vehicles` (`booking_vehicle_id`, `booking_id`, `vehicle_id`) VALUES
-(1, 'B001', 7),
-(2, 'B002', 10);
+CREATE TABLE `customer` (
+  `customer_id` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
+  `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `full_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
+  `phone_number` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `photo` text COLLATE utf8mb4_general_ci,
+  `citizen` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `tgl_lahir` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `gender` enum('laki-laki','perempuan','tidak ada') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `account_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `account_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `account_holder_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `user_role` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `customer`
+--
+
+INSERT INTO `customer` (`customer_id`, `email`, `password`, `full_name`, `phone_number`, `photo`, `citizen`, `tgl_lahir`, `gender`, `account_name`, `account_number`, `account_holder_name`, `user_role`, `created_at`, `updated_at`) VALUES
+('C001', 'mfirjatullah123@gmail.com', '$2y$10$buajdfrcMRWhvt.RTZFUN.vS6NKh5dPDQVngJ5xU1KrJFlcJCvyWa', 'Muhammad Firjatullah', '081234513423', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'customer', '2024-11-03 14:16:26', '2024-11-03 21:16:26');
 
 -- --------------------------------------------------------
 
@@ -319,7 +327,8 @@ CREATE TABLE `packages` (
 
 INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `description`, `foto`, `created_at`, `updated_at`) VALUES
 ('P01', 'Paket Wisata Ubud', 'single_destination', 'Ubud is a unique and captivating tourist destination that offers a perfect blend of nature, culture, and art. Despite its increasing popularity, Ubud has managed to preserve its traditional charm and serene atmosphere, which are hallmarks of the area. With its stunning natural beauty, rich cultural heritage, and peaceful environment, Ubud stands out as one of Bali\'s hidden gems and is a must-visit for travelers.', '1729568758_e309f0d7e9cae72dcd8a.jpg', '2024-10-21 20:45:58', NULL),
-('P02', 'Paket Wisata Bedugul', 'single_destination', 'Bedugul is a famous mountain tourist area in Bali, Indonesia. Located in Tabanan Regency, about 50 kilometers from Denpasar, Bedugul is a favorite destination because of its cool air and beautiful natural views. Bedugul is surrounded by green hills, lakes and lush gardens.', '1729568779_5b6aa544ebe5b64901ab.jpg', '2024-10-21 20:46:19', NULL);
+('P02', 'Paket Wisata Bedugul', 'single_destination', 'Bedugul is a famous mountain tourist area in Bali, Indonesia. Located in Tabanan Regency, about 50 kilometers from Denpasar, Bedugul is a favorite destination because of its cool air and beautiful natural views. Bedugul is surrounded by green hills, lakes and lush gardens.', '1729568779_5b6aa544ebe5b64901ab.jpg', '2024-10-21 20:46:19', NULL),
+('P03', 'Paket Hamparan Perak', 'single_destination', 'hamparan perak adalah kota yang sangat luar biasa', '1730166231_0e6a73dd39350d1fb1f6.jpg', '2024-10-28 18:43:51', NULL);
 
 -- --------------------------------------------------------
 
@@ -330,19 +339,12 @@ INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `descripti
 CREATE TABLE `payments` (
   `payment_id` int NOT NULL,
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `custbank_id` int NOT NULL,
+  `customer_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `payment_method` enum('bank_transfer','other') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `payment_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `payment_status` enum('pending','validated','failed') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `proof_of_payment` text COLLATE utf8mb4_general_ci
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `payments`
---
-
-INSERT INTO `payments` (`payment_id`, `booking_id`, `custbank_id`, `payment_method`, `payment_date`, `payment_status`, `proof_of_payment`) VALUES
-(1, 'B002', 1, 'bank_transfer', '2024-10-28 16:28:10', 'validated', 'bukti_tf1.jpg');
 
 --
 -- Triggers `payments`
@@ -375,7 +377,7 @@ DELIMITER ;
 CREATE TABLE `refunds` (
   `refund_id` int NOT NULL,
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `custbank_id` int DEFAULT NULL,
+  `customer_id` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `refund_amount` decimal(10,2) DEFAULT NULL,
   `refund_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `refund_status` enum('completed','processed','rejected') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
@@ -403,39 +405,13 @@ DELIMITER ;
 CREATE TABLE `reviews` (
   `review_id` int NOT NULL,
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `user_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `customer_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `package_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `rating` tinyint NOT NULL,
   `review_text` text COLLATE utf8mb4_general_ci,
+  `review_photo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
   `review_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `users`
---
-
-CREATE TABLE `users` (
-  `user_id` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
-  `full_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `phone_number` varchar(20) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `user_role` enum('customer','admin','owner') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `photo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`user_id`, `full_name`, `email`, `password`, `phone_number`, `user_role`, `photo`, `created_at`, `updated_at`) VALUES
-('C003', 'Muhammad Firjatullah', 'mfirjatullah123@gmail.com', '$2y$10$3a30novDoKO5RhKHJzQxPe5Vf1VNCh9pzVf165JC0AwWlI3EhUI2W', '081234513423', 'customer', '', '2024-10-21 15:30:39', '2024-10-21 22:30:39'),
-('U001', 'Mohammad Faris Fawwaz', 'farisfawwaz123@gmail.com', '$2y$10$2PQlScjiE2ZcDzYibWmLoerml.f2K008MAGlm9k9t8wN3JWtb0qsW', '081234567891', 'owner', '1730129683_bf5804dbb1ce67bf8530.jpg', '2024-10-07 02:03:00', '2024-10-28 15:34:43'),
-('U002', 'Muhammad Fauzan Azhar', 'mfauzanazhar12@gmail.com', '$2y$10$CCrIoiQ77QgPRrON3e8//OaMHrdauZZ3HWxjMDd6w4R1PQQsUBy8a', '089843213412', 'admin', '1730128767_15f3f8e75d79db270b7d.png', '2024-10-07 02:07:29', '2024-10-28 15:19:27');
 
 -- --------------------------------------------------------
 
@@ -460,7 +436,7 @@ CREATE TABLE `vehicles` (
 --
 
 INSERT INTO `vehicles` (`vehicle_id`, `vehicle_name`, `license_plate`, `capacity`, `vehicle_type`, `vehicle_photo`, `status`, `created_at`, `updated_at`) VALUES
-(7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'in_use', '2024-09-30 21:44:20', '2024-10-28 09:24:43'),
+(7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'maintenance', '2024-09-30 21:44:20', '2024-10-28 19:00:13'),
 (9, 'Suzuki APV Putih', 'DK 1234 ABC', 8, 'APV', '1728292802_0e76ce8c9e2331e8ddef.png', 'available', '2024-10-07 02:20:02', '2024-10-28 09:24:53'),
 (10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'in_use', '2024-10-07 02:21:40', '2024-10-28 16:26:59');
 
@@ -469,10 +445,11 @@ INSERT INTO `vehicles` (`vehicle_id`, `vehicle_name`, `license_plate`, `capacity
 --
 
 --
--- Indexes for table `bank_customer`
+-- Indexes for table `admin`
 --
-ALTER TABLE `bank_customer`
-  ADD PRIMARY KEY (`custbank_id`);
+ALTER TABLE `admin`
+  ADD PRIMARY KEY (`user_id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `bank_travel`
@@ -485,8 +462,8 @@ ALTER TABLE `bank_travel`
 --
 ALTER TABLE `bookings`
   ADD PRIMARY KEY (`booking_id`),
-  ADD KEY `bookings_ibfk_1` (`user_id`),
-  ADD KEY `bookings_ibfk_2` (`package_id`);
+  ADD KEY `bookings_ibfk_2` (`package_id`),
+  ADD KEY `bookings_ibfk_1` (`customer_id`);
 
 --
 -- Indexes for table `booking_destinations`
@@ -503,6 +480,12 @@ ALTER TABLE `booking_vehicles`
   ADD PRIMARY KEY (`booking_vehicle_id`),
   ADD KEY `booking_vehicles_ibfk_2` (`vehicle_id`),
   ADD KEY `booking_vehicles_ibfk_1` (`booking_id`);
+
+--
+-- Indexes for table `customer`
+--
+ALTER TABLE `customer`
+  ADD PRIMARY KEY (`customer_id`);
 
 --
 -- Indexes for table `destinations`
@@ -523,15 +506,15 @@ ALTER TABLE `packages`
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`payment_id`),
   ADD KEY `payments_ibfk_1` (`booking_id`),
-  ADD KEY `payments_ibfk_2` (`custbank_id`);
+  ADD KEY `payments_ibfk_2` (`customer_id`);
 
 --
 -- Indexes for table `refunds`
 --
 ALTER TABLE `refunds`
   ADD PRIMARY KEY (`refund_id`),
-  ADD KEY `refunds_ibfk_3` (`custbank_id`),
-  ADD KEY `refunds_ibfk_1` (`booking_id`);
+  ADD KEY `refunds_ibfk_1` (`booking_id`),
+  ADD KEY `refunds_ibfk_2` (`customer_id`);
 
 --
 -- Indexes for table `reviews`
@@ -539,15 +522,8 @@ ALTER TABLE `refunds`
 ALTER TABLE `reviews`
   ADD PRIMARY KEY (`review_id`),
   ADD KEY `booking_id` (`booking_id`),
-  ADD KEY `reviews_ibfk_1` (`user_id`),
-  ADD KEY `reviews_ibfk_2` (`package_id`);
-
---
--- Indexes for table `users`
---
-ALTER TABLE `users`
-  ADD PRIMARY KEY (`user_id`),
-  ADD UNIQUE KEY `email` (`email`);
+  ADD KEY `reviews_ibfk_2` (`package_id`),
+  ADD KEY `reviews_ibfk_1` (`customer_id`);
 
 --
 -- Indexes for table `vehicles`
@@ -558,12 +534,6 @@ ALTER TABLE `vehicles`
 --
 -- AUTO_INCREMENT for dumped tables
 --
-
---
--- AUTO_INCREMENT for table `bank_customer`
---
-ALTER TABLE `bank_customer`
-  MODIFY `custbank_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `bank_travel`
@@ -615,7 +585,7 @@ ALTER TABLE `vehicles`
 -- Constraints for table `bookings`
 --
 ALTER TABLE `bookings`
-  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `bookings_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `bookings_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `packages` (`package_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
@@ -643,20 +613,20 @@ ALTER TABLE `destinations`
 --
 ALTER TABLE `payments`
   ADD CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`custbank_id`) REFERENCES `bank_customer` (`custbank_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `payments_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `refunds`
 --
 ALTER TABLE `refunds`
   ADD CONSTRAINT `refunds_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `refunds_ibfk_3` FOREIGN KEY (`custbank_id`) REFERENCES `bank_customer` (`custbank_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `refunds_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `packages` (`package_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
