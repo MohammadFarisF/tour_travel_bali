@@ -26,28 +26,28 @@
                                 <th>Nama Customer</th>
                                 <th>Email</th>
                                 <th>Nomor HP</th>
+                                <th>Tanggal Lahir</th>
+                                <th>Kewarganegaraan</th>
+                                <th>Jenis Kelamin</th>
                                 <th>Foto Profil</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($customer as $user): ?>
                                 <tr>
-                                    <td><?php echo esc($user['user_id']); ?></td>
+                                    <td><?php echo esc($user['customer_id']); ?></td>
                                     <td><?php echo esc($user['full_name']); ?></td>
                                     <td><?php echo esc($user['email']); ?></td>
                                     <td><?php echo esc($user['phone_number']); ?></td>
+                                    <td><?php echo esc($user['tgl_lahir']); ?></td>
+                                    <td><?php echo esc($user['citizen']); ?></td>
+                                    <td><?php echo esc($user['gender']); ?></td>
                                     <td>
                                         <?php if (!empty($user['photo'])): ?>
-                                            <img src="<?= base_url('uploads/user/' . esc($user['photo'])); ?>" alt="Foto Profil" style="width: 100px; height: auto;">
+                                            <img src="<?= base_url('uploads/customer/' . esc($user['photo'])); ?>" alt="Foto Profil" style="width: 100px; height: auto;">
                                         <?php else: ?>
                                             No Image
                                         <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <form action="<?php echo site_url('bali/customer/delete/' . $user['user_id']); ?>" method="post" style="display:inline;">
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this customer?');">Delete</button>
-                                        </form>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

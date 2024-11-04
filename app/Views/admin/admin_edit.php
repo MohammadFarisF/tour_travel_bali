@@ -49,7 +49,7 @@
                                 <div class="mb-3">
                                     <label for="vehicle_photo" class="form-label">Foto Kendaraan</label>
                                     <?php if (!empty($admin['photo'])): ?>
-                                        <img src="<?= base_url('uploads/user/' . esc($admin['photo'])); ?>" alt="Foto Profil" style="width: 100px; height: auto;">
+                                        <img src="<?= base_url('uploads/admin/' . esc($admin['photo'])); ?>" alt="Foto Profil" style="width: 100px; height: auto;">
                                     <?php endif; ?>
                                     <input class="form-control" type="file" id="photo" name="photo" accept="image/*">
                                 </div>

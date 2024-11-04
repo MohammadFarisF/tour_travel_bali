@@ -10,13 +10,14 @@ class BookingModel extends Model
     protected $primaryKey = 'booking_id';
 
     protected $allowedFields = [
-        'user_id',
+        'customer_id',
         'package_id',
         'address',
         'total_people',
         'departure_date',
         'return_date',
         'total_amount',
+        'cust_request',
         'booking_status',
         'payment_status',
         'created_at',
@@ -29,14 +30,14 @@ class BookingModel extends Model
         $builder = $this->db->table($this->table);
         $builder->select('
             bookings.*, 
-            users.full_name AS user_name, 
+            customer.full_name AS user_name, 
             packages.package_name AS package_name, 
             GROUP_CONCAT(destinations.destination_name ORDER BY destinations.destination_name SEPARATOR ", ") AS destination_names,  
             MAX(vehicles.vehicle_name) AS vehicle_name
         ');
 
         // Join ke tabel users
-        $builder->join('users', 'users.user_id = bookings.user_id', 'left');
+        $builder->join('customer', 'customer.customer_id = bookings.customer_id', 'left');
 
         // Join ke tabel packages
         $builder->join('packages', 'packages.package_id = bookings.package_id', 'left');
@@ -62,10 +63,10 @@ class BookingModel extends Model
                              GROUP_CONCAT(destinations.destination_name) as destination_names, 
                              MAX(vehicles.vehicle_name) as vehicle_name, 
                              COALESCE(MAX(refunds.refund_status), "-") as refund_status,
-                             users.full_name AS user_name,
+                             customer.full_name AS user_name,
                              packages.package_name')
             ->join('packages', 'packages.package_id = bookings.package_id', 'left')
-            ->join('users', 'users.user_id = bookings.user_id', 'left')
+            ->join('customer', 'customer.customer_id = bookings.customer_id', 'left')
             ->join('booking_destinations', 'booking_destinations.booking_id = bookings.booking_id', 'left')
             ->join('destinations', 'destinations.destination_id = booking_destinations.destination_id', 'left')
             ->join('booking_vehicles', 'booking_vehicles.booking_id = bookings.booking_id', 'left')
@@ -76,16 +77,16 @@ class BookingModel extends Model
     }
 
     // Mengambil data bookings berdasarkan filter tanggal
-    public function getFilteredBookings($dateType, $dateValue)
+    public function getFilteredBookings($dateType, $dateValue, $status = null)
     {
         $builder = $this->db->table($this->table);
         $builder->select('bookings.*, 
                           GROUP_CONCAT(destinations.destination_name) as destination_names, 
                           MAX(vehicles.vehicle_name) as vehicle_name, 
                           COALESCE(MAX(refunds.refund_status), "-") as refund_status,
-                          users.full_name AS user_name,
+                          customer.full_name AS user_name,
                           packages.package_name');
-        $builder->join('users', 'users.user_id = bookings.user_id', 'left');
+        $builder->join('customer', 'customer.customer_id = bookings.customer_id', 'left');
         $builder->join('packages', 'packages.package_id = bookings.package_id', 'left');
         $builder->join('booking_destinations', 'booking_destinations.booking_id = bookings.booking_id', 'left');
         $builder->join('destinations', 'destinations.destination_id = booking_destinations.destination_id', 'left');
@@ -108,6 +109,11 @@ class BookingModel extends Model
             }
         }
 
+        if ($status) {
+            $builder->where('bookings.booking_status', $status);
+        }
+    
         return $builder->get()->getResultArray();
+
     }
 }

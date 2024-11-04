@@ -54,7 +54,7 @@
                                     </td>
                                     <td>
                                         <?php if (!empty($user['photo'])): ?>
-                                            <img src="<?= base_url('uploads/user/' . esc($user['photo'])); ?>" alt="Foto Profil" style="width: 100px; height: auto;">
+                                            <img src="<?= base_url('uploads/admin/' . esc($user['photo'])); ?>" alt="Foto Profil" style="width: 100px; height: auto;">
                                         <?php else: ?>
                                             No Image
                                         <?php endif; ?>

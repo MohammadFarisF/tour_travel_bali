@@ -7,7 +7,7 @@
                         <div class="col-auto mt-4">
                             <h1 class="page-header-title">
                                 <div class="page-header-icon"><i data-feather="briefcase"></i></div>
-                                Riview
+                                Review
                             </h1>
                         </div>
                     </div>
@@ -18,7 +18,7 @@
         <div class="container-xl px-4 mt-n10">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Riview Customer</span>
+                    <span>Review Customer</span>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple" class="table table-striped table-bordered">

@@ -3,7 +3,7 @@
 namespace App\Controllers\Dashboard;
 
 use App\Controllers\BaseController;
-use App\Models\usermodel;
+use App\Models\AdminModel;
 
 class Admin extends BaseController
 {
@@ -12,7 +12,7 @@ class Admin extends BaseController
 
     public function __construct()
     {
-        $this->adminModel = new usermodel();
+        $this->adminModel = new adminmodel();
         // Set roleLabel once during construction
         $this->roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
     }
@@ -210,5 +210,39 @@ class Admin extends BaseController
         $this->adminModel->update($userId, $updateData);
 
         return redirect()->to(base_url('/bali/profile'))->with('message', 'Profile updated successfully');
+    }
+
+    public function updatePassword()
+    {
+        $userId = session()->get('userid');
+        $currentPassword = $this->request->getPost('current_password');
+        $newPassword = $this->request->getPost('new_password');
+        $confirmNewPassword = $this->request->getPost('confirm_new_password');
+
+        // Ambil data pengguna berdasarkan user_id
+        $userData = $this->adminModel->find($userId);
+
+        // Validasi password lama
+        if (!password_verify($currentPassword, $userData['password'])) {
+            return redirect()->back()->with('error', 'Password lama tidak sesuai.');
+        }
+
+        // Validasi password baru tidak sama dengan password lama
+        if ($currentPassword === $newPassword) {
+            return redirect()->back()->with('error', 'Password baru tidak boleh sama dengan password lama.');
+        }
+
+        // Validasi password konfirmasi
+        if ($newPassword !== $confirmNewPassword) {
+            return redirect()->back()->with('error', 'Konfirmasi password baru tidak sesuai.');
+        }
+
+        // Hash password baru
+        $newPasswordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+
+        // Update password di database
+        $this->adminModel->update($userId, ['password' => $newPasswordHash]);
+
+        return redirect()->to(base_url('/bali/profile'))->with('message', 'Password berhasil diubah.');
     }
 }

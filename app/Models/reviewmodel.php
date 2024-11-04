@@ -12,16 +12,17 @@ class ReviewModel extends Model
     // Menentukan primary key tabel
     protected $primaryKey = 'review_id';
 
-    protected $foreignKey = ['user_id', 'package_id'];
+    protected $foreignKey = ['customer_id', 'package_id'];
 
 
     // Field yang dapat dimodifikasi
     protected $allowedFields = [
         'review_id',
-        'user_id',
+        'customer_id',
         'package_id',
         'rating',
         'review_text',
+        'review_photo',
         'review_date',
         'created_at',
         'updated_at'
@@ -34,14 +35,14 @@ class ReviewModel extends Model
         $builder->select('
             reviews.*, 
             bookings.booking_id,
-            users.user_id,
-            users.full_name,
+            customer.customer_id,
+            customer.full_name,
             packages.package_id,
             packages.package_name
 
         ');
         $builder->join('bookings', 'bookings.booking_id = reviews.booking_id', 'left');
-        $builder->join('users', 'users.user_id = reviews.user_id', 'left');
+        $builder->join('customer', 'customer.customer_id = reviews.customer_id', 'left');
         $builder->join('packages', 'packages.package_id = reviews.package_id', 'left');
 
         return $builder->get()->getResultArray();
