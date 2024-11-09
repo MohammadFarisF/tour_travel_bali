@@ -35,11 +35,15 @@ $routes->get('/', 'User::index');
 $routes->get('/about', 'User::about');
 $routes->get('/booking', 'User::booking', ['filter' => 'userFilter']);
 $routes->get('/contact', 'User::contact');
+$routes->get('/package-detail/(:any)', 'Dashboard\Paket::packageDetails/$1');
 
 
-$routes->get('profile/payment', 'Dashboard\Payment::cust_index', ['filter' => 'userFilter']);
-$routes->get('profile/my_account', 'User::my_account', ['filter' => 'userFilter']);
-$routes->get('profile/review', 'User::review', ['filter' => 'userFilter']);
+$routes->get('profile/my_booking', 'Dashboard\Booking::cust_index', ['filter' => 'userFilter']);
+$routes->get('profile/my_account', 'Dashboard\Customer::showAccount', ['filter' => 'userFilter']);
+$routes->post('profile/update_account', 'Dashboard\Customer::updateAccount', ['filter' => 'userFilter']);
+$routes->get('profile/review', 'Dashboard\Review::cust_index', ['filter' => 'userFilter']);
+$routes->post('profile/review_store', 'Dashboard\Review::store', ['filter' => 'userFilter']);
+$routes->get('profile/invoice', 'Dashboard\Booking::invoice', ['filter' => 'userFilter']);
 
 $routes->get('login', 'Auth::login');
 $routes->post('login/proses', 'Auth::loginPost');
@@ -60,7 +64,7 @@ $routes->group('bali', ['filter' => 'adminFilter'], function ($routes) {
     $routes->post('paket/store', 'Dashboard\Paket::store');
     $routes->get('paket/edit/(:any)', 'Dashboard\Paket::edit/$1');
     $routes->post('paket/update', 'Dashboard\Paket::update');
-    $routes->get('paket/delete/(:any)', 'Dashboard\Paket::delete/$1');
+    $routes->post('paket/delete/(:any)', 'Dashboard\Paket::delete/$1');
 
     $routes->get('destinasi', 'Dashboard\Destinasi::index');
     $routes->get('destinasi/create', 'Dashboard\Destinasi::create');

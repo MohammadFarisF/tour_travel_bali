@@ -4,16 +4,19 @@ namespace App\Controllers\Dashboard;
 
 use App\Controllers\BaseController;
 use App\Models\paketmodel;
+use App\Models\DestinasiModel;
 
 class Paket extends BaseController
 {
     protected $paketModel;
+    protected $destinasiModel;
     protected $roleLabel;
 
     public function __construct()
     {
         // Inisialisasi model PaketModel
         $this->paketModel = new paketmodel();
+        $this->destinasiModel = new DestinasiModel();
         $this->roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
     }
 
@@ -67,6 +70,10 @@ class Paket extends BaseController
         if (session()->get('user_role') !== 'owner') {
             return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
         }
+
+        $packageType = $this->request->getPost('package_type');
+        $dayCount = ($packageType === 'multiple_day') ? $this->request->getPost('day_count') : 1;
+
         $filePhoto = $this->request->getFile('foto');
 
         // Tentukan nama file yang akan disimpan
@@ -82,6 +89,7 @@ class Paket extends BaseController
             'package_name' => $this->request->getPost('package_name'),
             'package_type' => $this->request->getPost('package_type'),
             'description' => $this->request->getPost('description'),
+            'hari' => $dayCount,
             'foto' => $fileName,
             'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => NULL
@@ -115,44 +123,54 @@ class Paket extends BaseController
         if (session()->get('user_role') !== 'owner') {
             return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
         }
+
         // Mengupdate data paket berdasarkan ID
         $id = $this->request->getPost('package_id');
         $package = $this->paketModel->find($id);
+
         if (!$package) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Kendaraan tidak ditemukan');
         }
+
+        // Retrieve the package type and day count from the form
+        $packageType = $this->request->getPost('package_type');
+        $dayCount = ($packageType === 'multiple_day') ? $this->request->getPost('day_count') : 1;
+
+        // Prepare the data to be updated
         $data = [
             'package_name' => $this->request->getPost('package_name'),
-            'package_type' => $this->request->getPost('package_type'),
+            'package_type' => $packageType,
             'description' => $this->request->getPost('description'),
+            'hari' => $dayCount, // Set day count based on the package type
             'created_at' => $this->request->getPost('created_at'), // Bisa disesuaikan
             'updated_at' => date('Y-m-d H:i:s')
         ];
 
+        // Process the photo upload if a new one is provided
         $filePhoto = $this->request->getFile('foto');
 
-        // Jika ada file foto baru yang diunggah
         if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
-            // Hapus foto lama jika ada
+            // Delete the old photo if exists
             if (!empty($package['foto'])) {
                 $oldFilePath = 'uploads/paket/' . $package['foto'];
                 if (file_exists($oldFilePath)) {
-                    unlink($oldFilePath); // Menghapus file lama
+                    unlink($oldFilePath); // Delete the old file
                 }
             }
 
-            // Pindahkan file ke folder uploads dengan nama baru
-            $fileName = $filePhoto->getRandomName(); // Buat nama file acak
-            $filePhoto->move('uploads/paket', $fileName); // Simpan file ke folder uploads
-            $data['foto'] = $fileName; // Tambahkan nama file baru ke data
+            // Upload the new photo
+            $fileName = $filePhoto->getRandomName(); // Generate a random file name
+            $filePhoto->move('uploads/paket', $fileName); // Move the uploaded file to the folder
+            $data['foto'] = $fileName; // Add the new photo name to the data
         } else {
-            // Jika tidak ada file baru, tetap gunakan foto lama
+            // If no new file, retain the old photo
             $data['foto'] = $package['foto'];
         }
 
+        // Update the package data in the database
         $this->paketModel->update($id, $data);
 
-        // Redirect ke halaman daftar paket setelah update
+        // Redirect to the package list page after update
         return redirect()->to(base_url('/bali/paket'));
     }
 
@@ -183,6 +201,78 @@ class Paket extends BaseController
             return redirect()->to(base_url('/bali/paket'))->with('message', 'Data paket dan foto berhasil dihapus');
         } else {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Paket tidak ditemukan');
+        }
+    }
+    public function packageDetails($packageId)
+    {
+        // Retrieve package details
+        $package = $this->paketModel->find($packageId);
+
+        // If package not found, show error
+        if (empty($package)) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Paket tidak ditemukan');
+        }
+
+        // Get destinations related to the package ID
+        $destinations = $this->destinasiModel->where('package_id', $packageId)->findAll();
+
+        // Calculate the district (kabupaten) for each destination based on latitude and longitude
+        foreach ($destinations as &$destination) {
+            $destination['district'] = $this->getDistrictByLatLng($destination['latitude'], $destination['longitude']);
+        }
+
+        // Prepare data for view
+        $data = [
+            'title' => 'Detail Paket',
+            'package' => $package,
+            'destinations' => $destinations,
+            'contact' => [
+                'phone' => '628123456789', // Replace with actual contact phone
+                'email' => 'contact@example.com' // Replace with actual contact email
+            ]
+        ];
+
+        // Load views
+        echo view('user/detail-paket', $data);
+        echo view('user/Template/footer');
+    }
+
+    // Helper function to generate district (kabupaten) name from latitude and longitude
+    public function getDistrictByLatLng($latitude, $longitude)
+    {
+        // URL API Nominatim untuk reverse geocoding
+        $url = "https://nominatim.openstreetmap.org/reverse?lat={$latitude}&lon={$longitude}&format=json&addressdetails=1";
+
+        // Inisialisasi cURL
+        $ch = curl_init();
+
+        // Set opsi cURL
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        // Eksekusi permintaan cURL
+        $response = curl_exec($ch);
+
+        // Cek apakah ada kesalahan cURL
+        if (curl_errno($ch)) {
+            return "Error: " . curl_error($ch); // Tangani kesalahan
+        }
+
+        // Tutup cURL
+        curl_close($ch);
+
+        // Decode respons JSON
+        $data = json_decode($response, true);
+
+        // Cek apakah detail alamat tersedia
+        if (isset($data['address']['suburb'])) {
+            return $data['address']['suburb']; // Kembalikan suburb jika tersedia
+        } elseif (isset($data['address']['town'])) {
+            return $data['address']['town']; // Kembalikan town jika suburb tidak tersedia
+        } elseif (isset($data['address']['city'])) {
+            return $data['address']['city']; // Kembalikan city jika town tidak tersedia
+        } else {
+            return "Unknown District"; // Fallback jika tidak ada distrik yang ditemukan
         }
     }
 }

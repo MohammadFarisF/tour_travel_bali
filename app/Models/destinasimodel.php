@@ -48,4 +48,9 @@ class DestinasiModel extends Model
     {
         return $this->delete($id);
     }
+
+    public function getPricesByPackageId($packageId)
+    {
+        return $this->where('package_id', $packageId)->findAll();
+    }
 }

@@ -14,6 +14,9 @@ class PaymentModel extends Model
         'payment_method',
         'payment_status',
         'proof_of_payment',
+        'account_name',
+        'account_number',
+        'account_holder_name',
     ];
 
     public function getPayments()
@@ -24,39 +27,45 @@ class PaymentModel extends Model
             bookings.booking_id,
             bookings.customer_id,
             bookings.total_amount,
-            bookings.booking_status,
-            bank_customer.custbank_id,
-            bank_customer.account_number,
-            bank_customer.account_holder_name,
-
+            bookings.booking_status
         ');
         $builder->join('bookings', 'bookings.booking_id = payments.booking_id', 'left');
-        $builder->join('bank_customer', 'bank_customer.custbank_id = payments.custbank_id', 'left');
+        $builder->join('customer', 'customer.customer_id = payments.customer_id', 'left');
 
         return $builder->get()->getResultArray();
     }
 
     public function getPayment($userId = null)
-{
-    $builder = $this->db->table($this->table);
-    $builder->select('
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('
         payments.*, 
         bookings.booking_id,
         bookings.customer_id,
         bookings.total_amount,
-        bookings.booking_status,
-        customer.customer_id,
-        customer.account_number,
-        customer.account_holder_name
+        bookings.booking_status
     ');
-    $builder->join('bookings', 'bookings.booking_id = payments.booking_id', 'left');
-    $builder->join('customer', 'customer.customer_id = payments.customer_id', 'left');
+        $builder->join('bookings', 'bookings.booking_id = payments.booking_id', 'left');
+        $builder->join('customer', 'customer.customer_id = payments.customer_id', 'left');
 
-    // Filter data berdasarkan user_id yang login
-    if ($userId !== null) {
-        $builder->where('bookings.customer_id', $userId);
+        // Filter data berdasarkan user_id yang login
+        if ($userId !== null) {
+            $builder->where('bookings.customer_id', $userId);
+        }
+
+        return $builder->get()->getResultArray();
     }
 
-    return $builder->get()->getResultArray();
-}
+    public function getBank()
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('
+        payments.account_name,
+        payments.account_number,
+        payments.account_holder_name,
+        customer.full_name
+    ');
+        $builder->join('customer', 'customer.customer_id = payments.customer_id', 'left');
+        return $builder->get()->getResultArray();
+    }
 }

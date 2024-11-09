@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 04, 2024 at 11:27 PM
+-- Generation Time: Nov 09, 2024 at 06:15 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -254,6 +254,7 @@ CREATE TABLE `booking_vehicles` (
 
 CREATE TABLE `customer` (
   `customer_id` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `nik` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   `full_name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
@@ -262,9 +263,6 @@ CREATE TABLE `customer` (
   `citizen` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `tgl_lahir` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `gender` enum('laki-laki','perempuan','tidak ada') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `account_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `account_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `account_holder_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `user_role` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
@@ -274,8 +272,45 @@ CREATE TABLE `customer` (
 -- Dumping data for table `customer`
 --
 
-INSERT INTO `customer` (`customer_id`, `email`, `password`, `full_name`, `phone_number`, `photo`, `citizen`, `tgl_lahir`, `gender`, `account_name`, `account_number`, `account_holder_name`, `user_role`, `created_at`, `updated_at`) VALUES
-('C001', 'mfirjatullah123@gmail.com', '$2y$10$buajdfrcMRWhvt.RTZFUN.vS6NKh5dPDQVngJ5xU1KrJFlcJCvyWa', 'Muhammad Firjatullah', '081234513423', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'customer', '2024-11-03 14:16:26', '2024-11-03 21:16:26');
+INSERT INTO `customer` (`customer_id`, `nik`, `email`, `password`, `full_name`, `phone_number`, `photo`, `citizen`, `tgl_lahir`, `gender`, `user_role`, `created_at`, `updated_at`) VALUES
+('C001', NULL, 'mfirjatullah123@gmail.com', '$2y$10$buajdfrcMRWhvt.RTZFUN.vS6NKh5dPDQVngJ5xU1KrJFlcJCvyWa', 'Muhammad Firjatullah', '081234513423', NULL, NULL, NULL, NULL, 'customer', '2024-11-03 14:16:26', '2024-11-08 02:47:08'),
+('C002', '123456789101112', 'agushariyanto@gmail.com', '$2y$10$OLYi3vMUgQWO4Re8Me0w9O6FsuEEuerMeETBEQO1NCw41wz0KHkV2', 'Agus Hariyanto', '+6281235826974', '1731036860_6b4cd01a49c7091b5cb6.jpg', 'Indonesia', '15 June 2004', 'laki-laki', 'customer', '2024-11-07 20:18:37', '2024-11-08 07:06:55');
+
+--
+-- Triggers `customer`
+--
+DELIMITER $$
+CREATE TRIGGER `check_nik_unique` BEFORE INSERT ON `customer` FOR EACH ROW BEGIN
+    IF NEW.nik IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1 FROM customer 
+            WHERE nik = NEW.nik 
+            AND customer_id != NEW.customer_id 
+            AND nik IS NOT NULL
+        ) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'NIK sudah terdaftar';
+        END IF;
+    END IF;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `check_nik_unique_update` BEFORE UPDATE ON `customer` FOR EACH ROW BEGIN
+    IF NEW.nik IS NOT NULL THEN
+        IF EXISTS (
+            SELECT 1 FROM customer 
+            WHERE nik = NEW.nik 
+            AND customer_id != NEW.customer_id 
+            AND nik IS NOT NULL
+        ) THEN
+            SIGNAL SQLSTATE '45000'
+            SET MESSAGE_TEXT = 'NIK sudah terdaftar';
+        END IF;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -315,6 +350,7 @@ CREATE TABLE `packages` (
   `package_id` varchar(10) COLLATE utf8mb4_general_ci NOT NULL,
   `package_name` varchar(255) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `package_type` enum('single_destination','multiple_day') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `hari` int DEFAULT NULL,
   `description` text COLLATE utf8mb4_general_ci,
   `foto` text COLLATE utf8mb4_general_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
@@ -325,10 +361,10 @@ CREATE TABLE `packages` (
 -- Dumping data for table `packages`
 --
 
-INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `description`, `foto`, `created_at`, `updated_at`) VALUES
-('P01', 'Paket Wisata Ubud', 'single_destination', 'Ubud is a unique and captivating tourist destination that offers a perfect blend of nature, culture, and art. Despite its increasing popularity, Ubud has managed to preserve its traditional charm and serene atmosphere, which are hallmarks of the area. With its stunning natural beauty, rich cultural heritage, and peaceful environment, Ubud stands out as one of Bali\'s hidden gems and is a must-visit for travelers.', '1729568758_e309f0d7e9cae72dcd8a.jpg', '2024-10-21 20:45:58', NULL),
-('P02', 'Paket Wisata Bedugul', 'single_destination', 'Bedugul is a famous mountain tourist area in Bali, Indonesia. Located in Tabanan Regency, about 50 kilometers from Denpasar, Bedugul is a favorite destination because of its cool air and beautiful natural views. Bedugul is surrounded by green hills, lakes and lush gardens.', '1729568779_5b6aa544ebe5b64901ab.jpg', '2024-10-21 20:46:19', NULL),
-('P03', 'Paket Hamparan Perak', 'single_destination', 'hamparan perak adalah kota yang sangat luar biasa', '1730166231_0e6a73dd39350d1fb1f6.jpg', '2024-10-28 18:43:51', NULL);
+INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `hari`, `description`, `foto`, `created_at`, `updated_at`) VALUES
+('P01', 'Paket Wisata Ubud', 'single_destination', 1, 'Ubud is a unique and captivating tourist destination that offers a perfect blend of nature, culture, and art. Despite its increasing popularity, Ubud has managed to preserve its traditional charm and serene atmosphere, which are hallmarks of the area. With its stunning natural beauty, rich cultural heritage, and peaceful environment, Ubud stands out as one of Bali\'s hidden gems and is a must-visit for travelers.', '1729568758_e309f0d7e9cae72dcd8a.jpg', NULL, '2024-11-08 20:34:56'),
+('P02', 'Paket Wisata Bedugul', 'single_destination', 1, 'Bedugul is a famous mountain tourist area in Bali, Indonesia. Located in Tabanan Regency, about 50 kilometers from Denpasar, Bedugul is a favorite destination because of its cool air and beautiful natural views. Bedugul is surrounded by green hills, lakes and lush gardens.', '1729568779_5b6aa544ebe5b64901ab.jpg', NULL, '2024-11-08 20:24:43'),
+('P03', 'Paket Hamparan Perak', 'single_destination', 1, 'hamparan perak adalah kota yang sangat luar biasa', '1730166231_0e6a73dd39350d1fb1f6.jpg', NULL, '2024-11-08 20:24:49');
 
 -- --------------------------------------------------------
 
@@ -341,6 +377,9 @@ CREATE TABLE `payments` (
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `customer_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `payment_method` enum('bank_transfer','other') COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `account_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `account_number` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `account_holder_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `payment_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `payment_status` enum('pending','validated','failed') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `proof_of_payment` text COLLATE utf8mb4_general_ci
@@ -376,6 +415,7 @@ DELIMITER ;
 
 CREATE TABLE `refunds` (
   `refund_id` int NOT NULL,
+  `payment_id` int NOT NULL,
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `customer_id` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
   `refund_amount` decimal(10,2) DEFAULT NULL,
@@ -405,8 +445,6 @@ DELIMITER ;
 CREATE TABLE `reviews` (
   `review_id` int NOT NULL,
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `customer_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `package_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `rating` tinyint NOT NULL,
   `review_text` text COLLATE utf8mb4_general_ci,
   `review_photo` text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
@@ -485,7 +523,8 @@ ALTER TABLE `booking_vehicles`
 -- Indexes for table `customer`
 --
 ALTER TABLE `customer`
-  ADD PRIMARY KEY (`customer_id`);
+  ADD PRIMARY KEY (`customer_id`),
+  ADD UNIQUE KEY `email` (`email`);
 
 --
 -- Indexes for table `destinations`
@@ -514,16 +553,15 @@ ALTER TABLE `payments`
 ALTER TABLE `refunds`
   ADD PRIMARY KEY (`refund_id`),
   ADD KEY `refunds_ibfk_1` (`booking_id`),
-  ADD KEY `refunds_ibfk_2` (`customer_id`);
+  ADD KEY `refunds_ibfk_2` (`customer_id`),
+  ADD KEY `refunds_ibfk_3` (`payment_id`);
 
 --
 -- Indexes for table `reviews`
 --
 ALTER TABLE `reviews`
   ADD PRIMARY KEY (`review_id`),
-  ADD KEY `booking_id` (`booking_id`),
-  ADD KEY `reviews_ibfk_2` (`package_id`),
-  ADD KEY `reviews_ibfk_1` (`customer_id`);
+  ADD KEY `booking_id` (`booking_id`);
 
 --
 -- Indexes for table `vehicles`
@@ -620,14 +658,13 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `refunds`
   ADD CONSTRAINT `refunds_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `refunds_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `refunds_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `refunds_ibfk_3` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`payment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reviews`
 --
 ALTER TABLE `reviews`
-  ADD CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`package_id`) REFERENCES `packages` (`package_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 

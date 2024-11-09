@@ -12,18 +12,15 @@ class ReviewModel extends Model
     // Menentukan primary key tabel
     protected $primaryKey = 'review_id';
 
-    protected $foreignKey = ['customer_id', 'package_id'];
+    protected $foreignKey = ['booking_id'];
     // Field yang dapat dimodifikasi
     protected $allowedFields = [
         'review_id',
-        'customer_id',
-        'package_id',
+        'booking_id',
         'rating',
         'review_text',
         'review_photo',
-        'review_date',
-        'created_at',
-        'updated_at'
+        'review_date'
     ];
 
     // Fungsi untuk mendapatkan data review berdasarkan user_id
@@ -33,14 +30,14 @@ class ReviewModel extends Model
         $builder->select('
             reviews.*, 
             bookings.booking_id,
-            customer.customer_id,
+            bookings.customer_id,
+            bookings.package_id,
             customer.full_name,
-            packages.package_id,
             packages.package_name
         ');
         $builder->join('bookings', 'bookings.booking_id = reviews.booking_id', 'left');
-        $builder->join('customer', 'customer.customer_id = reviews.customer_id', 'left');
-        $builder->join('packages', 'packages.package_id = reviews.package_id', 'left');
+        $builder->join('packages', 'packages.package_id = bookings.package_id', 'left');
+        $builder->join('customer', 'customer.customer_id = bookings.customer_id', 'left');
 
         // Filter based on user_id if provided
         if ($userId) {
@@ -54,5 +51,40 @@ class ReviewModel extends Model
     public function deleteReview($id)
     {
         return $this->delete($id); // Menghapus berdasarkan ID
+    }
+
+    public function getReviewCust($userId = false)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('
+            reviews.*, 
+            bookings.booking_id,
+            bookings.customer_id,
+            bookings.package_id,
+            bookings.booking_status,
+            customer.full_name,
+            packages.package_name
+        ');
+        $builder->join('bookings', 'bookings.booking_id = reviews.booking_id', 'left');
+        $builder->join('packages', 'packages.package_id = bookings.package_id', 'left');
+        $builder->join('customer', 'customer.customer_id = bookings.customer_id', 'left');
+
+        // Filter based on user_id if provided
+        if ($userId) {
+            $builder->where('bookings.customer_id', $userId);
+        }
+        $builder->where('bookings.booking_status', 'completed');
+
+
+        return $builder->get()->getResultArray();
+    }
+
+    public function getReviewsByPackageId($packageId)
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('reviews.*, bookings.package_id');
+        $builder->join('bookings', 'bookings.booking_id = reviews.booking_id', 'left');
+        $builder->where('bookings.package_id', $packageId); // Filter by package_id
+        return $builder->get()->getResultArray();
     }
 }

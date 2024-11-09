@@ -7,7 +7,7 @@
                         <div class="col-auto mt-4">
                             <h1 class="page-header-title">
                                 <div class="page-header-icon"><i data-feather="briefcase"></i></div>
-                                Pemesanan
+                                Invoice
                             </h1>
                         </div>
                     </div>
@@ -18,7 +18,7 @@
         <div class="container-xl px-4 mt-n10">
             <div class="card mb-4">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span>Data Pemesanan</span>
+                    <span>Pesanan Anda</span>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple" class="table table-striped table-bordered">
@@ -28,12 +28,11 @@
                                 <th>Nama Paket</th>
                                 <th>Total Bayar</th>
                                 <th>Status Pemesanan</th>
-                                <th>Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php foreach ($bookings as $booking): ?>
-                                <tr>
+                                <tr onclick="window.location.href='<?= site_url('profile/detail-invoice/' . $booking['booking_id']); ?>'" style="cursor: pointer;">
                                     <td><?= $booking['booking_id']; ?></td>
                                     <td><?= $booking['package_name']; ?></td>
                                     <td>Rp. <?= number_format($booking['total_amount'], 0, ',', '.'); ?></td> <!-- Format Total Bayar -->
@@ -57,11 +56,6 @@
                                                 break;
                                         }
                                         ?>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-primary">
-                                            Bayar
-                                        </button>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

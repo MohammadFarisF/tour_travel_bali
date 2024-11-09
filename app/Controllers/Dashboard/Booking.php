@@ -39,10 +39,22 @@ class Booking extends BaseController
             'title' => 'Pemesanan',
             'bookings' => $this->bookingModel->getBookingByUserId($userId),
         ];
-    
+
         echo view('user/template/header', $data);
         echo view('user/payment', $data);
-        echo view('user/template/footer');   
+        echo view('user/template/footer');
     }
-    
+
+    public function invoice()
+    {
+        $userId = session()->get('userid'); // Ambil user_id dari session
+        $data = [
+            'title' => 'Invoice',
+            'bookings' => $this->bookingModel->getBookingByUserId($userId),
+        ];
+
+        echo view('user/template/header', $data);
+        echo view('user/invoice', $data);
+        echo view('user/template/footer');
+    }
 }
