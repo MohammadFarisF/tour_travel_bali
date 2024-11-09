@@ -18,6 +18,7 @@ class paketmodel extends Model
         'package_name',
         'package_type',
         'description',
+        'hari',
         'foto',
         'created_at',
         'updated_at'

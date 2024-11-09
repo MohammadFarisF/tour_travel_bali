@@ -196,12 +196,17 @@ class Auth extends BaseController
             'created_at' => date('Y-m-d H:i:s'), // Set waktu pembuatan
         ];
 
-        // Simpan data ke database
-        $this->customerModel->insert($data);
+        // Simpan data ke database dengan error handling
+        $result = $this->customerModel->insertCustomer($data);
+
+        if ($result instanceof \Exception) {
+            // Jika terjadi error saat insert (misalnya NIK duplikat)
+            session()->setFlashdata('error', 'Terjadi kesalahan: ' . $result->getMessage());
+            return redirect()->to(base_url('register'));
+        }
 
         // Set flashdata alert bahwa akun berhasil dibuat
         session()->setFlashdata('success', 'Akun telah berhasil dibuat.');
-
         return redirect()->to(base_url('login')); // Redirect ke halaman login
     }
 

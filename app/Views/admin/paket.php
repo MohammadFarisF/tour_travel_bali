@@ -32,6 +32,7 @@
                                 <th>Kode Paket</th>
                                 <th>Nama Paket</th>
                                 <th>Tipe Paket</th>
+                                <th>Durasi Perjalanan</th>
                                 <th>Deskripsi Paket</th>
                                 <th>Foto Paket</th>
                                 <?php if (session()->get('user_role') === 'owner'): ?>
@@ -56,6 +57,7 @@
                                             }
                                             ?>
                                         </td>
+                                        <td><?= esc($package['hari']); ?> Hari</td>
                                         <td><?= esc($package['description']); ?></td>
                                         <td> <?php if (!empty($package['foto'])): ?>
                                                 <img src="<?= base_url('uploads/paket/' . esc($package['foto'])); ?>" alt="Foto Paket" style="width: 100px; height: auto;">

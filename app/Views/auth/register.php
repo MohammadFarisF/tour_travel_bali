@@ -12,7 +12,17 @@
     <link rel="icon" type="image/x-icon" href="<?= base_url() ?>asset_user/img/title.png" />
     <script data-search-pseudo-elements defer src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/js/all.min.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.28.0/feather.min.js" crossorigin="anonymous"></script>
+    <!-- Phone Input CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+
+    <!-- Phone Input JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
 </head>
+<style>
+    .iti {
+        width: 100%;
+    }
+</style>
 
 <body class="bg-primary">
     <div id="layoutAuthentication">
@@ -50,20 +60,19 @@
                                             <input class="form-control" id="inputFullName" name="fullname" type="text" placeholder="Enter full name" />
                                         </div>
 
-
                                         <!-- Form Group (last name)-->
                                         <div class="mb-3">
-                                            <label class="small mb-1" for="inputLastName">Phone Number</label>
-                                            <input class="form-control" id="inputLastName" name="no_hp" type="number" placeholder="Enter phone number" />
+                                            <label class="small mb-1" for="inputPhoneNumber">Phone Number</label>
+                                            <input class="form-control" id="inputPhoneNumber" name="no_hp" type="tel" placeholder="Enter phone number" />
                                         </div>
 
-
-                                        <!-- Form Group (email address)            -->
+                                        <!-- Form Group (email address) -->
                                         <div class="mb-3">
                                             <label class="small mb-1" for="inputEmailAddress">Email</label>
                                             <input class="form-control" id="inputEmailAddress" name="email" type="email" aria-describedby="emailHelp" placeholder="Enter email address" />
                                         </div>
-                                        <!-- Form Row    -->
+
+                                        <!-- Form Row -->
                                         <div class="row gx-3">
                                             <div class="col-md-6">
                                                 <!-- Form Group (password)-->
@@ -79,8 +88,8 @@
                                                     <input class="form-control" id="inputConfirmPassword" name="confirm_password" type="password" placeholder="Confirm password" />
                                                 </div>
                                             </div>
-
                                         </div>
+
                                         <!-- Form Group (create account submit)-->
                                         <button type="submit" class="btn btn-primary">Create Account</button>
                                     </form>
@@ -99,14 +108,33 @@
                 <div class="container-xl px-4">
                     <div class="row">
                         <div class="col-md-6 small">Copyright &copy; Explore Tour and Travel 2024</div>
-
                     </div>
                 </div>
             </footer>
         </div>
     </div>
+
     <script src="<?= base_url() ?>https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="<?= base_url() ?>js/scripts.js"></script>
+
+    <script>
+        // Initialize phone input with intl-tel-input
+        const phoneInput = document.querySelector("#inputPhoneNumber");
+        const iti = window.intlTelInput(phoneInput, {
+            utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js",
+            separateDialCode: true, // Show dial code
+            initialCountry: "id", // Default country
+            preferredCountries: ["id", "my", "sg"] // Default preferred countries
+        });
+
+        // No need to modify phone number before submission
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            // Let the phone number remain in international format
+            const phoneNumber = iti.getNumber(); // Get the full phone number with country code
+            document.querySelector('input[name="no_hp"]').value = phoneNumber; // Set the value to the full number
+        });
+    </script>
 </body>
 
 </html>

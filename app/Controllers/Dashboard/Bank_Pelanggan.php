@@ -3,16 +3,16 @@
 namespace App\Controllers\Dashboard;
 
 use App\Controllers\BaseController;
-use App\Models\CustModel;
+use App\Models\PaymentModel;
 
 class Bank_Pelanggan extends BaseController
 {
-    protected $customerModel;
+    protected $paymentModel;
 
     public function __construct()
     {
         // Inisialisasi model bank pelangganModel
-        $this->customerModel = new CustModel();
+        $this->paymentModel = new PaymentModel();
     }
 
     public function index()
@@ -25,7 +25,7 @@ class Bank_Pelanggan extends BaseController
         }
         $data = [
             'title' => 'Bank Pelanggan',
-            'bankpelanggan' => $this->customerModel->getBank(), // Mengambil semua bank pelanggan
+            'bankpelanggan' => $this->paymentModel->getBank(), // Mengambil semua bank pelanggan
             'roleLabel' => $roleLabel, // Label role (Admin/Super Admin)
         ];
 

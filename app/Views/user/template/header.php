@@ -8,6 +8,7 @@
     <meta content="" name="keywords">
     <meta content="" name="description">
     <link rel="icon" href="<?= base_url() ?>asset_user/img/title.png" type="image/png">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 
     <!-- Favicon -->
     <link href="<?= base_url() ?>asset_user/img/favicon.ico" rel="icon">
@@ -17,10 +18,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
 
     <!-- Icon Font Stylesheet -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
 
     <!-- Libraries Stylesheet -->
     <link href="<?= base_url() ?>asset_user/lib/animate/animate.min.css" rel="stylesheet">
@@ -39,11 +42,11 @@
 
 <body>
     <!-- Spinner Start -->
-    <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+    <!-- <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
         <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
             <span class="sr-only">Loading...</span>
         </div>
-    </div>
+    </div> -->
     <!-- Spinner End -->
 
 
@@ -77,9 +80,10 @@
                                     <i class="fas fa-user-circle" style="font-size: 30px;"></i> <!-- Ikon Profil -->
                                 </a>
                                 <div class="dropdown-menu m-0">
-                                <a href="<?= base_url() ?>profile/my_account" class="dropdown-item <?= (uri_string() == 'profile/my_account') ? 'active' : '' ?>">My Account</a>
-                                    <a href="<?= base_url() ?>profile/payment" class="dropdown-item <?= (uri_string() == 'profile/payment') ? 'active' : '' ?>">Payment</a>
+                                    <a href="<?= base_url() ?>profile/my_account" class="dropdown-item <?= (uri_string() == 'profile/my_account') ? 'active' : '' ?>">My Account</a>
+                                    <a href="<?= base_url() ?>profile/my_booking" class="dropdown-item <?= (uri_string() == 'profile/my_booking') ? 'active' : '' ?>">My Booking</a>
                                     <a href="<?= base_url() ?>profile/review" class="dropdown-item <?= (uri_string() == 'profile/review') ? 'active' : '' ?>">Review</a>
+                                    <a href="<?= base_url() ?>profile/invoice" class="dropdown-item <?= (uri_string() == 'profile/invoice') ? 'active' : '' ?>">Invoice</a>
 
                                     <!-- Logout Button -->
                                     <form action="<?= base_url() ?>logout/proses" method="post" class="dropdown-item p-0">

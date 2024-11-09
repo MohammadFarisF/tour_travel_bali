@@ -3,19 +3,16 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use CodeIgniter\Database\Exceptions\DatabaseException;
 
 class CustModel extends Model
 {
-    // Menentukan nama tabel
     protected $table = 'customer';
-
-    // Menentukan primary key tabel
     protected $primaryKey = 'customer_id';
     protected $useAutoIncrement = false;
-
-    // Field yang dapat dimodifikasi
     protected $allowedFields = [
         'customer_id',
+        'nik',
         'email',
         'password',
         'full_name',
@@ -24,30 +21,22 @@ class CustModel extends Model
         'citizen',
         'tgl_lahir',
         'gender',
-        'account_name',
-        'account_number',
-        'account_holder_name',
         'user_role',
         'created_at',
         'updated_at'
     ];
 
-
-    public function getBank()
+    public function insertCustomer($data)
     {
-        return $this->select('full_name, account_name, account_number, account_holder_name')->findAll();
+        try {
+            // Insert data
+            return $this->insert($data);
+        } catch (DatabaseException $e) {
+            // Tangani error jika terjadi, seperti NIK duplikat
+            return $e->getMessage(); // Bisa Anda modifikasi sesuai kebutuhan
+        }
     }
 
-
-    // Mendapatkan data profil terbatas
-    public function getProfile($id)
-    {
-        return $this->select('full_name, email, photo, gender, phone_number, tgl_lahir, citizen, user_role')
-            ->where('customer_id', $id)
-            ->first();
-    }
-
-    // Mendapatkan data bank
     public function getCustomer()
     {
         return $this->findAll();

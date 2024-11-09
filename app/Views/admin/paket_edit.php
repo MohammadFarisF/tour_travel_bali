@@ -46,6 +46,24 @@
                                 </div>
 
                                 <div class="mb-3">
+                                    <label for="package_type" class="form-label">Tipe Paket</label>
+                                    <select class="form-select" id="package_type" name="package_type" required>
+                                        <option value="single_destination" <?= isset($package['package_type']) && $package['package_type'] === 'single_destination' ? 'selected' : ''; ?>>Single Destination</option>
+                                        <option value="multiple_day" <?= isset($package['package_type']) && $package['package_type'] === 'multiple_day' ? 'selected' : ''; ?>>Multiple Day</option>
+                                    </select>
+                                </div>
+
+                                <div id="days_input_container" style="display: none;">
+                                    <div class="mb-3">
+                                        <label for="day_count" class="form-label">Jumlah Hari</label>
+                                        <div class="input-group">
+                                            <input type="number" class="form-control" id="day_count" name="day_count" placeholder="Masukkan Jumlah Hari" min="1" required>
+                                            <span class="input-group-text text-large"><b>Hari</b></span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
                                     <label for="description" class="form-label">Deskripsi</label>
                                     <input type="text" class="form-control" id="description" name="description" value="<?= esc($package['description']) ?>" placeholder="Masukkan Deskripsi Paket..." required>
                                 </div>
@@ -68,3 +86,24 @@
             </div>
         </div>
     </main>
+
+    <script>
+        document.getElementById('package_type').addEventListener('change', function() {
+            const packageType = this.value;
+            const daysInputContainer = document.getElementById('days_input_container');
+            const dayCountInput = document.getElementById('day_count');
+
+            if (packageType === 'multiple_day') {
+                // Show the input field for day count and make it required
+                daysInputContainer.style.display = 'block';
+                dayCountInput.setAttribute('required', 'required');
+            } else {
+                // Hide the input field for day count and remove the required attribute
+                daysInputContainer.style.display = 'none';
+                dayCountInput.removeAttribute('required');
+            }
+        });
+
+        // Trigger change event on page load to initialize visibility based on the selected package type
+        document.getElementById('package_type').dispatchEvent(new Event('change'));
+    </script>
