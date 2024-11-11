@@ -66,37 +66,9 @@
                     <a href="<?= base_url() ?>about" class="nav-item nav-link <?= (uri_string() == 'about') ? 'active' : '' ?>">About</a>
                     <a href="<?= base_url() ?>booking" class="nav-item nav-link <?= (uri_string() == 'booking') ? 'active' : '' ?>">Booking</a>
                     <a href="<?= base_url() ?>contact" class="nav-item nav-link <?= (uri_string() == 'contact') ? 'active' : '' ?>">Contact</a>
-
-
-
-                    <!-- New Customer Profile Dropdown -->
-                    <?php if (session()->get('userid')): // Cek apakah pengguna sudah login 
-                    ?>
-                        <?php if (session()->get('user_role') === 'customer'): // Jika peran adalah customer 
-                        ?>
-                            <!-- Dropdown untuk Customer -->
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle <?= (in_array(uri_string(), ['profile/change', 'profile/order_data', 'profile/review'])) ? 'active' : '' ?>" data-bs-toggle="dropdown">
-                                    <i class="fas fa-user-circle" style="font-size: 30px;"></i> <!-- Ikon Profil -->
-                                </a>
-                                <div class="dropdown-menu m-0">
-                                    <a href="<?= base_url() ?>profile/my_account" class="dropdown-item <?= (uri_string() == 'profile/my_account') ? 'active' : '' ?>">My Account</a>
-                                    <a href="<?= base_url() ?>profile/my_booking" class="dropdown-item <?= (uri_string() == 'profile/my_booking') ? 'active' : '' ?>">My Booking</a>
-                                    <a href="<?= base_url() ?>profile/review" class="dropdown-item <?= (uri_string() == 'profile/review') ? 'active' : '' ?>">Review</a>
-                                    <a href="<?= base_url() ?>profile/invoice" class="dropdown-item <?= (uri_string() == 'profile/invoice') ? 'active' : '' ?>">Invoice</a>
-
-                                    <!-- Logout Button -->
-                                    <form action="<?= base_url() ?>logout/proses" method="post" class="dropdown-item p-0">
-                                        <button type="submit" class="btn btn-danger w-100 text-start">Logout</button>
-                                    </form>
-                                </div>
-                            </div>
-
-                        <?php endif; ?>
-                    <?php else: // Jika belum login 
-                    ?>
-                        <a href="<?= base_url('login') ?>" class="nav-item nav-link">Login</a>
-                    <?php endif; ?>
+                    <a href="<?= base_url() ?>profile/my_account" class="nav-item nav-link <?= (uri_string() == 'profile/my_account') ? 'active' : '' ?>">
+                    <i class="fas fa-user-circle" style="font-size: 30px;"></i> <!-- Ikon Profil -->
+                </a>
 
                     <span>
                         <div class="translate" id="google_translate_element"></div>
@@ -125,3 +97,6 @@
             </div>
         </div>
     </div>
+    
+
+    

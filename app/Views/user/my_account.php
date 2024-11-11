@@ -24,7 +24,7 @@
 
 <style>
     .page-header {
-        color: white;
+        color: black;
     }
 
     .account-info {
@@ -47,10 +47,12 @@
 
     .page-header-title {
         margin-left: 10px;
+
     }
 
     .modal-title {
         margin-left: 10px;
+        color: black;
     }
 
     .form-label {
@@ -107,9 +109,7 @@
                         <div class="info-item">
                             <strong>Name:</strong> <?= $customer['full_name'] ?? '-' ?>
                         </div>
-                        <div class="info-item">
-                            <strong>NIK:</strong> <?= $customer['nik'] ?? '-' ?>
-                        </div>
+                    
                         <div class="info-item">
                             <strong>Gender:</strong> <?= $customer['gender'] == 'laki-laki' ? 'Laki-Laki' : ($customer['gender'] == 'perempuan' ? 'Perempuan' : 'Tidak Ada') ?>
                         </div>
@@ -154,12 +154,7 @@
                         <div class="mb-3">
                             <label for="accountName" class="form-label">Name</label>
                             <input type="text" class="form-control" id="accountName" name="accountName" value="<?= $customer['full_name'] ?>" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="accountNIK" class="form-label">NIK / ID Number</label>
-                            <input type="text" class="form-control" id="accountNIK" name="accountNIK" value="<?= $customer['nik'] ?>" required>
-                        </div>
+                        </div> 
 
                         <div class="mb-3">
                             <label for="accountGender" class="form-label">Gender</label>

@@ -56,9 +56,8 @@ class Customer extends BaseController
             'customer' => $userData
         ];
 
-        echo view('user/Template/header', $data);
+        echo view('user/Template/sidebar', $data);
         echo view('user/my_account', $data);  // Sesuaikan dengan file view Anda
-        echo view('user/Template/footer');
     }
 
     // Method untuk memperbarui data akun
