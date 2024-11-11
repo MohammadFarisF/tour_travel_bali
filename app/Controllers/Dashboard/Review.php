@@ -58,9 +58,8 @@ class Review extends BaseController
             'review' => $this->reviewModel->getReviewCust($userId), // Mengambil review berdasarkan user_id
         ];
 
-        echo view('user/template/header', $data);
+        echo view('user/template/sidebar', $data);
         echo view('user/review', $data);
-        echo view('user/template/footer');
     }
     // Method untuk menyimpan review
     public function store()
