@@ -43,7 +43,17 @@
                                     <td><?php echo esc($ulasan['package_name']); ?></td>
                                     <td><?php echo esc($ulasan['rating']); ?></td>
                                     <td><?php echo esc($ulasan['review_text']); ?></td>
-                                    <td><?php echo esc($ulasan['review_photo']); ?></td>
+                                    <td>
+                                        <?php
+                                        // Cek jika ada foto review
+                                        if (!empty($ulasan['review_photo'])) {
+                                            $photos = explode(',', $ulasan['review_photo']); // Memisahkan nama file foto yang dipisahkan koma
+                                            foreach ($photos as $photo) {
+                                                echo '<img src="' . base_url('uploads/review/' . esc($photo)) . '" alt="Review Photo" style="width: 100px; height: auto; margin-right: 10px;">';
+                                            }
+                                        }
+                                        ?>
+                                    </td>
                                     <td><?php echo esc($ulasan['review_date']); ?></td>
                                     <td>
                                         <form action="<?php echo site_url('bali/review/delete/' . $ulasan['review_id']); ?>" method="post" style="display:inline;">

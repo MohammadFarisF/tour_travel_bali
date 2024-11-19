@@ -28,4 +28,13 @@ class RefundModel extends Model
             ->get()
             ->getResultArray();
     }
+    public function processRefund($bookingId)
+    {
+        // Memanggil stored procedure
+        // Memanggil stored procedure
+        $query = $this->db->query("CALL process_refund(?)", [$bookingId]);
+
+        // Mengambil hasil
+        return $query->getRow();
+    }
 }

@@ -5,18 +5,21 @@ namespace App\Controllers\Dashboard;
 use App\Controllers\BaseController;
 use App\Models\paketmodel;
 use App\Models\DestinasiModel;
+use App\Models\CustModel;
 
 class Paket extends BaseController
 {
     protected $paketModel;
     protected $destinasiModel;
     protected $roleLabel;
+    protected $customerModel;
 
     public function __construct()
     {
         // Inisialisasi model PaketModel
         $this->paketModel = new paketmodel();
         $this->destinasiModel = new DestinasiModel();
+        $this->customerModel = new CustModel();
         $this->roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
     }
 
@@ -216,63 +219,31 @@ class Paket extends BaseController
         // Get destinations related to the package ID
         $destinations = $this->destinasiModel->where('package_id', $packageId)->findAll();
 
-        // Calculate the district (kabupaten) for each destination based on latitude and longitude
-        foreach ($destinations as &$destination) {
-            $destination['district'] = $this->getDistrictByLatLng($destination['latitude'], $destination['longitude']);
-        }
+        $customerId = session()->get('userid');
+        $customer = $this->customerModel->find($customerId);
 
+        // Check if customer data is complete
+        $isDataComplete = !empty($customer['full_name']) &&
+            !empty($customer['email']) &&
+            !empty($customer['phone_number']) &&
+            !empty($customer['nik']) &&
+            !empty($customer['citizen']) &&
+            !empty($customer['gender']);
         // Prepare data for view
         $data = [
-            'title' => 'Detail Paket',
+            'title' => 'Detail Paket - ',
             'package' => $package,
             'destinations' => $destinations,
+            'customer' => $customer,
+            'isDataComplete' => $isDataComplete,
             'contact' => [
-                'phone' => '628123456789', // Replace with actual contact phone
-                'email' => 'contact@example.com' // Replace with actual contact email
+                'phone' => '6282236906042', // Replace with actual contact phone
+                'email' => 'explorebali52@gmail.com' // Replace with actual contact email
             ]
         ];
 
-        // Load views
+        echo view('user/Template/header', $data);
         echo view('user/detail-paket', $data);
         echo view('user/Template/footer');
-    }
-
-    // Helper function to generate district (kabupaten) name from latitude and longitude
-    public function getDistrictByLatLng($latitude, $longitude)
-    {
-        // URL API Nominatim untuk reverse geocoding
-        $url = "https://nominatim.openstreetmap.org/reverse?lat={$latitude}&lon={$longitude}&format=json&addressdetails=1";
-
-        // Inisialisasi cURL
-        $ch = curl_init();
-
-        // Set opsi cURL
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        // Eksekusi permintaan cURL
-        $response = curl_exec($ch);
-
-        // Cek apakah ada kesalahan cURL
-        if (curl_errno($ch)) {
-            return "Error: " . curl_error($ch); // Tangani kesalahan
-        }
-
-        // Tutup cURL
-        curl_close($ch);
-
-        // Decode respons JSON
-        $data = json_decode($response, true);
-
-        // Cek apakah detail alamat tersedia
-        if (isset($data['address']['suburb'])) {
-            return $data['address']['suburb']; // Kembalikan suburb jika tersedia
-        } elseif (isset($data['address']['town'])) {
-            return $data['address']['town']; // Kembalikan town jika suburb tidak tersedia
-        } elseif (isset($data['address']['city'])) {
-            return $data['address']['city']; // Kembalikan city jika town tidak tersedia
-        } else {
-            return "Unknown District"; // Fallback jika tidak ada distrik yang ditemukan
-        }
     }
 }

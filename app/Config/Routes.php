@@ -33,24 +33,34 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'User::index');
 $routes->get('/about', 'User::about');
-$routes->get('/booking', 'User::booking', ['filter' => 'userFilter']);
+
+$routes->post('/confirm-booking', 'Dashboard\Booking::confirmBooking', ['filter' => 'userFilter']);
 $routes->get('/contact', 'User::contact');
 $routes->get('/package-detail/(:any)', 'Dashboard\Paket::packageDetails/$1');
 
+$routes->get('booking/getPaymentHistory/(:any)', 'Dashboard\Payment::getPaymentHistory/$1');
+$routes->get('booking/getPreviousPayments/(:any)/(:any)', 'Dashboard\Payment::getPreviousPayments/$1/$2');
+$routes->post('/payment/submit', 'Dashboard\Payment::submit');
 
 $routes->get('profile/my_booking', 'Dashboard\Booking::cust_index', ['filter' => 'userFilter']);
 $routes->get('profile/my_account', 'Dashboard\Customer::showAccount', ['filter' => 'userFilter']);
 $routes->post('profile/update_account', 'Dashboard\Customer::updateAccount', ['filter' => 'userFilter']);
 $routes->get('profile/review', 'Dashboard\Review::cust_index', ['filter' => 'userFilter']);
-$routes->post('profile/review_store', 'Dashboard\Review::store', ['filter' => 'userFilter']);
+$routes->post('review/store', 'Dashboard\Review::store', ['filter' => 'userFilter']);
 $routes->get('profile/invoice', 'Dashboard\Booking::invoice', ['filter' => 'userFilter']);
+$routes->get('profile/invoice-details/(:any)', 'Dashboard\Booking::viewInvoice/$1', ['filter' => 'userFilter']);
+$routes->post('profile/printPdf/(:any)', 'Dashboard\Booking::printInvoice/$1', ['filter' => 'userFilter']);
+
+
+$routes->get('/booking/(:segment)', 'Dashboard\Booking::bookingDetails/$1', ['filter' => 'userFilter']);
+$routes->post('/booking/cancelBooking/(:any)', 'Dashboard\Booking::cancelBooking/$1', ['filter' => 'userFilter']);
+
 
 $routes->get('login', 'Auth::login');
 $routes->post('login/proses', 'Auth::loginPost');
 $routes->get('register', 'Auth::register');
 $routes->post('register/proses', 'Auth::registerPost');
-$routes->get('logout', 'Auth::logout');
-$routes->post('logout/proses', 'Auth::logout');
+$routes->post('logout', 'Auth::logout');
 
 $routes->group('bali', ['filter' => 'adminFilter'], function ($routes) {
     $routes->get('/', 'Dashboard::index');
@@ -105,6 +115,7 @@ $routes->group('bali', ['filter' => 'adminFilter'], function ($routes) {
     $routes->post('banktravel/update/(:any)', 'Dashboard\Bank_Travel::update/$1');
 
     $routes->get('booking', 'Dashboard\Booking::index');
+    $routes->post('booking/completeBooking/(:any)', 'Dashboard\Booking::completeBooking/$1');
 
     $routes->get('payment', 'Dashboard\Payment::index');
     $routes->post('payment/updateStatus', 'Dashboard\Payment::updateStatus');

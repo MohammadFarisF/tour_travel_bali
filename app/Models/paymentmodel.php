@@ -11,6 +11,7 @@ class PaymentModel extends Model
 
     protected $allowedFields = [
         'booking_id',
+        'customer_id',
         'payment_method',
         'payment_status',
         'proof_of_payment',
@@ -25,9 +26,10 @@ class PaymentModel extends Model
         $builder->select('
             payments.*, 
             bookings.booking_id,
-            bookings.customer_id,
             bookings.total_amount,
-            bookings.booking_status
+            bookings.booking_status,
+            customer.customer_id,
+            customer.full_name
         ');
         $builder->join('bookings', 'bookings.booking_id = payments.booking_id', 'left');
         $builder->join('customer', 'customer.customer_id = payments.customer_id', 'left');
@@ -41,16 +43,17 @@ class PaymentModel extends Model
         $builder->select('
         payments.*, 
         bookings.booking_id,
-        bookings.customer_id,
         bookings.total_amount,
         bookings.booking_status
-    ');
+        customer.customer_id,
+        customer.full_name
+        ');
         $builder->join('bookings', 'bookings.booking_id = payments.booking_id', 'left');
         $builder->join('customer', 'customer.customer_id = payments.customer_id', 'left');
 
         // Filter data berdasarkan user_id yang login
         if ($userId !== null) {
-            $builder->where('bookings.customer_id', $userId);
+            $builder->where('customer.customer_id', $userId);
         }
 
         return $builder->get()->getResultArray();
@@ -63,8 +66,10 @@ class PaymentModel extends Model
         payments.account_name,
         payments.account_number,
         payments.account_holder_name,
+        customer.customer_id,
         customer.full_name
     ');
+        $builder->join('bookings', 'bookings.booking_id = payments.booking_id', 'left');
         $builder->join('customer', 'customer.customer_id = payments.customer_id', 'left');
         return $builder->get()->getResultArray();
     }

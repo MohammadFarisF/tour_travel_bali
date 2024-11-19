@@ -54,13 +54,13 @@ class Review extends BaseController
     {
         $userId = session()->get('userid'); // Dapatkan user_id dari session
         $data = [
-            'title' => 'Review',
+            'title' => 'Review - ',
             'review' => $this->reviewModel->getReviewCust($userId), // Mengambil review berdasarkan user_id
         ];
 
         echo view('user/template/header', $data);
+        echo view('user/template/sidebar', $data);
         echo view('user/review', $data);
-        echo view('user/template/footer');
     }
     // Method untuk menyimpan review
     public function store()
@@ -87,16 +87,27 @@ class Review extends BaseController
         ];
 
         // Proses upload foto jika ada
-        if ($this->request->getFile('review_photo')->isValid()) {
-            $file = $this->request->getFile('review_photo');
-            $newName = $file->getRandomName();
-            $file->move(FCPATH . 'uploads/review', $newName); // Pastikan folder ini ada
-            $data['review_photo'] = $newName; // Simpan nama file foto
+        $photos = [];
+        $files = $this->request->getFiles();
+
+        if ($files['review_photo']) {
+            foreach ($files['review_photo'] as $file) {
+                if ($file->isValid()) {
+                    $newName = $file->getRandomName();
+                    $file->move(FCPATH . 'uploads/review', $newName); // Pastikan folder ini ada
+                    $photos[] = $newName; // Simpan nama file foto
+                }
+            }
+        }
+
+        // Jika ada foto, simpan dengan nama file yang dipisahkan koma
+        if (!empty($photos)) {
+            $data['review_photo'] = implode(',', $photos); // Menggabungkan nama file dengan koma
         }
 
         // Simpan data review ke database
         $this->reviewModel->save($data);
 
-        return redirect()->to(base_url('/bali/review'))->with('success', 'Review berhasil disimpan.');
+        return redirect()->to(base_url('/profile/review'))->with('success', 'Review berhasil disimpan.');
     }
 }

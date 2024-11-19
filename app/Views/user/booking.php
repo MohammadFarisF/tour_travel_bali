@@ -1,251 +1,513 @@
-    <div class="container-xxl py-5">
-        <div class="container">
-            <div class="text-center pb-4 wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Process</h6>
-                <h1 class="mb-5">3 Easy Steps</h1>
-            </div>
-            <div class="row gy-5 gx-4 justify-content-center">
-                <div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.1s">
-                    <div class="position-relative border border-primary pt-5 pb-4 px-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow" style="width: 100px; height: 100px;">
-                            <i class="fa fa-map-marker-alt fa-3x text-white"></i>
-                        </div>
-                        <h5 class="mt-4">Choose A Destination</h5>
-                        <hr class="w-25 mx-auto bg-primary mb-1">
-                        <hr class="w-50 mx-auto bg-primary mt-0">
-                        <p class="mb-0">Choose your perfect destination and embark on an unforgettable journey through Bali’s most captivating spots, from vibrant beaches to tranquil temples and scenic terraces. Discover the magic of Bali, crafted just for you.</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.3s">
-                    <div class="position-relative border border-primary pt-5 pb-4 px-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow" style="width: 100px; height: 100px;">
-                            <i class="fa fa-dollar-sign fa-3x text-white"></i>
-                        </div>
-                        <h5 class="mt-4">Pay Online</h5>
-                        <hr class="w-25 mx-auto bg-primary mb-1">
-                        <hr class="w-50 mx-auto bg-primary mt-0">
-                        <p class="mb-0">Enjoy a hassle-free booking experience with our secure online payment system. Simply select your destination, book your trip, and send proof of payment easily. Your dream vacation is just a few clicks away!</p>
-                    </div>
-                </div>
-                <div class="col-lg-4 col-sm-6 text-center pt-4 wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="position-relative border border-primary pt-5 pb-4 px-4">
-                        <div class="d-inline-flex align-items-center justify-content-center bg-primary rounded-circle position-absolute top-0 start-50 translate-middle shadow" style="width: 100px; height: 100px;">
-                            <i class="fa fa-car fa-3x text-white"></i>
-                        </div>
-                        <h5 class="mt-4">Lets Go</h5>
-                        <hr class="w-25 mx-auto bg-primary mb-1">
-                        <hr class="w-50 mx-auto bg-primary mt-0">
-                        <p class="mb-0">Pack your bags and get ready for an unforgettable journey! With Bali Tour Explorer, every moment is designed to create lasting memories. Let's go and experience the beauty, culture, and excitement of Bali together.</p>
-                    </div>
+    <div class="container-fluid bg-primary hero-header">
+        <div class="container py-5">
+            <div class="row justify-content-center py-5">
+                <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                    <h1 class="display-3 text-white mb-3 animated slideInDown"> Booking #<?= esc($booking['booking_id']); ?></h1>
+                    <div class="position-relative w-75 mx-auto animated slideInDown"></div>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Process Start -->
 
-    <!-- Package Start -->
-    <div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center pb-4">
-            <h6 class="section-title bg-white text-center text-primary px-3">Packages</h6>
-            <h1 class="mb-5">Our Tour Packages</h1>
-        </div>
-        <div class="row gy-5 gx-4 justify-content-center">
-            <?php if (!empty($packages) && is_array($packages)): ?>
-                <?php foreach ($packages as $package): ?>
-                    <div class="col-lg-4 col-sm-6 text-center pt-4">
-                        <div class="position-relative border border-primary pt-5 pb-4 px-4">
-                            <img src="<?= base_url('uploads/paket/' . esc($package['foto'])); ?>" alt="<?= esc($package['package_name']); ?>" class="img-fluid mb-3" style="width:100%; height:200px; object-fit:cover;">
-                            <h5 class="mt-4"><?= esc($package['package_name']); ?></h5>
-                            <hr class="w-25 mx-auto bg-primary mb-1">
-                            <hr class="w-50 mx-auto bg-primary mt-0">
-                            <p class="mb-0"><?= esc($package['description']); ?></p>
-                            <p class="text-primary mt-3"><strong>Rp <?= number_format($package['harga'], 0, ',', '.'); ?></strong></p>
+    <div id="layoutSidenav_content">
+        <main>
+            <header class="page-header page-header-light">
+                <div class="container-xl px-4">
+                    <div class="pt-4">
+                        <h1>
+                            <div data-feather="briefcase" style="height:50px; width:30px"></div>
+                            Booking Details: #<?= esc($booking['booking_id']); ?>
+                        </h1>
+                    </div>
+                </div>
+            </header>
+
+            <!-- user/booking_details.php -->
+            <div class="container">
+                <div class="row">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <!-- Card for Booking Details -->
+                            <div class="card mb-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Booking Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Nama Paket:</strong> <?= esc($package['package_name']); ?></p>
+
+                                    <p><strong>Destinations</strong></p>
+                                    <ul>
+                                        <?php if (!empty($destinations)): ?>
+                                            <?php foreach ($destinations as $destination): ?>
+                                                <li><?= esc($destination['destination_name']); ?></li>
+                                            <?php endforeach; ?>
+                                        <?php else: ?>
+                                            <li>-</li>
+                                        <?php endif; ?>
+                                    </ul>
+
+                                    <p><strong>Pickup Address:</strong> <?= esc($booking['address']); ?></p>
+                                    <p><strong>Total Participants:</strong> <?= esc($booking['total_people']); ?> Orang</p>
+                                    <p><strong>Departure Date:</strong> <?= date('l, d F Y', strtotime($booking['departure_date'])); ?></p>
+                                    <p><strong>Return Date:</strong> <?= date('l, d F Y', strtotime($booking['return_date'])); ?></p>
+                                    <p><strong>Customer Request:</strong> <?= !empty($booking['cust_request']) ? esc($booking['cust_request']) : '-'; ?></p>
+                                    <!-- Add this section where you want to display the vehicle details -->
+                                    <?php if (!empty($vehicles)): ?>
+                                        <h6>Kendaraan yang Digunakan :</h6> <!-- Judul untuk accordion -->
+                                        <div class="accordion" id="vehicleAccordion">
+                                            <?php foreach ($vehicles as $index => $vehicle): ?>
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="headingVehicle<?= $index ?>">
+                                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseVehicle<?= $index ?>" aria-expanded="false" aria-controls="collapseVehicle<?= $index ?>">
+                                                            <?= esc($vehicle['vehicle_name']); ?>
+                                                        </button>
+                                                    </h2>
+                                                    <div id="collapseVehicle<?= $index ?>" class="accordion-collapse collapse" aria-labelledby="headingVehicle<?= $index ?>" data-bs-parent="#vehicleAccordion">
+                                                        <div class="accordion-body">
+                                                            <img src="<?= base_url('uploads/kendaraan/' . esc($vehicle['vehicle_photo'])); ?>" alt="<?= esc($vehicle['vehicle_name']); ?>" style="max-width: 150px; margin-right: 10px; object-fit: contain;">
+                                                            <p>No. Plat: <?= esc($vehicle['license_plate']); ?></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <?php endforeach; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+
+                            <!-- Card for Customer Details -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Customer Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Name:</strong> <?= esc($customer['full_name']); ?></p>
+                                    <p><strong>Phone Number:</strong> <?= esc($customer['phone_number']); ?></p>
+                                    <p><strong>Email:</strong> <?= esc($customer['email']); ?></p>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-between mt-4">
+                                <?php
+                                // Hitung selisih hari antara tanggal keberangkatan dan tanggal saat ini
+                                $departureDate = strtotime($booking['departure_date']);
+                                $currentDate = time();
+                                $daysBeforeDeparture = ($departureDate - $currentDate) / (60 * 60 * 24); // Menghitung selisih hari
+
+                                if ($booking['booking_status'] === 'completed'): ?>
+                                    <a href="<?= base_url('profile/my_booking') ?>" class="btn btn-secondary">Kembali</a>
+                                <?php elseif ($booking['booking_status'] === 'cancelled'): ?>
+                                    <a href="<?= base_url('profile/my_booking') ?>" class="btn btn-secondary">Kembali</a>
+                                <?php elseif ($booking['payment_status'] === 'pending' && !empty($payment['proof_of_payment'])): ?>
+                                    <!-- Jika sudah bayar tetapi belum dikonfirmasi admin -->
+                                    <a href="<?= base_url('profile/my_booking') ?>" class="btn btn-secondary">Kembali</a>
+
+                                <?php else: ?>
+                                    <?php if ($daysBeforeDeparture > 7): ?>
+                                        <form action="<?= base_url('booking/cancelBooking/' . esc($booking['booking_id'])) ?>" method="post" onsubmit="return confirm('Dana anda akan dikembalikan 100%. Apakah anda yakin ingin membatalkan pesanan ini?');">
+                                            <button type="submit" class="btn btn-danger">Batalkan Pesanan</button>
+                                        </form>
+                                        <a href="<?= base_url('profile/my_booking') ?>" class="btn btn-secondary">Kembali</a>
+                                    <?php elseif ($daysBeforeDeparture > 3): ?>
+                                        <form action="<?= base_url('booking/cancelBooking/' . esc($booking['booking_id'])) ?>" method="post" onsubmit="return confirm('Dana anda akan dikembalikan 50%. Apakah anda yakin ingin membatalkan pesanan ini?');">
+                                            <button type="submit" class="btn btn-danger">Batalkan Pesanan</button>
+                                        </form>
+                                        <a href="<?= base_url('profile/my_booking') ?>" class="btn btn-secondary">Kembali</a>
+                                    <?php elseif ($daysBeforeDeparture <= 3): ?>
+                                        <p class="text-danger">Anda tidak dapat membatalkan pesanan ini karena waktu keberangkatan kurang dari 3 hari.</p>
+                                        <a href="<?= base_url('profile/my_booking') ?>" class="btn btn-secondary">Kembali</a>
+                                    <?php else: ?>
+                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#paymentModal" onclick="submitPayment()">Submit Pembayaran</button>
+                                        <button class="btn btn-secondary" onclick="payLater()">Bayar Nanti</button>
+                                    <?php endif; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                        <!-- Modal for Payment Submission -->
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Bank Details</h5>
+                                </div>
+                                <div class="card-body">
+                                    <ul class="list-group">
+                                        <?php foreach ($banks as $bank): ?>
+                                            <li class="list-group-item d-flex align-items-center">
+                                                <img src="<?= base_url('uploads/banktravel/' . esc($bank['photo'])); ?>" width="90" alt="<?= esc($bank['bank_name']); ?>" style="margin-right: 20px;">
+                                                <div>
+                                                    <h6><?= esc($bank['bank_name']); ?></h6>
+                                                    <small><strong>Account Holder: </strong><?= esc($bank['account_holder_name']); ?></small><br>
+                                                    <small><strong>Account Number: </strong><?= esc($bank['account_number']); ?></small>
+                                                </div>
+                                            </li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="card mt-4">
+                                <div class="card-header">
+                                    <h5 class="mb-0">Subtotal</h5>
+                                </div>
+                                <div class="card-body">
+                                    <?php
+                                    $totalAmount = esc($booking['total_amount']); // Ambil total amount dari booking
+                                    $totalDestinationPrice = 0; // Inisialisasi total harga destinasi
+
+                                    // Iterasi melalui setiap destinasi
+                                    foreach ($destinations as $destination) {
+                                        $pricePerPerson = esc($destination['harga_per_orang']); // Ambil harga per orang untuk destinasi ini
+                                        $numPeople = esc($booking['total_people']); // Ambil jumlah peserta
+                                        $destinationTotalPrice = $pricePerPerson * $numPeople; // Hitung total harga untuk destinasi ini
+                                        $totalDestinationPrice += $destinationTotalPrice; // Tambahkan ke total harga destinasi
+
+                                        // Tampilkan informasi destinasi
+                                        echo "<p>{$destination['destination_name']} - Rp " . number_format($pricePerPerson, 0, ',', '.') . " Per Orang</p>";
+                                    }
+                                    ?>
+
+                                    <hr>
+
+                                    <?php
+                                    // Tampilkan total harga untuk setiap destinasi
+                                    foreach ($destinations as $destination) {
+                                        $pricePerPerson = esc($destination['harga_per_orang']); // Ambil harga per orang untuk destinasi ini
+                                        $numPeople = esc($booking['total_people']); // Ambil jumlah peserta
+                                        $destinationTotalPrice = $pricePerPerson * $numPeople; // Hitung total harga untuk destinasi ini
+
+                                        // Tampilkan total harga untuk destinasi
+                                        echo "<p>Rp " . number_format($pricePerPerson, 0, ',', '.') . " x " . esc($numPeople) . " Orang = Rp " . number_format($destinationTotalPrice, 0, ',', '.') . "</p>";
+                                    }
+                                    ?>
+
+                                    <hr>
+                                    <p><strong>Total Amount Booking:</strong> Rp <?= number_format($totalAmount, 0, ',', '.'); ?></p>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p>No packages available at the moment.</p>
-            <?php endif; ?>
-        </div>
-    </div>
-</div>
-     <!-- Package End -->
+                </div>
+        </main>
+        <!-- Modal for Payment Submission -->
+        <div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="paymentModalLabel">Submit Pembayaran</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="paymentForm" enctype="multipart/form-data" action="<?= base_url('payment/submit') ?>" method="POST" onsubmit="return submitPaymentForm(event)">
+                        <div class="modal-body">
+                            <!-- Hidden Booking ID -->
+                            <input type="hidden" id="bookingId" name="booking_id" value="<?= esc($booking['booking_id']); ?>">
 
-<!-- Booking Start -->
-<div class="container-xxl py-5">
-    <div class="container">
-        <div class="text-center pb-4 wow fadeInUp" data-wow-delay="0.1s">
-            <h6 class="section-title bg-white text-center text-primary px-3">Booking</h6>
-            <h1 class="mb-5">Book A Tour</h1>
-        </div>
-        <div class="row g-5">
-            <div class="col-lg-7">
-                <div class="wow fadeInUp" data-wow-delay="0.3s">
-                    <form id="bookingForm" onsubmit="redirectToWhatsApp(event)">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="name" placeholder="Your Name" required>
-                                    <label for="name">Your Name</label>
+                            <!-- Transaction History Radio Buttons -->
+                            <div class="mb-3">
+                                <label class="form-label">Status Transaksi</label>
+                                <div class="form-check">
+                                    <input type="radio" id="everTransactedYes" name="transactionStatus" value="yes" class="form-check-input" disabled>
+                                    <label class="form-check-label" for="everTransactedYes">Sudah Pernah Transaksi</label>
                                 </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="email" class="form-control" id="email" placeholder="Your Email" required>
-                                    <label for="email">Your Email</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating">
-                                    <input type="text" class="form-control" id="text" placeholder="Address" required>
-                                    <label for="text">Address</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating date" id="date3" data-target-input="nearest">
-                                    <input type="date" class="form-control datetimepicker-input" id="date" placeholder="Date" data-target="#date3" data-toggle="datetimepicker" required />
-                                    <label for="date">Date</label>
+                                <div class="form-check">
+                                    <input type="radio" id="everTransactedNo" name="transactionStatus" value="no" class="form-check-input" checked>
+                                    <label class="form-check-label" for="everTransactedNo">Belum Pernah Transaksi</label>
                                 </div>
                             </div>
 
-                            <div class="col-md-12">
-                                <label for="package" class="form-label">Select Package:</label>
-                                <select class="form-select" id="package" required onchange="updateDestinations()">
-                                    <option value="" disabled selected>Select a package</option>
-                                    <option value="package1">Package 1</option>
-                                    <option value="package2">Package 2</option>
-                                    <option value="package3">Package 3</option>
-                                    <option value="package4">Package 4</option>
+                            <!-- Payment Method Selection -->
+                            <div class="mb-3">
+                                <label for="paymentMethod" class="form-label">Metode Pembayaran</label>
+                                <select id="paymentMethod" name="paymentMethod" class="form-select" required onchange="handlePaymentMethodChange()">
+                                    <option value="">Pilih Metode Pembayaran</option>
+                                    <option value="bank_transfer">Bank Transfer</option>
+                                    <option value="e_wallet">E-Wallet</option>
                                 </select>
                             </div>
 
-                            <!-- Checkbox for Selecting Destinations -->
-                            <div class="col-md-12">
-                                <label class="form-label">Select Destinations:</label>
-                                <div class="row" id="destinationContainer">
-                                    <div class="col-md-6" id="leftColumn">
-                                        <!-- Destinasi kiri -->
-                                    </div>
-                                    <div class="col-md-6" id="rightColumn">
-                                        <!-- Destinasi kanan -->
-                                    </div>
+                            <!-- Dynamic Account Holder Field -->
+                            <div class="mb-3">
+                                <label for="accountHolder" class="form-label">Nama Pemegang Akun</label>
+                                <div id="accountHolderContainer">
+                                    <input type="text" id="accountHolder" name="accountHolder" class="form-control" required>
                                 </div>
                             </div>
 
-                            <div class="flex items-center space-x-4 mt-3">
-                                <label class="text-gray-700" for="person">Person</label>
-                                <input id="person" min="1" type="number" value="1" />
+                            <!-- Account Name -->
+                            <div class="mb-3">
+                                <label for="accountName" class="form-label">Nama Akun/Bank/E-Wallet</label>
+                                <input type="text" id="accountName" name="accountName" class="form-control" required>
                             </div>
-                            <div class="col-12">
-                                <div class="form-floating">
-                                    <textarea class="form-control" placeholder="Special Request" id="message" style="height: 100px" required></textarea>
-                                    <label for="message">Special Request</label>
+
+                            <!-- Account Number -->
+                            <div class="mb-3">
+                                <label for="accountNumber" class="form-label">Nomor Rekening/Nomor E-Wallet</label>
+                                <input type="text" id="accountNumber" name="accountNumber" class="form-control" required>
+                            </div>
+
+                            <!-- Transfer Amount -->
+                            <div class="mb-3">
+                                <label for="transferAmount" class="form-label">Jumlah Transfer</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">Rp</span>
+                                    <input type="text" id="transferAmount" name="transferAmount" class="form-control"
+                                        value="<?= number_format($booking['total_amount'], 0, ',', '.'); ?>" readonly>
                                 </div>
                             </div>
-                            <div class="flex justify-end space-x-4 mt-6">
-                                <button class="button button-cancel" type="button">
-                                    Cancel
-                                </button>
-                                <button class="button button-book" type="submit">
-                                    Booking
-                                </button>
+
+                            <!-- Transfer Proof -->
+                            <div class="mb-3">
+                                <label for="transferProof" class="form-label">Bukti Transfer</label>
+                                <input type="file" id="transferProof" name="transferProof" class="form-control" accept="image/*" required>
+                                <small class="text-muted">Format: JPG, PNG, atau PDF. Maksimal 2MB</small>
                             </div>
+
+                            <!-- Preview Image -->
+                            <div class="mb-3 d-none" id="imagePreviewContainer">
+                                <label class="form-label">Preview Bukti Transfer</label>
+                                <div class="text-center">
+                                    <img id="imagePreview" src="#" alt="Preview" class="img-fluid img-thumbnail" style="max-height: 200px;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Submit Pembayaran</button>
                         </div>
                     </form>
                 </div>
             </div>
-            <div class="col-lg-5">
-                <div class="wow fadeInUp" data-wow-delay="0.5s">
-                    <div class="contact-info bg-light rounded p-3 mb-4">
-                        <h5><i class="fa fa-map-marker-alt text-primary me-3"></i>Office</h5>
-                        <p class="mb-2">Jl. Mekar II Blok C 2 No.2 Pemogan, Denpasar Selatan, Indonesia</p>
-                    </div>
-                    <div class="contact-info bg-light rounded p-3 mb-4">
-                        <h5><i class="fa fa-phone-alt text-primary me-3"></i>Phone</h5>
-                        <p class="mb-2">+62 822-3690-6042</p>
-                    </div>
-                    <div class="contact-info bg-light rounded p-3 mb-4">
-                        <h5><i class="fa fa-envelope-open text-primary me-3"></i>Email</h5>
-                        <p class="mb-2">explorebali52@gmail.com</p>
-                    </div>
-                    <div class="contact-info bg-light rounded p-3 mb-4">
-                        <h5><i class="fa fa-clock text-primary me-3"></i>Opening Hours</h5>
-                        <p class="mb-2">24 Hours</p>
-                    </div>
-                </div>
-            </div>
         </div>
-    </div>
-</div>
-<!-- Booking End -->
-
-<script>
-    function updateDestinations() {
-        const packageSelect = document.getElementById("package");
-        const leftColumn = document.getElementById("leftColumn");
-        const rightColumn = document.getElementById("rightColumn");
-
-        // Kosongkan opsi destinasi sebelumnya
-        leftColumn.innerHTML = '';
-        rightColumn.innerHTML = '';
-
-        // Ambil paket yang dipilih
-        const selectedPackage = packageSelect.value;
-
-        // Tentukan destinasi berdasarkan paket
-        let destinations = [];
-        switch (selectedPackage) {
-            case "package1":
-                destinations = ["Kuta Beach", "Ubud", "Seminyak", "Tanah Lot"];
-                break;
-            case "package2":
-                destinations = ["Nusa Penida", "Gili Trawangan", "Uluwatu", "Sanur"];
-                break;
-            case "package3":
-                destinations = ["Mount Batur", "Tegallalang Rice Terrace", "Lovina Beach", "Jatiluwih"];
-                break;
-            case "package4":
-                destinations = ["Nusa Dua", "Amed Beach", "Jimbaran", "Bali Safari Park"];
-                break;
-            default:
-                destinations = [];
-        }
-
-        // Isi checkbox destinasi dengan opsi baru ke dua kolom
-        destinations.forEach((dest, index) => {
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.value = dest.toLowerCase().replace(/\s/g, "");
-            checkbox.id = dest.toLowerCase().replace(/\s/g, "") + "Checkbox";
-            checkbox.name = "destination";
-
-            const label = document.createElement("label");
-            label.htmlFor = checkbox.id;
-            label.textContent = dest;
-
-            const destinationDiv = document.createElement("div");
-            destinationDiv.classList.add("form-check");
-
-            destinationDiv.appendChild(checkbox);
-            destinationDiv.appendChild(label);
-
-            // Menentukan kolom mana yang akan diisi
-            if (index % 2 === 0) {
-                leftColumn.appendChild(destinationDiv);
-            } else {
-                rightColumn.appendChild(destinationDiv);
+        <script>
+            function submitPayment() {
+                const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+                paymentModal.show();
+                checkPaymentHistory();
             }
-        });
-    }
 
-    // Validasi jumlah destinasi yang dipilih
-    const destinationContainer = document.getElementById("destinationContainer");
-    destinationContainer.addEventListener("change", function() {
-        const checkedBoxes = destinationContainer.querySelectorAll('input[type="checkbox"]:checked');
-        if (checkedBoxes.length > 4) {
-            alert("You can select up to 4 destinations only.");
-            checkedBoxes[4].checked = false; // Deselect the last option
-        }
-    });
-</script>
+            function checkPaymentHistory() {
+                const customerId = '<?= session()->get('userid') ?>';
+
+                fetch(`getPaymentHistory/${customerId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const radioYes = document.getElementById('everTransactedYes');
+                        const radioNo = document.getElementById('everTransactedNo');
+
+                        // Remove disabled state from both radio buttons
+                        radioYes.disabled = false;
+                        radioNo.disabled = false;
+
+                        if (data.hasHistory) {
+                            radioYes.checked = true;
+                        } else {
+                            radioNo.checked = true;
+                        }
+
+                        // Reset payment method and fields
+                        const paymentMethod = document.getElementById('paymentMethod');
+                        paymentMethod.value = '';
+                        resetPaymentFields();
+
+                        // Handle initial state
+                        handleTransactionStatusChange();
+                    });
+            }
+
+            // New function to handle transaction status change
+            function handleTransactionStatusChange() {
+                const isNewTransaction = document.getElementById('everTransactedNo').checked;
+                const paymentMethodSelect = document.getElementById('paymentMethod');
+
+                if (isNewTransaction) {
+                    // Reset and enable all fields for new transaction
+                    resetPaymentFields();
+                    paymentMethodSelect.value = '';
+                } else {
+                    // Handle existing transaction logic
+                    if (paymentMethodSelect.value) {
+                        handlePaymentMethodChange();
+                    }
+                }
+            }
+
+            function handlePaymentMethodChange() {
+                const paymentMethod = document.getElementById('paymentMethod').value;
+                const isNewTransaction = document.getElementById('everTransactedNo').checked;
+                const customerId = '<?= session()->get('userid') ?>';
+
+                if (!isNewTransaction && paymentMethod) {
+                    const accountHolderContainer = document.getElementById('accountHolderContainer');
+
+                    fetch(`getPreviousPayments/${customerId}/${paymentMethod}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.length > 0) {
+                                // Create select element with previous payment data
+                                const select = createAccountHolderSelect(data);
+                                accountHolderContainer.innerHTML = '';
+                                accountHolderContainer.appendChild(select);
+                            } else {
+                                resetPaymentFields();
+                            }
+                        });
+                } else {
+                    resetPaymentFields();
+                }
+            }
+
+            function createAccountHolderSelect(data) {
+                const selectWrapper = document.createElement('div');
+                selectWrapper.className = 'select-wrapper position-relative';
+
+                const select = document.createElement('select');
+                select.id = 'accountHolder';
+                select.name = 'accountHolder';
+                select.className = 'form-select';
+                select.required = true;
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select Account Holder';
+                select.appendChild(defaultOption);
+
+                data.forEach(payment => {
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify(payment);
+                    option.textContent = payment.account_holder_name;
+                    select.appendChild(option);
+                });
+
+                select.addEventListener('change', function() {
+                    if (this.value) {
+                        const selectedAccount = JSON.parse(this.value);
+                        document.getElementById('accountName').value = selectedAccount.account_name;
+                        document.getElementById('accountNumber').value = selectedAccount.account_number;
+                    } else {
+                        document.getElementById('accountName').value = '';
+                        document.getElementById('accountNumber').value = '';
+                    }
+                });
+
+                selectWrapper.appendChild(select);
+                return selectWrapper;
+            }
+
+            function resetPaymentFields() {
+                const accountHolderContainer = document.getElementById('accountHolderContainer');
+                const accountName = document.getElementById('accountName');
+                const accountNumber = document.getElementById('accountNumber');
+
+                // Create new text input for account holder
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.id = 'accountHolder';
+                input.name = 'accountHolder';
+                input.className = 'form-control';
+                input.required = true;
+                input.placeholder = 'Enter Account Holder Name';
+
+                // Replace existing element with text input
+                accountHolderContainer.innerHTML = '';
+                accountHolderContainer.appendChild(input);
+
+                // Clear and enable all fields
+                accountName.value = '';
+                accountNumber.value = '';
+                accountName.readOnly = false;
+                accountNumber.readOnly = false;
+            }
+
+            // Add event listeners when document loads
+            document.addEventListener('DOMContentLoaded', function() {
+                // Add event listeners to radio buttons
+                document.querySelectorAll('input[name="transactionStatus"]').forEach(radio => {
+                    radio.addEventListener('change', handleTransactionStatusChange);
+                });
+
+                // Add event listener to payment method select
+                document.getElementById('paymentMethod').addEventListener('change', handlePaymentMethodChange);
+
+                // Initial setup
+                const paymentModal = new bootstrap.Modal(document.getElementById('paymentModal'));
+
+                document.getElementById('paymentModal').addEventListener('hidden.bs.modal', function() {
+                    const backdrop = document.querySelector('.modal-backdrop');
+                    if (backdrop) {
+                        backdrop.remove();
+                    }
+                });
+            });
+            // Add this to your existing JavaScript code
+            function submitPaymentForm(event) {
+                event.preventDefault();
+
+                const form = event.target;
+                const accountHolderInput = document.getElementById('accountHolder');
+                let accountHolderName;
+
+                // Check if the input is a select element (for returning customers)
+                if (accountHolderInput.tagName === 'SELECT') {
+                    // If a value is selected, parse the JSON and get just the name
+                    if (accountHolderInput.value) {
+                        const selectedAccount = JSON.parse(accountHolderInput.value);
+                        accountHolderName = selectedAccount.account_holder_name;
+                    } else {
+                        accountHolderName = '';
+                    }
+                } else {
+                    // For new customers, just get the input value directly
+                    accountHolderName = accountHolderInput.value;
+                }
+
+                // Create a new hidden input for the processed account holder name
+                const processedNameInput = document.createElement('input');
+                processedNameInput.type = 'hidden';
+                processedNameInput.name = 'accountHolder';
+                processedNameInput.value = accountHolderName;
+
+                // Replace the original account holder input
+                accountHolderInput.name = 'original_account_holder';
+                form.appendChild(processedNameInput);
+
+                // Submit the form
+                form.submit();
+                return true;
+            }
+
+            // Modify the createAccountHolderSelect function
+            function createAccountHolderSelect(data) {
+                const selectWrapper = document.createElement('div');
+                selectWrapper.className = 'select-wrapper position-relative';
+
+                const select = document.createElement('select');
+                select.id = 'accountHolder';
+                select.name = 'original_account_holder'; // Change the name to avoid conflict
+                select.className = 'form-select';
+                select.required = true;
+
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select Account Holder';
+                select.appendChild(defaultOption);
+
+                data.forEach(payment => {
+                    const option = document.createElement('option');
+                    option.value = JSON.stringify(payment);
+                    option.textContent = payment.account_holder_name;
+                    select.appendChild(option);
+                });
+
+                select.addEventListener('change', function() {
+                    if (this.value) {
+                        const selectedAccount = JSON.parse(this.value);
+                        document.getElementById('accountName').value = selectedAccount.account_name;
+                        document.getElementById('accountNumber').value = selectedAccount.account_number;
+                    } else {
+                        document.getElementById('accountName').value = '';
+                        document.getElementById('accountNumber').value = '';
+                    }
+                });
+
+                selectWrapper.appendChild(select);
+                return selectWrapper;
+            }
+        </script>

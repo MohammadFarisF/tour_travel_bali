@@ -38,7 +38,15 @@
                         <tbody>
                             <?php foreach ($bookings as $booking): ?>
                                 <tr>
-                                    <td><?= $booking['booking_id']; ?></td>
+                                    <td>
+                                        <?php if ($booking['booking_status'] === 'completed'): ?>
+                                            <!-- Jika status sudah completed, tampilkan kode booking tanpa link -->
+                                            <span>#<?= $booking['booking_id']; ?></span>
+                                        <?php else: ?>
+                                            <!-- Jika status belum completed, tampilkan kode booking dengan modal -->
+                                            <a data-bs-toggle="modal" data-bs-target="#detailModal<?= $booking['booking_id']; ?>" style="cursor: pointer; color: black; transition: color 0.3s;" onmouseover="this.style.color='blue';" onmouseout="this.style.color='black';">#<?= $booking['booking_id']; ?></a>
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?= $booking['user_name']; ?></td>
                                     <td><?= $booking['package_name']; ?></td>
                                     <td><?= $booking['address']; ?></td>
@@ -66,9 +74,16 @@
                                         ?>
                                     </td>
                                     <td>
-                                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#detailModal<?= $booking['booking_id']; ?>">
-                                            Detail
-                                        </button>
+                                        <?php if ($booking['booking_status'] === 'completed'): ?>
+                                            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#detailModal<?= $booking['booking_id']; ?>">
+                                                Detail
+                                            </button>
+                                        <?php else: ?>
+                                            <!-- Jika status belum completed, tampilkan tombol Selesai -->
+                                            <form action="<?= base_url('bali/booking/completeBooking/' . esc($booking['booking_id'])) ?>" method="post" onsubmit="return confirm('Apakah Anda yakin ingin menyelesaikan pesanan ini?');">
+                                                <button type="submit" class="btn btn-primary">Selesai</button>
+                                            </form>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
 

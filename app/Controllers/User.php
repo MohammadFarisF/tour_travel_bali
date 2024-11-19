@@ -32,6 +32,7 @@ class User extends BaseController
         // Siapkan data untuk tampilan
         $data = [
             'packages' => $this->calculatePackageDetails($packages),
+            'title' => ''
         ];
 
         // Muat tampilan
@@ -72,45 +73,20 @@ class User extends BaseController
 
     public function about()
     {
-        echo view('user/template/header');
+        $data = [
+            'title' => 'About - '
+        ];
+        echo view('user/template/header', $data);
         echo view('user/about');
-        echo view('user/template/footer');
-    }
-
-    public function booking()
-    {
-        echo view('user/template/header');
-        echo view('user/booking');
         echo view('user/template/footer');
     }
     public function contact()
     {
-        echo view('user/template/header');
+        $data = [
+            'title' => 'Contact - '
+        ];
+        echo view('user/template/header', $data);
         echo view('user/contact');
-        echo view('user/template/footer');
-    }
-    public function payment()
-    {
-        echo view('user/template/header');
-        echo view('user/payment');
-        echo view('user/template/footer');
-    }
-    public function change()
-    {
-        echo view('user/template/header');
-        echo view('user/change');
-        echo view('user/template/footer');
-    }
-    public function my_account()
-    {
-        echo view('user/template/header');
-        echo view('user/my_account');
-        echo view('user/template/footer');
-    }
-    public function review()
-    {
-        echo view('user/template/header');
-        echo view('user/review');
         echo view('user/template/footer');
     }
 }

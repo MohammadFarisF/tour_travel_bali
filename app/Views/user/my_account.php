@@ -23,10 +23,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/choices.js/9.0.1/choices.min.js"></script>
 
 <style>
-    .page-header {
-        color: white;
-    }
-
     .account-info {
         border: 1px solid #dee2e6;
         border-radius: 0.25rem;
@@ -43,10 +39,6 @@
 
     .info-item:last-child {
         border-bottom: none;
-    }
-
-    .page-header-title {
-        margin-left: 10px;
     }
 
     .modal-title {
@@ -74,31 +66,39 @@
     }
 </style>
 
+<?php
+// Ambil userName dari session
+$userName = session()->get('userName') ?? 'my-account'; // Ganti 'my-account' dengan nilai default jika session tidak ada
+
+// Buat ID yang disanitasi dari userName
+$customerId = strtolower(str_replace(' ', '-', $userName));
+?>
+
+
 <div id="layoutSidenav_content">
-    <main>
-        <header class="page-header page-header-dark pb-10">
-            <div class="container-xl px-4">
-                <div class="page-header-content pt-4">
-                    <div class="row align-items-center justify-content-between">
-                        <div class="col-auto mt-4">
-                            <h1 class="page-header-title">
-                                <div class="page-header-icon"><i data-feather="user"></i></div>
-                                My Account
-                            </h1>
-                        </div>
-                        <div class="col-auto">
-                            <button class="btn btn-primary" style="width: 120px;" data-bs-toggle="modal" data-bs-target="#editAccountModal">
-                                Edit
-                            </button>
-                        </div>
+    <header class="page-header page-header-light pb-10" id="<?= $customerId ?>">
+        <div class="container-xl px-4">
+            <div class="page-header-content pt-4">
+                <div class="row align-items-center justify-content-between">
+                    <div class="col-auto mt-4">
+                        <h1>
+                            <div data-feather="user" style="height:50px; width:30px"></div>
+                            My Account
+                        </h1>
+                    </div>
+                    <div class="col-auto">
+                        <button class="btn btn-primary" style="width: 120px;" data-bs-toggle="modal" data-bs-target="#editAccountModal">
+                            Edit
+                        </button>
                     </div>
                 </div>
             </div>
-        </header>
-
+        </div>
+    </header>
+    <main>
         <div class="container-xl px-4 mt-n10">
             <div class="card mb-4">
-                <div class="card-header text-center">Account Information</div>
+                <div class="card-header-primary text-center">Account Information</div>
                 <div class="card-body text-center">
                     <div class="mb-4">
                         <img id="photoPreview" src="<?= isset($customer['photo']) ? base_url('uploads/customer/' . $customer['photo']) : base_url('asset_user/img/avatar-profile.jpg') ?>" alt="Profile Photo" class="rounded-circle" style="width: 150px; height: 150px; object-fit: cover;">
@@ -114,7 +114,7 @@
                             <strong>Gender:</strong> <?= $customer['gender'] == 'laki-laki' ? 'Laki-Laki' : ($customer['gender'] == 'perempuan' ? 'Perempuan' : 'Tidak Ada') ?>
                         </div>
                         <div class="info-item">
-                            <strong>Birth Date:</strong> <?= date('d F Y', strtotime($customer['tgl_lahir'])) ?? '-' ?>
+                            <strong>Birth Date:</strong> <?= !empty($customer['tgl_lahir']) ? date('d F Y', strtotime($customer['tgl_lahir'])) : '-' ?>
                         </div>
                         <div class="info-item">
                             <strong>Email:</strong> <?= $customer['email'] ?? '-' ?>
@@ -158,7 +158,7 @@
 
                         <div class="mb-3">
                             <label for="accountNIK" class="form-label">NIK / ID Number</label>
-                            <input type="text" class="form-control" id="accountNIK" name="accountNIK" value="<?= $customer['nik'] ?>" required>
+                            <input type="text" class="form-control" id="accountNIK" name="accountNIK" value="<?= $customer['nik'] ?>" <?= isset($customer['nik']) ? 'readonly' : '' ?> required>
                         </div>
 
                         <div class="mb-3">
@@ -178,7 +178,7 @@
 
                         <div class="mb-3">
                             <label for="accountEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="accountEmail" name="accountEmail" value="<?= $customer['email'] ?>" required>
+                            <input type="email" class="form-control" id="accountEmail" name="accountEmail" value="<?= $customer['email'] ?>" <?= isset($customer['email']) ? 'readonly' : '' ?> required>
                         </div>
 
                         <div class="mb-3">
@@ -202,6 +202,7 @@
             </div>
         </div>
     </div>
+
 
     <script>
         // Initialize Feather Icons
@@ -268,5 +269,12 @@
                 };
                 reader.readAsDataURL(file);
             }
+        });
+
+        window.addEventListener("load", function() {
+            const customerId = "<?= $customerId ?>";
+            document.getElementById(customerId)?.scrollIntoView({
+                behavior: "smooth"
+            });
         });
     </script>
