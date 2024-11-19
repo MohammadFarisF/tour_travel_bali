@@ -19850,6 +19850,7 @@ body {
 .dropdown .dropdown-toggle {
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
 }
 .dropdown .dropdown-toggle .dropdown-arrow {
   margin-left: 0.4rem;

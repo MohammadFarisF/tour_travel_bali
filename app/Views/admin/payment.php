@@ -38,7 +38,7 @@
                         <tbody>
                             <?php foreach ($payments as $payment): ?>
                                 <tr>
-                                    <td><?= $payment['booking_id']; ?></td>
+                                    <td>#<?= $payment['booking_id']; ?></td>
                                     <td><?= $payment['account_holder_name']; ?></td>
                                     <td><?= $payment['account_number']; ?></td>
                                     <td>

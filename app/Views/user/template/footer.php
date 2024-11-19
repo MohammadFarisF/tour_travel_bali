@@ -43,7 +43,8 @@
 
 <!-- JavaScript Libraries -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="<?= base_url() ?>asset_admin/js/scripts.js"></script>
 <script src="<?= base_url() ?>asset_user/lib/wow/wow.min.js"></script>
 <script src="<?= base_url() ?>asset_user/lib/easing/easing.min.js"></script>
 <script src="<?= base_url() ?>asset_user/lib/waypoints/waypoints.min.js"></script>

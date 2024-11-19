@@ -24,6 +24,10 @@ class Auth extends BaseController
             return $this->redirectByRole(session()->get('user_role'));
         }
 
+        if ($this->request->getGet('redirect')) {
+            session()->set('redirect_url', $this->request->getGet('redirect'));
+        }
+
         // Only initialize validation if POST method is detected
         $data['validation'] = null;
         if ($this->request->getMethod() === 'post') {
@@ -89,6 +93,12 @@ class Auth extends BaseController
                 // Set semua session
                 session()->set($sessionData);
 
+                $redirectUrl = session()->get('redirect_url');
+                if ($redirectUrl) {
+                    session()->remove('redirect_url'); // Hapus URL setelah digunakan
+                    return redirect()->to($redirectUrl); // Redirect ke halaman sebelumnya
+                }
+
                 // Redirect berdasarkan role
                 return $this->redirectByRole($user['user_role']);
             } else {
@@ -117,6 +127,9 @@ class Auth extends BaseController
     {
         if (session()->get('user_role')) {
             return $this->redirectByRole(session()->get('user_role'));
+        }
+        if ($this->request->getGet('redirect')) {
+            session()->set('redirect_url', $this->request->getGet('redirect'));
         }
         $data['validation'] = null;
         if ($this->request->getMethod() === 'post') {
@@ -213,8 +226,17 @@ class Auth extends BaseController
     // Fungsi logout
     public function logout()
     {
+        // Ambil role dari session
+        $userRole = session()->get('user_role'); // Pastikan 'user_role' disimpan di session saat login
+
         // Hapus sesi login
         session()->destroy();
-        return redirect()->to(base_url('login')); // Redirect ke halaman login setelah logout
+
+        // Redirect berdasarkan role
+        if ($userRole === 'admin' || $userRole === 'owner') {
+            return redirect()->to(base_url('login')); // Redirect ke halaman login untuk admin dan owner
+        } else {
+            return redirect()->to(base_url('')); // Redirect ke halaman home untuk customer
+        }
     }
 }

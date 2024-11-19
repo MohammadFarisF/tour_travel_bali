@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 09, 2024 at 06:15 AM
+-- Generation Time: Nov 19, 2024 at 03:18 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -25,35 +25,69 @@ DELIMITER $$
 --
 -- Procedures
 --
-CREATE DEFINER=`root`@`localhost` PROCEDURE `allocateVehicles` (IN `p_booking_id` INT)   BEGIN
-    DECLARE total_people INT;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `allocateVehicles` (IN `p_booking_id` VARCHAR(10) CHARSET utf8mb4)   BEGIN
+    DECLARE total_people_count INT;  -- Mengganti nama variabel menjadi total_people_count
     DECLARE available_vehicle_id INT;
-    DECLARE capacity INT;
+    DECLARE vehicle_capacity INT;     -- Mengganti nama variabel menjadi vehicle_capacity
     DECLARE remaining_people INT;
-    
-    -- Ambil jumlah penumpang dari pemesanan
-    SELECT total_people INTO total_people
-    FROM bookings WHERE booking_id = p_booking_id;
-    
-    SET remaining_people = total_people;
+
+    -- Ambil jumlah penumpang dari pemesanan berdasarkan booking_id
+    SELECT total_people INTO total_people_count
+    FROM bookings
+    WHERE booking_id = p_booking_id COLLATE utf8mb4_general_ci;
+
+    -- Jika booking_id tidak ditemukan, biarkan sistem database menampilkan error bawaan
+    IF total_people_count IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Booking ID tidak ditemukan.';
+    END IF;
+
+    SET remaining_people = total_people_count;
     
     -- Loop selama masih ada penumpang yang belum dialokasikan
     WHILE remaining_people > 0 DO
-        -- Ambil mobil yang tersedia dan kapasitasnya
-        SELECT vehicle_id, capacity INTO available_vehicle_id, capacity
+        -- Cek apakah ada mobil yang memiliki kapasitas yang cukup untuk sisa penumpang
+        SELECT vehicle_id, capacity 
+        INTO available_vehicle_id, vehicle_capacity
         FROM vehicles
-        WHERE status = 'available'
+        WHERE status = 'available' AND capacity >= remaining_people
+        ORDER BY capacity ASC  -- Urutkan berdasarkan kapasitas dari yang terkecil
         LIMIT 1;
-        
-        -- Kurangi remaining_people dengan kapasitas mobil yang dialokasikan
-        SET remaining_people = remaining_people - capacity;
-        
-        -- Simpan hubungan antara pemesanan dan mobil
-        INSERT INTO booking_vehicles (booking_id, vehicle_id)
-        VALUES (p_booking_id, available_vehicle_id);
-        
-        -- Update status mobil menjadi 'in_use'
-        UPDATE vehicles SET status = 'in_use' WHERE vehicle_id = available_vehicle_id;
+
+        -- Jika ditemukan mobil yang muat untuk sisa penumpang
+        IF available_vehicle_id IS NOT NULL THEN
+            -- Alokasikan seluruh sisa penumpang ke mobil tersebut
+            INSERT INTO booking_vehicles (booking_id, vehicle_id)
+            VALUES (p_booking_id, available_vehicle_id);
+
+            -- Update status mobil menjadi 'in_use'
+            UPDATE vehicles SET status = 'in_use' WHERE vehicle_id = available_vehicle_id;
+
+            -- Semua penumpang telah dialokasikan
+            SET remaining_people = 0;
+        ELSE
+            -- Jika tidak ada mobil yang cukup besar, ambil mobil yang memiliki kapasitas yang paling mendekati
+            SELECT vehicle_id, capacity 
+            INTO available_vehicle_id, vehicle_capacity
+            FROM vehicles
+            WHERE status = 'available' AND capacity >= remaining_people
+            ORDER BY capacity ASC  -- Urutkan berdasarkan kapasitas dari yang terkecil
+            LIMIT 1;
+
+            -- Jika masih tidak ada kendaraan yang tersedia, hentikan prosedur
+            IF available_vehicle_id IS NULL THEN
+                SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Tidak ada kendaraan yang tersedia untuk mengakomodasi seluruh penumpang.';
+            END IF;
+
+            -- Kurangi remaining_people dengan kapasitas mobil yang dialokasikan
+            SET remaining_people = remaining_people - vehicle_capacity;
+
+            -- Simpan hubungan antara pemesanan dan mobil
+            INSERT INTO booking_vehicles (booking_id, vehicle_id)
+            VALUES (p_booking_id, available_vehicle_id);
+
+            -- Update status mobil menjadi 'in_use'
+            UPDATE vehicles SET status = 'in_use' WHERE vehicle_id = available_vehicle_id;
+        END IF;
     END WHILE;
 END$$
 
@@ -84,29 +118,6 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `calculateRefund` (IN `p_booking_id`
     INSERT INTO refunds (booking_id, user_id, refund_amount, refund_status)
     SELECT b.booking_id, b.user_id, refund_amount, 'pending'
     FROM bookings b WHERE b.booking_id = p_booking_id;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `update_transaction_amount` (IN `transaction_id` INT, IN `payment_method` ENUM('bank_transfer','other'))   BEGIN
-    DECLARE base_amount DECIMAL(10, 2);
-    DECLARE final_amount DECIMAL(10, 2);
-    
-    -- Ambil jumlah dasar dari transaksi
-    SELECT total_amount INTO base_amount
-    FROM transactions
-    WHERE id = transaction_id;
-    
-    -- Hitung jumlah yang harus dibayar
-    CALL calculate_final_amount(base_amount, payment_method, final_amount);
-    
-    -- Perbarui entri transaksi
-    UPDATE transactions
-    SET transfer_fee_percentage = 
-        CASE 
-            WHEN payment_method = 'bank_transfer' THEN 0.00
-            ELSE 2.00
-        END,
-        amount_paid = final_amount
-    WHERE id = transaction_id;
 END$$
 
 DELIMITER ;
@@ -186,8 +197,28 @@ CREATE TABLE `bookings` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `bookings`
+--
+
+INSERT INTO `bookings` (`booking_id`, `customer_id`, `package_id`, `address`, `total_people`, `departure_date`, `return_date`, `total_amount`, `cust_request`, `booking_status`, `payment_status`, `created_at`, `updated_at`) VALUES
+('B32535', 'C002', 'P02', 'Jl. Jakarta', 1, '2024-11-20', '2024-11-20', '750000.00', 'Tidak Ada', 'confirmed', 'paid', '2024-11-16 19:08:56', '2024-11-17 03:59:24'),
+('B43298', 'C002', 'P01', 'Jl. Medan', 4, '2024-11-17', '2024-11-17', '3000000.00', '2 Anak, 2 Dewasa', 'completed', 'paid', '2024-11-16 19:06:26', '2024-11-17 04:23:43');
+
+--
 -- Triggers `bookings`
 --
+DELIMITER $$
+CREATE TRIGGER `vehicle_release_on_cancel_trigger` AFTER UPDATE ON `bookings` FOR EACH ROW BEGIN
+    IF NEW.booking_status = 'cancelled' THEN
+        -- Update status kendaraan yang digunakan menjadi 'available'
+        UPDATE vehicles v
+        JOIN booking_vehicles bv ON v.vehicle_id = bv.vehicle_id
+        SET v.status = 'available'
+        WHERE bv.booking_id = NEW.booking_id;
+    END IF;
+END
+$$
+DELIMITER ;
 DELIMITER $$
 CREATE TRIGGER `vehicle_release_trigger` AFTER UPDATE ON `bookings` FOR EACH ROW BEGIN
     IF NEW.booking_status = 'completed' THEN
@@ -214,25 +245,13 @@ CREATE TABLE `booking_destinations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Triggers `booking_destinations`
+-- Dumping data for table `booking_destinations`
 --
-DELIMITER $$
-CREATE TRIGGER `limit_destination_choice` BEFORE INSERT ON `booking_destinations` FOR EACH ROW BEGIN
-    DECLARE destination_count INT;
-    
-    -- Hitung jumlah destinasi yang sudah dipilih untuk booking ini
-    SELECT COUNT(*) INTO destination_count
-    FROM booking_destinations
-    WHERE booking_id = NEW.booking_id;
-    
-    -- Cegah penambahan destinasi jika sudah mencapai batas maksimum
-    IF destination_count >= 4 THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'You cannot select more than 4 destinations for this package.';
-    END IF;
-END
-$$
-DELIMITER ;
+
+INSERT INTO `booking_destinations` (`booking_destination_id`, `booking_id`, `destination_id`) VALUES
+(17, 'B43298', 'D01'),
+(18, 'B43298', 'D02'),
+(19, 'B32535', 'D03');
 
 -- --------------------------------------------------------
 
@@ -245,6 +264,14 @@ CREATE TABLE `booking_vehicles` (
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
   `vehicle_id` int DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `booking_vehicles`
+--
+
+INSERT INTO `booking_vehicles` (`booking_vehicle_id`, `booking_id`, `vehicle_id`) VALUES
+(8, 'B43298', 10),
+(9, 'B32535', 7);
 
 -- --------------------------------------------------------
 
@@ -274,7 +301,8 @@ CREATE TABLE `customer` (
 
 INSERT INTO `customer` (`customer_id`, `nik`, `email`, `password`, `full_name`, `phone_number`, `photo`, `citizen`, `tgl_lahir`, `gender`, `user_role`, `created_at`, `updated_at`) VALUES
 ('C001', NULL, 'mfirjatullah123@gmail.com', '$2y$10$buajdfrcMRWhvt.RTZFUN.vS6NKh5dPDQVngJ5xU1KrJFlcJCvyWa', 'Muhammad Firjatullah', '081234513423', NULL, NULL, NULL, NULL, 'customer', '2024-11-03 14:16:26', '2024-11-08 02:47:08'),
-('C002', '123456789101112', 'agushariyanto@gmail.com', '$2y$10$OLYi3vMUgQWO4Re8Me0w9O6FsuEEuerMeETBEQO1NCw41wz0KHkV2', 'Agus Hariyanto', '+6281235826974', '1731036860_6b4cd01a49c7091b5cb6.jpg', 'Indonesia', '15 June 2004', 'laki-laki', 'customer', '2024-11-07 20:18:37', '2024-11-08 07:06:55');
+('C002', '123456789101112', 'agushariyanto@gmail.com', '$2y$10$OLYi3vMUgQWO4Re8Me0w9O6FsuEEuerMeETBEQO1NCw41wz0KHkV2', 'Agus Hariyanto', '+6281235826974', '1731036860_6b4cd01a49c7091b5cb6.jpg', 'Indonesia', '15 June 2004', 'laki-laki', 'customer', '2024-11-07 20:18:37', '2024-11-08 07:06:55'),
+('C003', NULL, 'teguhpratama@gmail.com', '$2y$10$9G4eAaSrHNd.khbYNTxYieDr1oyVBCzeNXeEr8uMDX3YJW7WOfbX.', 'Teguh Pratama', '+6281456286315', NULL, NULL, NULL, NULL, 'customer', '2024-11-09 18:16:34', '2024-11-10 01:16:34');
 
 --
 -- Triggers `customer`
@@ -375,7 +403,7 @@ INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `hari`, `d
 CREATE TABLE `payments` (
   `payment_id` int NOT NULL,
   `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `customer_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `customer_id` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `payment_method` enum('bank_transfer','other') COLLATE utf8mb4_general_ci DEFAULT NULL,
   `account_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
   `account_number` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
@@ -386,12 +414,20 @@ CREATE TABLE `payments` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`payment_id`, `booking_id`, `customer_id`, `payment_method`, `account_name`, `account_number`, `account_holder_name`, `payment_date`, `payment_status`, `proof_of_payment`) VALUES
+(7, 'B43298', 'C002', 'bank_transfer', 'Bank Rakyat Indonesia', '113414134134', 'Agus Hariyanto', '2024-11-17 02:06:57', 'validated', '1731809217_65fe52845770bec23769.jpg'),
+(9, 'B32535', 'C002', 'bank_transfer', 'Bank Rakyat Indonesia', '113414134134', 'Agus Hariyanto', '2024-11-17 03:15:03', 'validated', '1731813303_bec3a590b7bf2da3740c.jpg');
+
+--
 -- Triggers `payments`
 --
 DELIMITER $$
 CREATE TRIGGER `update_booking_status` AFTER UPDATE ON `payments` FOR EACH ROW BEGIN
     -- Jika status pembayaran telah selesai ('paid'), maka update booking status menjadi 'confirmed'
-    IF NEW.payment_status = 'paid' THEN
+    IF NEW.payment_status = 'validated' THEN
         UPDATE bookings
         SET booking_status = 'confirmed'
         WHERE bookings.booking_id = NEW.booking_id;
@@ -451,6 +487,13 @@ CREATE TABLE `reviews` (
   `review_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`review_id`, `booking_id`, `rating`, `review_text`, `review_photo`, `review_date`) VALUES
+(2, 'B43298', 4, 'Perjalanan Menyenangkan', '1731823523_5b69b5e0facc51478b6b.jpg,1731823523_0f177569924865b0ff5c.jpg', '2024-11-16 23:05:23');
+
 -- --------------------------------------------------------
 
 --
@@ -474,9 +517,9 @@ CREATE TABLE `vehicles` (
 --
 
 INSERT INTO `vehicles` (`vehicle_id`, `vehicle_name`, `license_plate`, `capacity`, `vehicle_type`, `vehicle_photo`, `status`, `created_at`, `updated_at`) VALUES
-(7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'maintenance', '2024-09-30 21:44:20', '2024-10-28 19:00:13'),
-(9, 'Suzuki APV Putih', 'DK 1234 ABC', 8, 'APV', '1728292802_0e76ce8c9e2331e8ddef.png', 'available', '2024-10-07 02:20:02', '2024-10-28 09:24:53'),
-(10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'in_use', '2024-10-07 02:21:40', '2024-10-28 16:26:59');
+(7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'in_use', '2024-09-30 21:44:20', '2024-11-17 03:59:24'),
+(9, 'Suzuki APV Putih', 'DK 1234 ABC', 8, 'APV', '1728292802_0e76ce8c9e2331e8ddef.png', 'available', '2024-10-07 02:20:02', '2024-11-11 14:17:50'),
+(10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'available', '2024-10-07 02:21:40', '2024-11-17 04:23:43');
 
 --
 -- Indexes for dumped tables
@@ -583,31 +626,31 @@ ALTER TABLE `bank_travel`
 -- AUTO_INCREMENT for table `booking_destinations`
 --
 ALTER TABLE `booking_destinations`
-  MODIFY `booking_destination_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `booking_destination_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `booking_vehicles`
 --
 ALTER TABLE `booking_vehicles`
-  MODIFY `booking_vehicle_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `booking_vehicle_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `refunds`
 --
 ALTER TABLE `refunds`
-  MODIFY `refund_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `refund_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `review_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `vehicles`

@@ -7,6 +7,7 @@ use App\Models\destinasimodel;
 use App\Models\kendaraanmodel;
 use App\Models\paymentmodel;
 use App\Models\refundmodel;
+use App\Models\BookingModel;
 use App\Controllers\BaseController;
 
 class Dashboard extends BaseController
@@ -16,6 +17,7 @@ class Dashboard extends BaseController
     protected $kendaraanModel;
     protected $paymentModel;
     protected $refundModel;
+    protected $bookingModel;
 
     public function __construct()
     {
@@ -25,6 +27,7 @@ class Dashboard extends BaseController
         $this->kendaraanModel = new kendaraanmodel();
         $this->paymentModel = new paymentmodel();
         $this->refundModel = new refundmodel();
+        $this->bookingModel = new BookingModel();
     }
 
 
@@ -40,6 +43,10 @@ class Dashboard extends BaseController
         $vehicles = $this->kendaraanModel->where('status', 'available')->findAll(); // Kendaraan dengan status 'available'
         $pendingPayments = $this->paymentModel->where('payment_status', 'pending')->countAllResults(); // Pembayaran yang masih 'pending'
         $pendingRefunds = $this->refundModel->where('refund_status', 'pending')->countAllResults(); // Refund yang masih 'pending'
+        $currentDate = date('Y-m-d'); // Ambil tanggal saat ini
+        $pendingTasks = $this->bookingModel->where('departure_date <', $currentDate)
+            ->where('booking_status', 'confirmed')
+            ->countAllResults(); // Hitung pemesanan yang perlu diselesaikan
 
         // Siapkan data untuk dikirimkan ke view
         $data = [
@@ -50,7 +57,7 @@ class Dashboard extends BaseController
             'availableVehicles' => count($vehicles), // Jumlah kendaraan yang tersedia
             'pendingPayments' => $pendingPayments, // Jumlah pembayaran yang perlu dikonfirmasi
             'pendingRefunds' => $pendingRefunds,
-
+            'pendingTasks' => $pendingTasks
         ];
 
         // Tampilkan view dengan data yang dikirimkan

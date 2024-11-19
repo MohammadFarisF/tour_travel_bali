@@ -52,13 +52,14 @@ class Customer extends BaseController
 
         // Data yang dikirimkan ke view
         $data = [
-            'title' => 'My Account',
+            'title' => 'My Account - ',
             'customer' => $userData
         ];
 
         echo view('user/Template/header', $data);
+        echo view('user/Template/sidebar', $data);
         echo view('user/my_account', $data);  // Sesuaikan dengan file view Anda
-        echo view('user/Template/footer');
+        // echo view('user/Template/footer');
     }
 
     // Method untuk memperbarui data akun

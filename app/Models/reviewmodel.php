@@ -58,10 +58,7 @@ class ReviewModel extends Model
         $builder = $this->db->table($this->table);
         $builder->select('
             reviews.*, 
-            bookings.booking_id,
-            bookings.customer_id,
-            bookings.package_id,
-            bookings.booking_status,
+            bookings.*,
             customer.full_name,
             packages.package_name
         ');
@@ -82,7 +79,7 @@ class ReviewModel extends Model
     public function getReviewsByPackageId($packageId)
     {
         $builder = $this->db->table($this->table);
-        $builder->select('reviews.*, bookings.package_id');
+        $builder->select('reviews.*, bookings.*');
         $builder->join('bookings', 'bookings.booking_id = reviews.booking_id', 'left');
         $builder->where('bookings.package_id', $packageId); // Filter by package_id
         return $builder->get()->getResultArray();

@@ -115,7 +115,7 @@
   font-family: "Nunito", sans-serif;
   position: relative;
   margin-right: 25px;
-  padding: 35px 0;
+  padding: 25px 0;
   color: #ffffff !important;
   font-size: 18px;
   font-weight: 600;
@@ -139,7 +139,7 @@
 }
 
 .sticky-top.navbar-light .navbar-brand img {
-  max-height: 80px;
+  max-height: 100px;
 }
 
 @media (max-width: 991.98px) {
@@ -467,4 +467,24 @@
   margin-right: 0;
   padding-right: 0;
   border-right: none;
+}
+
+.sidenav-light .sidenav-menu .nav-link.active .nav-link-icon {
+  color: #86b817;
+}
+
+.sidenav-light .sidenav-menu .nav-link.active {
+  color: #86b817;
+}
+
+.sidenav-light .sidenav-menu .nav-link:hover {
+  color: #86b817;
+}
+
+.sidenav-light .sidenav-menu .nav-link .nav-link-icon {
+  color: #14141f;
+}
+
+.page-header.page-header-light .page-header-title .page-header-icon {
+  color: #14141f;
 }
