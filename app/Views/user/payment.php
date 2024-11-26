@@ -163,8 +163,12 @@
                                             <a href="<?= base_url('booking/' . esc($booking['booking_id'])) ?>" class="btn btn-success">
                                                 Detail
                                             </a>
-                                        <?php elseif ($booking['booking_status'] === 'completed' && $booking['payment_status'] === 'paid' && !$booking['review']): ?>
-                                            <a href="#" data-bs-toggle="modal" data-bs-target="#reviewModal" class="btn btn-warning text-white">
+                                        <?php elseif ($booking['booking_status'] === 'completed' && !$booking['review']): ?>
+                                            <a href="#"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#reviewModal"
+                                                data-booking-id="<?= esc($booking['booking_id']) ?>"
+                                                class="btn btn-warning text-white review-btn">
                                                 Review
                                             </a>
                                         <?php elseif ($booking['review']): ?>
@@ -186,6 +190,7 @@
         </div>
     </main>
     <!-- Modal Review -->
+    <!-- Modal Review -->
     <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -197,7 +202,7 @@
                     <!-- Form Review -->
                     <form action="<?= base_url('review/store'); ?>" method="post" enctype="multipart/form-data">
                         <!-- Booking ID (hidden) -->
-                        <input type="hidden" name="booking_id" value="<?= $booking['booking_id'] ?>">
+                        <input type="hidden" name="booking_id" id="modalBookingId" value="">
 
                         <!-- Rating (Bintang) -->
                         <div class="mb-3">
@@ -219,15 +224,10 @@
                         </div>
 
                         <!-- Foto Review (Opsional) -->
-                        <!-- Foto Review (Opsional) -->
                         <div class="mb-3">
                             <label for="review_photo" class="form-label">Unggah Foto (Opsional)</label>
                             <input type="file" name="review_photo[]" id="review_photo" class="form-control" multiple>
-
-                            <!-- Preview Gambar -->
-                            <div id="preview-container" class="mt-3">
-                                <!-- Preview gambar akan muncul di sini -->
-                            </div>
+                            <div id="preview-container" class="mt-3"></div>
                         </div>
 
                         <!-- Submit Button -->
@@ -286,5 +286,18 @@
                     reader.readAsDataURL(file); // Membaca file sebagai URL
                 }
             }
+        });
+
+        // Event listener untuk membuka modal dan memperbarui booking_id
+        document.addEventListener('DOMContentLoaded', function() {
+            var reviewButtons = document.querySelectorAll('.review-btn');
+            var modalBookingIdInput = document.getElementById('modalBookingId');
+
+            reviewButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    var bookingId = this.getAttribute('data-booking-id');
+                    modalBookingIdInput.value = bookingId; // Set booking ID ke input hidden
+                });
+            });
         });
     </script>
