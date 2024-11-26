@@ -78,15 +78,15 @@ class BookingModel extends Model
     }
 
     // Mengambil data bookings berdasarkan filter tanggal
-    public function getFilteredBookings($dateType, $dateValue, $status = null)
+    public function getFilteredBookings($dateType, $dateRange, $status = null)
     {
         $builder = $this->db->table($this->table);
         $builder->select('bookings.*, 
-                          GROUP_CONCAT(destinations.destination_name) as destination_names, 
-                          MAX(vehicles.vehicle_name) as vehicle_name, 
-                          COALESCE(MAX(refunds.refund_status), "-") as refund_status,
-                          customer.full_name AS user_name,
-                          packages.package_name');
+                      GROUP_CONCAT(destinations.destination_name) as destination_names, 
+                      MAX(vehicles.vehicle_name) as vehicle_name, 
+                      COALESCE(MAX(refunds.refund_status), "-") as refund_status,
+                      customer.full_name AS user_name,
+                      packages.package_name');
         $builder->join('customer', 'customer.customer_id = bookings.customer_id', 'left');
         $builder->join('packages', 'packages.package_id = bookings.package_id', 'left');
         $builder->join('booking_destinations', 'booking_destinations.booking_id = bookings.booking_id', 'left');
@@ -96,26 +96,33 @@ class BookingModel extends Model
         $builder->join('refunds', 'refunds.booking_id = bookings.booking_id', 'left');
         $builder->groupBy('bookings.booking_id');
 
-        // Filter berdasarkan jenis tanggal (harian, bulanan, tahunan)
-        if ($dateType && $dateValue) {
+        // Filter berdasarkan jenis tanggal
+        if ($dateType && $dateRange) {
             if ($dateType === 'daily') {
-                $builder->where('DATE(bookings.departure_date)', $dateValue); // Format: 'YYYY-MM-DD'
+                $builder->where('DATE(bookings.created_at)', $dateRange);
             } elseif ($dateType === 'monthly') {
-                $startDate = date('Y-m-01', strtotime($dateValue)); // Awal bulan
-                $endDate = date('Y-m-t', strtotime($dateValue)); // Akhir bulan
-                $builder->where('bookings.departure_date >=', $startDate);
-                $builder->where('bookings.departure_date <=', $endDate);
+                // Ubah format input 'YYYY-MM' menjadi rentang tanggal awal dan akhir bulan
+                if (strpos($dateRange, ' to ') === false) {
+                    $startDate = date('Y-m-01', strtotime($dateRange)); // Tanggal awal bulan
+                    $endDate = date('Y-m-t', strtotime($dateRange)); // Tanggal akhir bulan
+                } else {
+                    list($startDate, $endDate) = explode(' to ', $dateRange); // Jika menggunakan rentang
+                }
+                $builder->where('bookings.created_at >=', $startDate);
+                $builder->where('bookings.created_at <=', $endDate);
             } elseif ($dateType === 'yearly') {
-                $builder->where('YEAR(bookings.departure_date)', $dateValue); // Format: 'YYYY'
+                $builder->where('YEAR(bookings.created_at)', $dateRange);
             }
         }
 
-        if ($status) {
+        // Filter berdasarkan status
+        if ($status && $status !== 'all') {
             $builder->where('bookings.booking_status', $status);
         }
 
         return $builder->get()->getResultArray();
     }
+
 
     public function getBookingByUserId($userId)
     {

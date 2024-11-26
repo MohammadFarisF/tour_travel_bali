@@ -21,9 +21,12 @@ class Report extends BaseController
     // Method untuk menampilkan form laporan
     public function index()
     {
-        $type = $this->request->getPost('reportType');
+        $type = $this->request->getPost('inputType'); // Nama input diubah agar sesuai dengan view
         $dateRange = $this->request->getPost('dateRange');
         $status = $this->request->getPost('status');
+
+        // Debugging: Pastikan data diterima
+        log_message('info', "Filter received: type=$type, dateRange=$dateRange, status=$status");
 
         $data = [
             'title' => 'Laporan',
@@ -51,11 +54,11 @@ class Report extends BaseController
         $imageData = base64_encode(file_get_contents(FCPATH . 'asset_user/img/title.png'));
         $logoSrc = 'data:image/jpeg;base64,' . $imageData;
 
-        $type = $this->request->getPost('reportType');
-        $dateRange = $this->request->getPost('dateRange');
-        $status = $this->request->getPost('bookingStatus');
+        $type = $this->request->getPost('inputType'); // Daily, Monthly, Yearly
+        $dateRange = $this->request->getPost('dateRange'); // Flatpickr input value
+        $status = $this->request->getPost('status');
 
-        // Filter status
+        // Filter status dan data laporan
         $reportData = $this->bookingModel->getFilteredBookings($type, $dateRange, $status);
 
         $statusMap = [
@@ -66,10 +69,9 @@ class Report extends BaseController
             'all' => 'Semua Status'
         ];
 
-        // Use the status value to get the display text
         $statusText = isset($statusMap[$status]) ? $statusMap[$status] : 'Semua Status';
-        $dateRangeText = $this->formatDateRange($dateRange);
-        $adminName = session()->get('userName'); // Nama lengkap admin dari session
+        $dateRangeText = $this->formatDateRange($type, $dateRange); // Updated
+        $adminName = session()->get('userName'); // Nama admin dari session
 
         $data = [
             'reportData' => $reportData,
@@ -101,17 +103,33 @@ class Report extends BaseController
     }
 
     // Helper function to format date range based on the type
-    private function formatDateRange($dateRange)
+    private function formatDateRange($type, $dateRange)
     {
         if ($dateRange === 'all' || empty($dateRange)) {
             return "Semua Data";
-        } elseif (strpos($dateRange, '-') !== false) {
-            list($startDate, $endDate) = explode(' - ', $dateRange);
-            $start = date('d F Y', strtotime($startDate));
-            $end = date('d F Y', strtotime($endDate));
-            return "$start - $end";
-        } else {
-            return date('d F Y', strtotime($dateRange));
+        }
+
+        switch ($type) {
+            case 'daily':
+                // Format input: 'YYYY-MM-DD'
+                return date('d F Y', strtotime($dateRange));
+
+            case 'monthly':
+                // Format input: 'YYYY-MM-DD to YYYY-MM-DD' (Flatpickr range)
+                if (strpos($dateRange, ' to ') !== false) {
+                    list($startDate, $endDate) = explode(' to ', $dateRange);
+                    $start = date('d F Y', strtotime($startDate));
+                    $end = date('d F Y', strtotime($endDate));
+                    return "$start - $end";
+                }
+                return date('F Y', strtotime($dateRange));
+
+            case 'yearly':
+                // Format input: 'YYYY'
+                return date('Y', strtotime($dateRange));
+
+            default:
+                return "Format Tidak Dikenal";
         }
     }
 }

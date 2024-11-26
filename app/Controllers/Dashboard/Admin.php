@@ -95,51 +95,6 @@ class Admin extends BaseController
         return redirect()->to(base_url('/bali/admin'))->with('create', 'Admin berhasil ditambahkan');
     }
 
-    public function edit($id)
-    {
-        if (session()->get('user_role') !== 'owner') {
-            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
-        }
-        $data['admin'] = $this->adminModel->getAdmin($id);
-        if (empty($data['admin'])) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('Admin tidak ditemukan');
-        }
-
-        $data['title'] = 'Edit Admin';
-        $data['roleLabel'] = $this->roleLabel; // Use the property for role label
-        echo view('admin/Template/header', $data);
-        echo view('admin/Template/sidebar', $data); // Pass roleLabel to sidebar
-        echo view('admin/admin_edit', $data); // View untuk mengedit admin
-        echo view('admin/Template/footer');
-    }
-
-    public function update($id)
-    {
-        if (session()->get('user_role') !== 'owner') {
-            return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
-        }
-        // Cek apakah admin dengan ID yang diberikan ada
-        $admin = $this->adminModel->find($id);
-        if (!$admin) {
-            throw new \CodeIgniter\Exceptions\PageNotFoundException('Admin tidak ditemukan');
-        }
-
-        // Ambil data dari form
-        $data = [
-            'full_name' => $this->request->getPost('full_name'),
-            'email' => $this->request->getPost('email'),
-            'password' => $this->request->getPost('password'),
-            'phone_number' => $this->request->getPost('phone_number'),
-            'updated_at' => date('Y-m-d H:i:s'),
-        ];
-
-        // Update data di database
-        $this->adminModel->update($id, $data);
-
-        // Redirect setelah sukses
-        return redirect()->to(base_url('/bali/admin'))->with('update', 'Admin berhasil diupdate');
-    }
-
     public function delete($id)
     {
         if (session()->get('user_role') !== 'owner') {

@@ -38,7 +38,7 @@
                         <tbody>
                             <?php foreach ($review as $ulasan): ?>
                                 <tr>
-                                    <td><?php echo esc($ulasan['booking_id']); ?></td>
+                                    <td>#<?php echo esc($ulasan['booking_id']); ?></td>
                                     <td><?php echo esc($ulasan['full_name']); ?></td>
                                     <td><?php echo esc($ulasan['package_name']); ?></td>
                                     <td><?php echo esc($ulasan['rating']); ?></td>

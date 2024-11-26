@@ -102,17 +102,17 @@
                                     <a href="<?= base_url('profile/my_booking') ?>" class="btn btn-secondary">Kembali</a>
 
                                 <?php else: ?>
-                                    <?php if ($daysBeforeDeparture > 7): ?>
+                                    <?php if ($daysBeforeDeparture > 7 && $booking['booking_status'] === 'confirmed'): ?>
                                         <form action="<?= base_url('booking/cancelBooking/' . esc($booking['booking_id'])) ?>" method="post" onsubmit="return confirm('Dana anda akan dikembalikan 100%. Apakah anda yakin ingin membatalkan pesanan ini?');">
                                             <button type="submit" class="btn btn-danger">Batalkan Pesanan</button>
                                         </form>
                                         <a href="<?= base_url('profile/my_booking') ?>" class="btn btn-secondary">Kembali</a>
-                                    <?php elseif ($daysBeforeDeparture > 3): ?>
+                                    <?php elseif ($daysBeforeDeparture > 3 && $booking['booking_status'] === 'confirmed'): ?>
                                         <form action="<?= base_url('booking/cancelBooking/' . esc($booking['booking_id'])) ?>" method="post" onsubmit="return confirm('Dana anda akan dikembalikan 50%. Apakah anda yakin ingin membatalkan pesanan ini?');">
                                             <button type="submit" class="btn btn-danger">Batalkan Pesanan</button>
                                         </form>
                                         <a href="<?= base_url('profile/my_booking') ?>" class="btn btn-secondary">Kembali</a>
-                                    <?php elseif ($daysBeforeDeparture <= 3): ?>
+                                    <?php elseif ($daysBeforeDeparture <= 3 && $booking['booking_status'] === 'confirmed'): ?>
                                         <p class="text-danger">Anda tidak dapat membatalkan pesanan ini karena waktu keberangkatan kurang dari 3 hari.</p>
                                         <a href="<?= base_url('profile/my_booking') ?>" class="btn btn-secondary">Kembali</a>
                                     <?php else: ?>

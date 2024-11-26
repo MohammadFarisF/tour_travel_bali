@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 19, 2024 at 03:18 AM
+-- Generation Time: Nov 26, 2024 at 12:37 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -201,8 +201,9 @@ CREATE TABLE `bookings` (
 --
 
 INSERT INTO `bookings` (`booking_id`, `customer_id`, `package_id`, `address`, `total_people`, `departure_date`, `return_date`, `total_amount`, `cust_request`, `booking_status`, `payment_status`, `created_at`, `updated_at`) VALUES
-('B32535', 'C002', 'P02', 'Jl. Jakarta', 1, '2024-11-20', '2024-11-20', '750000.00', 'Tidak Ada', 'confirmed', 'paid', '2024-11-16 19:08:56', '2024-11-17 03:59:24'),
-('B43298', 'C002', 'P01', 'Jl. Medan', 4, '2024-11-17', '2024-11-17', '3000000.00', '2 Anak, 2 Dewasa', 'completed', 'paid', '2024-11-16 19:06:26', '2024-11-17 04:23:43');
+('B32535', 'C002', 'P02', 'Jl. Jakarta', 1, '2024-11-20', '2024-11-20', '750000.00', 'Tidak Ada', 'completed', 'paid', '2024-11-16 19:08:56', '2024-11-25 11:09:02'),
+('B43298', 'C002', 'P01', 'Jl. Medan', 4, '2024-11-17', '2024-11-17', '3000000.00', '2 Anak, 2 Dewasa', 'completed', 'paid', '2024-11-16 19:06:26', '2024-11-17 04:23:43'),
+('B68127', 'C002', 'P01', 'Jl. Medan', 2, '2024-11-25', '2024-11-25', '1500000.00', '', 'completed', 'paid', '2024-11-24 18:26:03', '2024-11-25 11:28:47');
 
 --
 -- Triggers `bookings`
@@ -251,7 +252,9 @@ CREATE TABLE `booking_destinations` (
 INSERT INTO `booking_destinations` (`booking_destination_id`, `booking_id`, `destination_id`) VALUES
 (17, 'B43298', 'D01'),
 (18, 'B43298', 'D02'),
-(19, 'B32535', 'D03');
+(19, 'B32535', 'D03'),
+(21, 'B68127', 'D01'),
+(22, 'B68127', 'D02');
 
 -- --------------------------------------------------------
 
@@ -271,7 +274,8 @@ CREATE TABLE `booking_vehicles` (
 
 INSERT INTO `booking_vehicles` (`booking_vehicle_id`, `booking_id`, `vehicle_id`) VALUES
 (8, 'B43298', 10),
-(9, 'B32535', 7);
+(9, 'B32535', 7),
+(10, 'B68127', 10);
 
 -- --------------------------------------------------------
 
@@ -419,7 +423,8 @@ CREATE TABLE `payments` (
 
 INSERT INTO `payments` (`payment_id`, `booking_id`, `customer_id`, `payment_method`, `account_name`, `account_number`, `account_holder_name`, `payment_date`, `payment_status`, `proof_of_payment`) VALUES
 (7, 'B43298', 'C002', 'bank_transfer', 'Bank Rakyat Indonesia', '113414134134', 'Agus Hariyanto', '2024-11-17 02:06:57', 'validated', '1731809217_65fe52845770bec23769.jpg'),
-(9, 'B32535', 'C002', 'bank_transfer', 'Bank Rakyat Indonesia', '113414134134', 'Agus Hariyanto', '2024-11-17 03:15:03', 'validated', '1731813303_bec3a590b7bf2da3740c.jpg');
+(9, 'B32535', 'C002', 'bank_transfer', 'Bank Rakyat Indonesia', '113414134134', 'Agus Hariyanto', '2024-11-17 03:15:03', 'validated', '1731813303_bec3a590b7bf2da3740c.jpg'),
+(10, 'B68127', 'C002', 'bank_transfer', 'Bank Rakyat Indonesia', '113414134134', 'Agus Hariyanto', '2024-11-25 01:30:23', 'validated', '1732498223_9363ca8148fd87244278.png');
 
 --
 -- Triggers `payments`
@@ -492,7 +497,8 @@ CREATE TABLE `reviews` (
 --
 
 INSERT INTO `reviews` (`review_id`, `booking_id`, `rating`, `review_text`, `review_photo`, `review_date`) VALUES
-(2, 'B43298', 4, 'Perjalanan Menyenangkan', '1731823523_5b69b5e0facc51478b6b.jpg,1731823523_0f177569924865b0ff5c.jpg', '2024-11-16 23:05:23');
+(2, 'B43298', 4, 'Perjalanan Menyenangkan', '1731823523_5b69b5e0facc51478b6b.jpg,1731823523_0f177569924865b0ff5c.jpg', '2024-11-16 23:05:23'),
+(3, 'B68127', 5, 'Pelayanan Ramah dan Menyenangkan, Saya Akan menggunakan jasa Travel ini lagi jika saya ingin berpergian', '1732580467_2d46395e73335a845281.jpeg,1732580467_ea6fc87ee9daf0eaffb4.jpeg', '2024-11-25 17:21:07');
 
 -- --------------------------------------------------------
 
@@ -517,9 +523,9 @@ CREATE TABLE `vehicles` (
 --
 
 INSERT INTO `vehicles` (`vehicle_id`, `vehicle_name`, `license_plate`, `capacity`, `vehicle_type`, `vehicle_photo`, `status`, `created_at`, `updated_at`) VALUES
-(7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'in_use', '2024-09-30 21:44:20', '2024-11-17 03:59:24'),
+(7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'available', '2024-09-30 21:44:20', '2024-11-25 11:09:02'),
 (9, 'Suzuki APV Putih', 'DK 1234 ABC', 8, 'APV', '1728292802_0e76ce8c9e2331e8ddef.png', 'available', '2024-10-07 02:20:02', '2024-11-11 14:17:50'),
-(10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'available', '2024-10-07 02:21:40', '2024-11-17 04:23:43');
+(10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'available', '2024-10-07 02:21:40', '2024-11-25 11:28:47');
 
 --
 -- Indexes for dumped tables
@@ -626,19 +632,19 @@ ALTER TABLE `bank_travel`
 -- AUTO_INCREMENT for table `booking_destinations`
 --
 ALTER TABLE `booking_destinations`
-  MODIFY `booking_destination_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `booking_destination_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- AUTO_INCREMENT for table `booking_vehicles`
 --
 ALTER TABLE `booking_vehicles`
-  MODIFY `booking_vehicle_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `booking_vehicle_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `refunds`
@@ -650,7 +656,7 @@ ALTER TABLE `refunds`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `review_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `vehicles`

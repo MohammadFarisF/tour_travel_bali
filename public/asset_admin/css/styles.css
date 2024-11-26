@@ -7594,7 +7594,6 @@ fieldset:disabled .btn {
 .badge {
   display: inline-block;
   padding: 0.35em 0.65em;
-  font-size: 0.75em;
   font-weight: 400;
   line-height: 1;
   color: #fff;
@@ -22213,4 +22212,11 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.bg-auth {
+  background: linear-gradient(rgba(20, 20, 31, 0.7), rgba(20, 20, 31, 0.7)), url(../../asset_user/img/background.jpg);
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
 }

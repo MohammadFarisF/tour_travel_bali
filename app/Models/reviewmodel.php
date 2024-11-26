@@ -84,4 +84,24 @@ class ReviewModel extends Model
         $builder->where('bookings.package_id', $packageId); // Filter by package_id
         return $builder->get()->getResultArray();
     }
+
+    public function getReviewsWithPackageAndBooking()
+    {
+        $builder = $this->db->table($this->table);
+        $builder->select('
+            reviews.*, 
+            bookings.*,
+            customer.full_name,
+            customer.citizen,
+            packages.package_name
+        ');
+        $builder->join('bookings', 'bookings.booking_id = reviews.booking_id', 'left');
+        $builder->join('packages', 'packages.package_id = bookings.package_id', 'left');
+        $builder->join('customer', 'customer.customer_id = bookings.customer_id', 'left');
+
+        $builder->where('bookings.booking_status', 'completed');
+
+
+        return $builder->get()->getResultArray();
+    }
 }

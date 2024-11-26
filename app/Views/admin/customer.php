@@ -39,9 +39,21 @@
                                     <td><?php echo esc($user['full_name']); ?></td>
                                     <td><?php echo esc($user['email']); ?></td>
                                     <td><?php echo esc($user['phone_number']); ?></td>
-                                    <td><?php echo esc($user['tgl_lahir']); ?></td>
-                                    <td><?php echo esc($user['citizen']); ?></td>
-                                    <td><?php echo esc($user['gender']); ?></td>
+                                    <td>
+                                        <?= !empty($user['tgl_lahir']) ? esc($user['tgl_lahir']) : 'Belum Diisi'; ?>
+                                    </td>
+                                    <td>
+                                        <?= !empty($user['citizen']) ? esc($user['citizen']) : 'Belum Diisi'; ?>
+                                    </td>
+                                    <td>
+                                        <?php
+                                        if (!empty($user['gender'])) {
+                                            echo $user['gender'] === 'laki-laki' ? 'Laki - Laki' : ($user['gender'] === 'perempuan' ? 'Perempuan' : 'Tidak Mendefinisikan');
+                                        } else {
+                                            echo 'Belum Diisi';
+                                        }
+                                        ?>
+                                    </td>
                                     <td>
                                         <?php if (!empty($user['photo'])): ?>
                                             <img src="<?= base_url('uploads/customer/' . esc($user['photo'])); ?>" alt="Foto Profil" style="width: 100px; height: auto;">

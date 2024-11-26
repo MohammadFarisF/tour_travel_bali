@@ -1,3 +1,7 @@
+<?php
+
+use CodeIgniter\I18n\Time;
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -179,13 +183,77 @@
                     <td><?= esc($data['user_name']) ?></td>
                     <td><?= esc($data['package_name']) ?></td>
                     <td><?= esc($data['destination_names']) ?></td>
-                    <td><?= esc($data['total_people']) ?></td>
-                    <td><?= esc($data['departure_date']) ?> - <?= esc($data['return_date']) ?></td>
+                    <td><?= esc($data['total_people']) ?> Orang</td>
+                    <td>
+                        <?php
+                        // Format tanggal untuk departure_date dan return_date
+                        $departureDate = date('l, d F Y', strtotime($data['departure_date']));
+                        $returnDate = date('l, d F Y', strtotime($data['return_date']));
+                        echo $departureDate . ' - ' . $returnDate;
+                        ?>
+                    </td>
                     <td><?= esc($data['vehicle_name']) ?></td>
-                    <td><?= esc($data['total_amount']) ?></td>
-                    <td><?= esc($data['booking_status']) ?></td>
-                    <td><?= esc($data['payment_status']) ?></td>
-                    <td><?= esc($data['refund_status']) ?></td>
+                    <td>Rp. <?= number_format($data['total_amount'], 0, ',', '.') ?></td>
+                    <td>
+                        <?php
+                        // Menampilkan status booking dengan teks biasa
+                        switch ($data['booking_status']) {
+                            case 'pending':
+                                echo 'Belum dibayar';
+                                break;
+                            case 'confirmed':
+                                echo 'Sudah dibayar';
+                                break;
+                            case 'cancelled':
+                                echo 'Pesanan dibatalkan';
+                                break;
+                            case 'completed':
+                                echo 'Trip selesai';
+                                break;
+                            default:
+                                echo 'Status tidak diketahui';
+                                break;
+                        }
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        // Menampilkan status pembayaran dengan teks biasa
+                        switch ($data['payment_status']) {
+                            case 'paid':
+                                echo 'Pembayaran Berhasil';
+                                break;
+                            case 'pending':
+                                echo 'Menunggu Konfirmasi';
+                                break;
+                            case 'refund_processed':
+                                echo 'Proses Refund';
+                                break;
+                            default:
+                                echo 'Status tidak diketahui';
+                                break;
+                        }
+                        ?>
+                    </td>
+                    <td>
+                        <?php
+                        // Menampilkan status refund dengan teks biasa
+                        switch ($data['refund_status']) {
+                            case 'processed':
+                                echo 'Dalam Proses';
+                                break;
+                            case 'rejected':
+                                echo 'Refund Ditolak';
+                                break;
+                            case 'completed':
+                                echo 'Refund Selesai';
+                                break;
+                            default:
+                                echo 'Status Tidak Diketahui';
+                                break;
+                        }
+                        ?>
+                    </td>
                 </tr>
             <?php endforeach; ?>
         </tbody>
@@ -193,12 +261,12 @@
 
     <div class="footer">
         <div class="print-info">
-            Dicetak pada: <?= date('d/m/Y H:i:s') ?><br>
+            Dicetak pada: <?= Time::now('Asia/Makassar')->toLocalizedString('d MMMM yyyy HH:mm:ss') ?><br>
             Dicetak Oleh: <?= $adminName ?>
         </div>
 
         <div class="signature-section">
-            <div>Bali, <?= date('d F Y') ?></div>
+            <div>Bali, <?= Time::now('Asia/Makassar')->toLocalizedString('d MMMM yyyy') ?></div>
             <br>
             <br>
             <br>

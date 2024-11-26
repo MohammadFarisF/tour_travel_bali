@@ -39,7 +39,7 @@
                             <?php foreach ($bookings as $booking): ?>
                                 <tr>
                                     <td>
-                                        <?php if ($booking['booking_status'] === 'completed'): ?>
+                                        <?php if ($booking['booking_status'] === 'completed' || $booking['booking_status'] === 'pending'): ?>
                                             <!-- Jika status sudah completed, tampilkan kode booking tanpa link -->
                                             <span>#<?= $booking['booking_id']; ?></span>
                                         <?php else: ?>
@@ -56,25 +56,25 @@
                                         <?php
                                         switch ($booking['booking_status']) {
                                             case 'pending':
-                                                echo 'Belum dibayar';
+                                                echo '<span class="badge bg-warning text-dark rounded-pill"><strong>Belum Dibayar</strong></span>';
                                                 break;
                                             case 'confirmed':
-                                                echo 'Sudah dibayar';
+                                                echo '<span class="badge bg-success text-white rounded-pill">Sudah Dibayar</span>';
                                                 break;
                                             case 'cancelled':
-                                                echo 'Pesanan dibatalkan';
+                                                echo '<span class="badge bg-danger text-white rounded-pill">Pesanan Dibatalkan</span>';
                                                 break;
                                             case 'completed':
-                                                echo 'Trip selesai';
+                                                echo '<span class="badge bg-primary text-white rounded-pill">Trip Selesai</span>';
                                                 break;
                                             default:
-                                                echo 'Status tidak diketahui';
+                                                echo '<span class="badge bg-secondary text-white rounded-pill">Status Tidak Diketahui</span>';
                                                 break;
                                         }
                                         ?>
                                     </td>
                                     <td>
-                                        <?php if ($booking['booking_status'] === 'completed'): ?>
+                                        <?php if ($booking['booking_status'] === 'completed' || $booking['booking_status'] === 'pending'): ?>
                                             <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#detailModal<?= $booking['booking_id']; ?>">
                                                 Detail
                                             </button>

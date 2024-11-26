@@ -60,7 +60,6 @@
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <a href="<?php echo site_url('/bali/admin/edit/' . $user['user_id']); ?>" class="btn btn-warning">Edit</a>
                                         <form action="<?php echo site_url('/bali/admin/delete/' . $user['user_id']); ?>" method="post" style="display:inline;">
                                             <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this admin?');">Delete</button>
                                         </form>

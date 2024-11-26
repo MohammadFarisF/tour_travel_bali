@@ -133,7 +133,7 @@
                                     </td>
                                     <td>
                                         <?php
-                                        if ($booking['payment']['payment_status'] === 'pending' && !empty($booking['payment']['proof_of_payment'])) {
+                                        if ($booking['payment_status'] === 'pending' && !empty($booking['payment']['proof_of_payment'])) {
                                             echo '<span class="status-label payment-pending">Menunggu Konfirmasi</span>';
                                         } elseif ($booking['payment_status'] === 'pending') {
                                             echo '<span class="status-label payment-pending">Menunggu Pembayaran</span>';

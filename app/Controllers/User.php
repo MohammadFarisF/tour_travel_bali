@@ -29,9 +29,12 @@ class User extends BaseController
         // Ambil semua paket
         $packages = $this->paketModel->findAll();
 
+        $reviews = $this->reviewModel->getReviewsWithPackageAndBooking();
+
         // Siapkan data untuk tampilan
         $data = [
             'packages' => $this->calculatePackageDetails($packages),
+            'reviews' => $reviews,
             'title' => ''
         ];
 
