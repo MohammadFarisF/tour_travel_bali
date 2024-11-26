@@ -36,9 +36,16 @@
                                     <input type="text" class="form-control" id="destination_name" name="destination_name" value="<?= esc($destinasi['destination_name']); ?>" required>
                                 </div>
 
-                                <div class="mb-3">
-                                    <label for="location" class="form-label">Lokasi</label>
-                                    <input type="text" class="form-control" id="location" name="location" value="<?= esc($destinasi['location']); ?>" required>
+                                <div class="row gx-3 mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="latitude">Latitude</label>
+                                        <input class="form-control" id="latitude" type="text" name="latitude" value="<?= esc($destinasi['latitude']); ?>" required />
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label" for="longitude">Longitude</label>
+                                        <input class="form-control" id="longitude" type="text" name="longitude" value="<?= esc($destinasi['longitude']); ?>" required />
+                                    </div>
                                 </div>
 
                                 <div class="mb-3">
@@ -50,7 +57,7 @@
 
                                 <div class="mb-3">
                                     <label for="harga">Harga Destinasi</label>
-                                    <input class="form-control" name="harga" id="harga" type="text" value="<?= 'Rp. ' . number_format($destinasi['harga'], 0, ',', '.'); ?>" onkeyup="formatHarga(this)" required />
+                                    <input class="form-control" name="harga" id="harga" type="text" value="<?= 'Rp. ' . number_format($destinasi['harga_per_orang'], 0, ',', '.'); ?>" onkeyup="formatHarga(this)" required />
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Update</button>

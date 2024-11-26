@@ -87,8 +87,6 @@ $routes->group('bali', ['filter' => 'adminFilter'], function ($routes) {
     $routes->get('admin/create', 'Dashboard\Admin::create'); // Tambah prefix Dashboard
     $routes->post('admin/store', 'Dashboard\Admin::store');;
     $routes->post('admin/delete/(:any)', 'Dashboard\Admin::delete/$1'); // Tambah prefix Dashboard
-    $routes->get('admin/edit/(:any)', 'Dashboard\Admin::edit/$1'); // Tambah prefix Dashboard
-    $routes->post('admin/update/(:any)', 'Dashboard\Admin::update/$1');
 
     $routes->get('kendaraan', 'Dashboard\Kendaraan::index');
     $routes->get('kendaraan/create', 'Dashboard\Kendaraan::create');
@@ -103,9 +101,6 @@ $routes->group('bali', ['filter' => 'adminFilter'], function ($routes) {
 
     $routes->get('review', 'Dashboard\Review::index');
     $routes->post('review/delete/(:any)', 'Dashboard\Review::delete/$1');
-
-    $routes->get('bankpelanggan', 'Dashboard\Bank_Pelanggan::index');
-    $routes->get('bankpelanggan/delete/(:any)', 'Dashboard\Bank_Pelanggan::delete/$1');
 
     $routes->get('banktravel', 'Dashboard\Bank_Travel::index');
     $routes->get('banktravel/create/', 'Dashboard\Bank_Travel::create');

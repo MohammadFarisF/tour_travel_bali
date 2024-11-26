@@ -38,16 +38,6 @@
                                 <div class="mb-3">
                                     <label for="package_type" class="form-label">Tipe Paket</label>
                                     <select class="form-select" id="package_type" name="package_type" required>
-
-                                        <option value="single_destination" <?= isset($package['package_type']) && $package['package_type'] === 'single_destination' ? 'selected' : ''; ?>>Single Destination</option>
-
-                                        <option value="multiple_day" <?= isset($package['package_type']) && $package['package_type'] === 'multiple_day' ? 'selected' : ''; ?>>Multiple Day</option>
-                                    </select>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="package_type" class="form-label">Tipe Paket</label>
-                                    <select class="form-select" id="package_type" name="package_type" required>
                                         <option value="single_destination" <?= isset($package['package_type']) && $package['package_type'] === 'single_destination' ? 'selected' : ''; ?>>Single Destination</option>
                                         <option value="multiple_day" <?= isset($package['package_type']) && $package['package_type'] === 'multiple_day' ? 'selected' : ''; ?>>Multiple Day</option>
                                     </select>
@@ -69,11 +59,15 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="vehicle_photo" class="form-label">Foto Kendaraan</label>
+                                    <label for="vehicle_photo" class="form-label">Foto Paket</label>
                                     <?php if (!empty($package['foto'])): ?>
-                                        <img src="<?= base_url('uploads/paket/' . esc($package['foto'])); ?>" alt="Foto Paket" style="width: 100px; height: auto;">
+                                        <img id="currentPreview" src="<?= base_url('uploads/paket/' . esc($package['foto'])); ?>" alt="Foto Paket" style="width: 100px; height: auto; display: block; margin-bottom: 10px;">
+                                    <?php else: ?>
+                                        <img id="currentPreview" src="#" alt="Foto Paket" style="width: 100px; height: auto; display: none; margin-bottom: 10px;">
                                     <?php endif; ?>
+                                    <input type="hidden" name="foto_lama" value="<?= esc($package['foto']) ?>">
                                     <input class="form-control" type="file" id="foto" name="foto" accept="image/*">
+                                    <img id="newPreview" src="#" alt="Preview Foto Baru" style="width: 100px; height: auto; display: none; margin-top: 10px;">
                                 </div>
 
                                 <button type="submit" class="btn btn-success">Simpan</button>
@@ -106,4 +100,27 @@
 
         // Trigger change event on page load to initialize visibility based on the selected package type
         document.getElementById('package_type').dispatchEvent(new Event('change'));
+    </script>
+    <script>
+        const fotoInput = document.getElementById('foto');
+        const newPreview = document.getElementById('newPreview');
+        const currentPreview = document.getElementById('currentPreview');
+
+        fotoInput.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    newPreview.src = e.target.result;
+                    newPreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+
+                // Optional: Hide the current preview if a new file is selected
+                currentPreview.style.display = 'none';
+            } else {
+                newPreview.style.display = 'none';
+                currentPreview.style.display = 'block';
+            }
+        });
     </script>

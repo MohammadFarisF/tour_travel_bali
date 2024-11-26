@@ -1,4 +1,39 @@
     <!-- About Start -->
+    <style>
+        .documentation-item {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .documentation-item a {
+            display: block;
+            position: relative;
+        }
+
+        .documentation-item img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+        }
+
+        .documentation-item .text-container {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            /* Background hitam */
+            color: white;
+            padding: 10px;
+            font-size: 14px;
+            display: none;
+            /* Defaultnya disembunyikan */
+        }
+
+        .documentation-item:hover .text-container {
+            display: block;
+            /* Menampilkan nama paket saat hover */
+        }
+    </style>
     <div class="container-fluid bg-primary hero-header">
         <div class="container py-5">
             <div class="row justify-content-center py-5">
@@ -11,7 +46,7 @@
     </div>
 
     <!-- Service Start -->
-    <div class="container-xxl py-5">
+    <!-- <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="section-title bg-white text-center text-primary px-3">Services</h6>
@@ -56,7 +91,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Service End -->
 
 
@@ -67,34 +102,28 @@
                 <h6 class="section-title bg-white text-center text-primary px-3">Image Documentation</h6>
                 <h1 class="mb-5">Documentation</h1>
             </div>
-            <div class="row g-3">
-                <div class="col-lg-7 col-md-6">
-                    <div class="row g-3">
-                        <div class="col-lg-12 col-md-12 wow zoomIn" data-wow-delay="0.1s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="asset_user/img/dokumentasi1.jpeg" alt="">
+            <div class="owl-carousel documentation-carousel position-relative">
+                <?php foreach ($reviews as $review): ?>
+                    <?php
+                    // Split the comma-separated image filenames into an array
+                    $images = explode(',', $review['review_photo']);
+                    ?>
+                    <?php foreach ($images as $image): ?>
+                        <div class="documentation-item position-relative bg-white text-center border">
+                            <a class="position-relative d-block overflow-hidden">
+                                <img class="img-fluid" src="uploads/review/<?= esc($image); ?>" alt="documentation-image">
+                                <div class="text-container">
+                                    <p class="mb-0"><?= esc($review['package_name']) ?></p>
+                                </div>
                             </a>
                         </div>
-                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.3s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="asset_user/img/dokumentasi4.jpeg" alt="">
-                            </a>
-                        </div>
-                        <div class="col-lg-6 col-md-12 wow zoomIn" data-wow-delay="0.5s">
-                            <a class="position-relative d-block overflow-hidden" href="">
-                                <img class="img-fluid" src="asset_user/img/dokumentasi3.jpeg" alt="">
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-5 col-md-6 wow zoomIn" data-wow-delay="0.7s" style="min-height: 350px;">
-                    <a class="position-relative d-block h-100 overflow-hidden" href="">
-                        <img class="img-fluid position-absolute w-100 h-100" src="asset_user/img/dokumentasi5.jpeg" alt="" style="object-fit: cover;">
-                    </a>
-                </div>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>
+
+
     <!-- Documentation Start -->
 
 
@@ -166,7 +195,7 @@
     </div>
 
     <!-- Process Start -->
-    <div class="container-xxl py-5">
+    <!-- <div class="container-xxl py-5">
         <div class="container">
             <div class="text-center pb-4 wow fadeInUp" data-wow-delay="0.1s">
                 <h6 class="section-title bg-white text-center text-primary px-3">Process</h6>
@@ -208,7 +237,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
     <!-- Process Start -->
 
     <!-- Testimonial Start -->
@@ -219,26 +248,15 @@
                 <h1 class="mb-5">Our Clients Say!!!</h1>
             </div>
             <div class="owl-carousel testimonial-carousel position-relative">
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <h5 class="mb-0">Alexander Johann Schmidt</h5>
-                    <p>Germany</p>
-                    <p class="mb-0">Our trip to Bali with ExploreTour & Travel Bali was one of the best holidays we have ever had. Every detail of the trip was arranged perfectly. We really enjoyed the tour to the Tegallalang Rice Terrace and snorkeling in Amed. Our tour guide was very knowledgeable and always helpful . The hotel chosen for us was very clean and comfortable, with very friendly staff. We will definitely return and recommend ExploreTour & Travel Bali to all our friends!</p>
-                </div>
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <h5 class="mb-0">Isabella Sofia Rodríguez García</h5>
-                    <p>Spain</p>
-                    <p class="mt-2 mb-0">Many thanks to ExploreTour & Travel Bali for making our holiday in Bali so special! Everything is professionally arranged, from transportation to tours to beautiful destinations such as Besakih Temple and Jimbaran Beach. Our tour guide was very friendly and provided lots of interesting information about Balinese culture. The accommodation is very comfortable and has stunning views. We highly recommend ExploreTour & Travel Bali!</p>
-                </div>
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <h5 class="mb-0">Jonathan Michael Williams</h5>
-                    <p>USA</p>
-                    <p class="mt-2 mb-0">Traveling to Bali with Explore Tour & Travel Bali is an amazing experience! Everything was very well organized, from airport pick up to daily tours to amazing places like Tanah Lot and Ubud. Our tour guide, was very friendly and informative. We also really enjoyed the snorkeling tour in Nusa Penida. Thank you for an unforgettable holiday!</p>
-                </div>
-                <div class="testimonial-item bg-white text-center border p-4">
-                    <h5 class="mb-0">Olivia Marie Johnson</h5>
-                    <p>Italy</p>
-                    <p class="mt-2 mb-0">Explore Tour & Travel Bali made our holiday in Bali truly magical! Everything was perfectly organized, from the warm welcome at the airport to the comprehensive tour. Highlights include sunset at Tanah Lot and cultural dance performances in Ubud. Our guides were great, shared a lot of knowledge and were always willing to help. Highly recommend Explore Tour & Travel Bali for the perfect holiday in Bali!</p>
-                </div>
+                <?php foreach ($reviews as $review): ?>
+                    <div class="testimonial-item bg-white text-center border p-4">
+                        <h5 class="mb-0"><?= esc($review['full_name']) ?></h5>
+                        <p class="mb-0"><strong><?= esc($review['citizen']) ?></strong></p>
+                        <p><?= esc($review['package_name']) ?></p>
+                        <h5 class="mt-2 mb-2">"<?= esc($review['review_text']) ?>"</h5>
+                        <p class="mt-3"><?= date('d F Y', strtotime($review['review_date'])) ?></p>
+                    </div>
+                <?php endforeach; ?>
             </div>
         </div>
     </div>

@@ -39,23 +39,23 @@
                                 <tr>
                                     <td><?= $refund['account_number']; ?></td>
                                     <td><?= $refund['account_holder_name']; ?></td>
-                                    <td><?= $refund['booking_id']; ?></td>
+                                    <td>#<?= $refund['booking_id']; ?></td>
                                     <td><?= "Rp " . number_format($refund['refund_amount'], 0, ',', '.'); ?></td> <!-- Format Rupiah -->
                                     <td><?= date('l, d F Y', strtotime($refund['refund_date'])); ?></td> <!-- Format Tanggal Refund -->
                                     <td>
                                         <?php
                                         switch ($refund['refund_status']) {
                                             case 'processed':
-                                                echo 'Dalam Proses';
+                                                echo '<span class="badge bg-warning text-dark"><strong>Dalam Proses</strong></span>';
                                                 break;
                                             case 'rejected':
-                                                echo 'Refund Ditolak';
+                                                echo '<span class="badge bg-danger text-white">Refund Ditolak</span>';
                                                 break;
                                             case 'completed':
-                                                echo 'Refund Selesai';
+                                                echo '<span class="badge bg-success text-white">Refund Selesai</span>';
                                                 break;
                                             default:
-                                                echo 'Status Tidak Diketahui';
+                                                echo '<span class="badge bg-secondary text-white">Status Tidak Diketahui</span>';
                                                 break;
                                         }
                                         ?>

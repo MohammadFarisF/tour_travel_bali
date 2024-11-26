@@ -24,7 +24,7 @@
     }
 </style>
 
-<body class="bg-primary">
+<body class="bg-auth">
     <div id="layoutAuthentication">
         <div id="layoutAuthentication_content">
             <main>

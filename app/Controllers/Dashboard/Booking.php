@@ -363,7 +363,7 @@ class Booking extends BaseController
             'vehicles' => $vehicleDetails,
             'payment' => $payment
         ];
-        echo view('user/template/footer', $data);
+        echo view('user/template/header', $data);
         echo view('user/booking', $data);
         echo view('user/template/footer');
     }

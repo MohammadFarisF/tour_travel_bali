@@ -58,19 +58,4 @@ class PaymentModel extends Model
 
         return $builder->get()->getResultArray();
     }
-
-    public function getBank()
-    {
-        $builder = $this->db->table($this->table);
-        $builder->select('
-        payments.account_name,
-        payments.account_number,
-        payments.account_holder_name,
-        customer.customer_id,
-        customer.full_name
-    ');
-        $builder->join('bookings', 'bookings.booking_id = payments.booking_id', 'left');
-        $builder->join('customer', 'customer.customer_id = payments.customer_id', 'left');
-        return $builder->get()->getResultArray();
-    }
 }

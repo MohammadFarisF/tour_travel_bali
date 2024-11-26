@@ -37,9 +37,4 @@ class AdminModel extends Model
             return $this->whereIn('user_role', ['admin', 'owner'])->where('user_id', $id)->first();
         }
     }
-
-    public function hapus($id)
-    {
-        return $this->delete($id);
-    }
 }
