@@ -150,7 +150,7 @@
                                         <p id="price_details" style="font-size: 0.875rem; margin-top: 5px;"></p>
                                     </div>
 
-                                    <button type="button" class="btn btn-primary" id="book_now_button" style="display: none;" data-bs-toggle="modal" data-bs-target="#bookingModal">Book Now</button>
+                                    <button type="button" class="btn btn-primary" id="book_now_button" style="display: none;" data-bs-target="#bookingModal">Book Now</button>
                                     <button type="button" class="btn btn-primary" id="book_now_button_logged_out" style="display: none;" onclick="redirectToLogin()">Book Now (Login Required)</button>
                                     <p id="minimum_participants_warning" style="color: red; display: none;">Minimal Peserta 2 Orang</p>
                                 </form>
@@ -182,10 +182,11 @@
                     </div>
                     <div class="modal-body">
                         <p><strong>Nama Paket:</strong> <span id="package_name"></span></p>
-                        <p><strong>Destinations:</strong></p>
+                        <p><strong>Tanggal Perjalanan:</strong> <span id="departure_date"></span></p>
+                        <p><strong>Destinasi:</strong></p>
                         <ul id="destination_list"></ul>
-                        <p><strong>Participants:</strong> <span id="participants_count"></span></p>
-                        <p><strong>Total Price:</strong> <span id="total_price_display"></span></p>
+                        <p><strong>Jumlah Peserta:</strong> <span id="participants_count"></span></p>
+                        <p><strong>Total Harga:</strong> <span id="total_price_display"></span></p>
 
                         <p id="price_details" style="cursor: pointer; color: blue;" onclick="togglePriceDetails()">Rincian Harga</p>
                         <div id="detailed_price" style="display: none;"></div>
@@ -338,12 +339,8 @@
 
             // Function to toggle detailed price display
             function togglePriceDetails() {
-                const detailedPriceDiv = document.getElementById('detailed_price');
-                if (detailedPriceDiv.style.display === 'none' || detailedPriceDiv.style.display === '') {
-                    detailedPriceDiv.style.display = 'block';
-                } else {
-                    detailedPriceDiv.style.display = 'none';
-                }
+                const detailedPrice = document.getElementById('detailed_price');
+                detailedPrice.style.display = detailedPrice.style.display === 'none' ? 'block' : 'none';
             }
 
             // Update the calculateTotalPrice function to set detailed price information
@@ -398,8 +395,28 @@
                 }
             }
 
+            let bookingModal;
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Initialize the modal
+                const modalElement = document.getElementById('bookingModal');
+                bookingModal = new bootstrap.Modal(modalElement);
+
+                // Add event listeners for closing modal
+                const closeButtons = document.querySelectorAll('[data-bs-dismiss="modal"]');
+                closeButtons.forEach(button => {
+                    button.addEventListener('click', function() {
+                        bookingModal.hide();
+                    });
+                });
+            });
+
             document.getElementById('book_now_button').addEventListener('click', function(event) {
                 event.preventDefault(); // Prevent default form submission
+                event.stopPropagation();
+
+                const modal = document.getElementById('bookingModal');
+
                 // Check if the user is logged in and has the 'customer' role
                 if (!isLoggedIn || !isCustomer) {
                     redirectToLogin();
@@ -416,6 +433,14 @@
                     return; // Prevent further execution
                 }
 
+                const availableVehicles = <?= json_encode($availableVehicles); ?>; // Pass the availability status from PHP
+
+                if (!availableVehicles) {
+                    alert('Mohon Maaf anda sedang tidak dapat memesan paket perjalanan');
+                    window.location.href = '<?= base_url('package-detail/' . esc($package['package_id'])); ?>'; // Redirect to profile page
+                    return;
+                }
+
                 // Retrieve data from the form if user is logged in and has the 'customer' role
                 const bookingData = {
                     packageName: '<?= esc($package['package_name']); ?>', // Package name
@@ -430,7 +455,8 @@
                         }
                     ), // Only destination names
                     numPeople: document.getElementById('num_people').value, // Number of participants
-                    totalPrice: document.getElementById('total_price').value // Total price (displayed separately)
+                    totalPrice: document.getElementById('total_price').value,
+                    bookingDate: document.getElementById('booking_date').value
                 };
 
                 const bookingDate = document.getElementById('booking_date').value;
@@ -443,7 +469,7 @@
                 document.getElementById('package_name').innerText = bookingData.packageName;
                 document.getElementById('participants_count').innerText = bookingData.numPeople + ' people';
                 document.getElementById('total_price_display').innerText = bookingData.totalPrice;
-
+                document.getElementById('departure_date').innerText = bookingData.bookingDate;
 
                 // Display only destination names in the modal list
                 document.getElementById('destination_list').innerHTML = bookingData.destinations
@@ -458,6 +484,14 @@
 
                 const destinationIds = bookingData.destinations.map(dest => dest.id); // Ambil ID destinasi sebagai array
                 document.getElementById('hidden_destinations').value = JSON.stringify(destinationIds);
+
+                bookingModal.show();
+            });
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Escape' && bookingModal) {
+                    bookingModal.hide();
+                }
             });
 
             function redirectToLogin() {

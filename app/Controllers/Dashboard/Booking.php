@@ -50,7 +50,7 @@ class Booking extends BaseController
         $roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
         // Mengambil semua data bank pelanggan
         $data = [
-            'title' => 'Pemesanan',
+            'title' => 'Pemesanan - ',
             'bookings' => $this->bookingModel->getBooking(),
             'roleLabel' => $roleLabel, // Mengambil semua bank pelanggan
         ];
@@ -353,7 +353,7 @@ class Booking extends BaseController
 
         // Prepare data for view
         $data = [
-            'title' => 'Booking Details',
+            'title' => 'Booking Details - ',
             'package' => $package,
             'booking' => $booking,
             'customer' => $customer,
@@ -380,12 +380,6 @@ class Booking extends BaseController
             return redirect()->to('/')->with('error', 'Booking not found.');
         }
 
-        // Find the payment associated with this booking using booking_id
-        $payment = $this->paymentModel->where('booking_id', $bookingId)->first();
-        if (!$payment) {
-            return redirect()->to('/')->with('error', 'Payment not found for this booking.');
-        }
-
         $refundResult = $this->refundModel->processRefund($bookingId);
 
         // Prepare refund data
@@ -394,19 +388,6 @@ class Booking extends BaseController
             $refundAmount = $refundResult->refund_amount; // Ganti sesuai dengan cara Anda mendapatkan hasil
 
             if ($refundAmount > 0) {
-                // Prepare refund data
-                $refundData = [
-                    'customer_id' => $booking['customer_id'], // Assuming you have access to customer_id from booking
-                    'booking_id' => $bookingId,
-                    'payment_id' => $payment['payment_id'], // Use the payment_id found
-                    'refund_amount' => $refundAmount, // Use the refund amount calculated from the procedure
-                    'refund_date' => date('Y-m-d H:i:s'),
-                    'refund_status' => 'processed', // or whatever status you want to set
-                ];
-
-                // Insert refund record
-                $this->refundModel->insert($refundData);
-
                 // Update booking status to 'cancelled'
                 $this->bookingModel->update($bookingId, [
                     'booking_status' => 'cancelled',

@@ -38,8 +38,8 @@
         <div class="container py-5">
             <div class="row justify-content-center py-5">
                 <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-                    <h1 class="display-3 text-white mb-3 animated slideInDown">Enjoy Your Vacation With Us</h1>
-                    <p class="fs-4 text-white mb-4 animated slideInDown">Experience the magic of a holiday in Bali like you've never felt before!</p>
+                    <h1 class="display-4 text-white mb-3 animated slideInDown">Nikmati Liburan Anda Bersama Kami</h1>
+                    <p class="fs-4 text-white mb-4 animated slideInDown">Rasakan keajaiban liburan di Bali seperti yang belum pernah Anda rasakan sebelumnya!</p>
                 </div>
             </div>
         </div>
@@ -99,8 +99,8 @@
     <div class="container-xxl py-5 destination">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Image Documentation</h6>
-                <h1 class="mb-5">Documentation</h1>
+                <h6 class="section-title bg-white text-center text-primary px-3">Dokumentasi Gambar</h6>
+                <h1 class="mb-5">Dokumentasi</h1>
             </div>
             <div class="owl-carousel documentation-carousel position-relative">
                 <?php foreach ($reviews as $review): ?>
@@ -131,8 +131,8 @@
     <div class="container-xxl py-5" id="paket">
         <div class="container">
             <div class="text-center wow fadeInUp" data-wow-delay="0.1s">
-                <h6 class="section-title bg-white text-center text-primary px-3">Packages</h6>
-                <h1 class="mb-5">Awesome Packages</h1>
+                <h6 class="section-title bg-white text-center text-primary px-3">Paket Perjalanan</h6>
+                <h1 class="mb-5">Paket Perjalanan Impian</h1>
             </div>
             <div class="row g-4 justify-content-center">
 
@@ -162,9 +162,9 @@
                                     <?php
                                     // Modify package type display
                                     if ($package['package_type'] === 'single_destination') {
-                                        echo 'Single Destination';
+                                        echo 'Paket 1 Hari';
                                     } elseif ($package['package_type'] === 'multiple_day') {
-                                        echo 'Multiple Day Package';
+                                        echo 'Paket Multi - Hari';
                                     } else {
                                         echo esc($package['package_type']);
                                     }
@@ -183,8 +183,8 @@
                                 </div>
                                 <p><?= esc(truncateDescription($package['description'], 300)); ?></p>
                                 <div class="d-flex justify-content-center mb-2">
-                                    <a href="<?= base_url('package-detail/' . esc($package['package_id'])); ?>" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Read More</a>
-                                    <a href="https://wa.me/yourwhatsappphonenumber?text=I%20am%20interested%20in%20<?= urlencode($package['package_name']); ?>" class="btn btn-sm btn-primary px-3" style="border-radius: 0 30px 30px 0;">Tanya ke WhatsApp</a>
+                                    <a href="<?= base_url('package-detail/' . esc($package['package_id'])); ?>" class="btn btn-sm btn-primary px-3 border-end" style="border-radius: 30px 0 0 30px;">Pesan Paket</a>
+                                    <a href="https://wa.me/6282236906042?text=Saya%20ingin%20bertanya%20-%20tanya%20mengenai%20info%20jelas%20dari%20Paket%20Perjalanan%20<?= urlencode($package['package_name']); ?>" class="btn btn-sm btn-success px-3" style="border-radius: 0 30px 30px 0;" target="_blank">Tanya ke WhatsApp</a>
                                 </div>
                             </div>
                         </div>
@@ -244,8 +244,8 @@
     <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container">
             <div class="text-center">
-                <h6 class="section-title bg-white text-center text-primary px-3">Testimonial</h6>
-                <h1 class="mb-5">Our Clients Say!!!</h1>
+                <h6 class="section-title bg-white text-center text-primary px-3">Testimoni</h6>
+                <h1 class="mb-5">Pendapat Klien Tentang Kami!</h1>
             </div>
             <div class="owl-carousel testimonial-carousel position-relative">
                 <?php foreach ($reviews as $review): ?>
@@ -257,6 +257,58 @@
                         <p class="mt-3"><?= date('d F Y', strtotime($review['review_date'])) ?></p>
                     </div>
                 <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+    <div class="container-xxl py-5 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="container">
+            <div class="text-center">
+                <h6 class="section-title bg-white text-center text-primary px-3">Syarat dan Ketentuan</h6>
+                <h1 class="mb-5">Syarat dan Ketentuan Pelanggan!</h1>
+            </div>
+            <div class="owl-carousel testimonial-carousel position-relative">
+                <div class="item">
+                    <div class="bg-primary rounded p-4 text-white text-center">
+                        <p>
+                            Jika pembatalan dilakukan lebih dari 7 hari sebelum tanggal keberangkatan, <strong>100% dana akan dikembalikan</strong> (kecuali biaya administrasi).
+                        </p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="bg-primary rounded p-4 text-white text-center">
+                        <p>
+                            Untuk pembatalan antara 3 hingga 7 hari sebelum tanggal keberangkatan, <strong>50% dana akan dikembalikan</strong>.
+                        </p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="bg-primary rounded p-4 text-white text-center">
+                        <p>
+                            Jika pembatalan dilakukan kurang dari 3 hari sebelum tanggal keberangkatan, <strong>tidak ada pengembalian dana</strong>.
+                        </p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="bg-primary rounded p-4 text-white text-center">
+                        <p>
+                            Pembatalan dapat dilakukan melalui halaman detail pemesanan dari setiap kode pemesanan melalui tombol detail di akun pengguna, Proses pembatalan akan mengikuti kebijakan refund yang telah disebutkan sebelumnya.
+                        </p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="bg-primary rounded p-4 text-white text-center">
+                        <p>
+                            Pemesanan dianggap sah setelah pembayaran diterima dan dikonfirmasi, Jika bukti pembayaran belum diunggah dalam waktu <strong>24 jam</strong>, sistem berhak membatalkan pesanan.
+                        </p>
+                    </div>
+                </div>
+                <div class="item">
+                    <div class="bg-primary rounded p-4 text-white text-center">
+                        <p>
+                            Kami tidak bertanggung jawab atas kehilangan barang pribadi selama perjalanan, Asuransi perjalanan tidak termasuk dalam harga paket.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

@@ -80,10 +80,10 @@ $customerId = strtolower(str_replace(' ', '-', $userName));
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0">
-                    <a href="<?= base_url() ?>" class="nav-item nav-link <?= (uri_string() == '') ? 'active' : '' ?>">Home</a>
+                    <a href="<?= base_url() ?>" class="nav-item nav-link <?= (uri_string() == '') ? 'active' : '' ?>">Beranda</a>
                     <a href="<?= base_url() ?>#paket" class="nav-item nav-link <?= (uri_string() == '#paket') ? 'active' : '' ?>">Paket</a>
-                    <a href="<?= base_url() ?>about" class="nav-item nav-link <?= (uri_string() == 'about') ? 'active' : '' ?>">About</a>
-                    <a href="<?= base_url() ?>contact" class="nav-item nav-link <?= (uri_string() == 'contact') ? 'active' : '' ?>">Contact</a>
+                    <a href="<?= base_url() ?>about" class="nav-item nav-link <?= (uri_string() == 'about') ? 'active' : '' ?>">Tentang Kami</a>
+                    <a href="<?= base_url() ?>contact" class="nav-item nav-link <?= (uri_string() == 'contact') ? 'active' : '' ?>">Kontak</a>
 
                     <!-- New Customer Profile Dropdown -->
                     <?php if (session()->get('userid')): // Cek apakah pengguna sudah login 
