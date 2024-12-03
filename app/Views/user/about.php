@@ -1,13 +1,13 @@
 <div class="container-fluid bg-primary hero-header">
-    <div class="container py-5">
-        <div class="row justify-content-center py-5">
-            <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
-                <h1 class="display-3 text-white mb-3 animated slideInDown">Enjoy Your Vacation With Us</h1>
-                <p class="fs-4 text-white mb-4 animated slideInDown">Experience the magic of a holiday in Bali like you've never felt before!</p>
+        <div class="container py-5">
+            <div class="row justify-content-center py-5">
+                <div class="col-lg-10 pt-lg-5 mt-lg-5 text-center">
+                    <h1 class="display-4 text-white mb-3 animated slideInDown">Nikmati Liburan Anda Bersama Kami</h1>
+                    <p class="fs-4 text-white mb-4 animated slideInDown">Rasakan keajaiban liburan di Bali seperti yang belum pernah Anda rasakan sebelumnya!</p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 <!-- About Start -->
 <div class="container-xxl py-5">
@@ -19,9 +19,9 @@
                 </div>
             </div>
             <div class="col-lg-6 wow fadeInUp" data-wow-delay="0.3s">
-                <h6 class="section-title bg-white text-start text-primary pe-3">About Us</h6>
-                <h1 class="mb-4">Welcome to <span class="text-primary">Explore Tour & Travel Bali</span></h1>
-                <p class="mb-4">At Explore Tour & Travel Bali, we specialize in curating exceptional travel experiences on the Island of the Gods. Our mission is to make your journey in Bali truly memorable by offering top-notch services and unique adventures tailored to your desires. Let us be your guide as you uncover the hidden gems and breathtaking beauty of Bali. Join us, and create lasting memories on your next adventure!</p>
+                <h6 class="section-title bg-white text-start text-primary pe-3">Tentang Kami</h6>
+                <h1 class="mb-4">Selamat Datang di <span class="text-primary">Explore Tour & Travel Bali</span></h1>
+                <p class="mb-4">Di Explore Tour & Travel Bali, kami mengkhususkan diri dalam merancang pengalaman perjalanan yang luar biasa di Pulau Dewata. Misi kami adalah membuat perjalanan Anda di Bali menjadi benar-benar tak terlupakan dengan menawarkan layanan terbaik dan petualangan unik yang disesuaikan dengan keinginan Anda. Biarkan kami menjadi pemandu Anda dalam menjelajahi keindahan tersembunyi dan pesona Bali yang memukau. Bergabunglah dengan kami, dan ciptakan kenangan abadi dalam petualangan Anda berikutnya!</p>
             </div>
         </div>
     </div>

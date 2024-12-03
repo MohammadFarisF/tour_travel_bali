@@ -2,14 +2,14 @@
     <div class="container py-5">
         <div class="row g-5">
             <div class="col-lg-3 col-md-6">
-                <h4 class="text-white mb-3">Contact</h4>
+                <h4 class="text-white mb-3">Kontak</h4>
                 <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>Jl. Mekar II Blok C 2 No.2 Pemogan, Denpasar Selatan, Indonesia</p>
                 <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+62 822-3690-6042</p>
                 <p class="mb-2"><i class="fa fa-envelope me-3"></i>explorebali52@gmail.com</p>
 
             </div>
             <div class="col-lg-3 col-md-6">
-                <h4 class="text-white mb-3">Gallery</h4>
+                <h4 class="text-white mb-3">Galeri</h4>
                 <div class="row g-2 pt-2">
                     <div class="col-4">
                         <img class="img-fluid bg-light p-1" src="<?= base_url() ?>asset_user/img/dokumentasi8.jpeg" alt="">

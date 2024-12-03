@@ -35,7 +35,7 @@
                                 <div class="card-body">
                                     <p><strong>Nama Paket:</strong> <?= esc($package['package_name']); ?></p>
 
-                                    <p><strong>Destinations</strong></p>
+                                    <p><strong>Destinasi</strong></p>
                                     <ul>
                                         <?php if (!empty($destinations)): ?>
                                             <?php foreach ($destinations as $destination): ?>
@@ -46,11 +46,11 @@
                                         <?php endif; ?>
                                     </ul>
 
-                                    <p><strong>Pickup Address:</strong> <?= esc($booking['address']); ?></p>
-                                    <p><strong>Total Participants:</strong> <?= esc($booking['total_people']); ?> Orang</p>
-                                    <p><strong>Departure Date:</strong> <?= date('l, d F Y', strtotime($booking['departure_date'])); ?></p>
-                                    <p><strong>Return Date:</strong> <?= date('l, d F Y', strtotime($booking['return_date'])); ?></p>
-                                    <p><strong>Customer Request:</strong> <?= !empty($booking['cust_request']) ? esc($booking['cust_request']) : '-'; ?></p>
+                                    <p><strong>Alamat Penjemputan:</strong> <?= esc($booking['address']); ?></p>
+                                    <p><strong>Total Peserta:</strong> <?= esc($booking['total_people']); ?> Orang</p>
+                                    <p><strong>Tanggal Keberangkatan:</strong> <?= date('l, d F Y', strtotime($booking['departure_date'])); ?></p>
+                                    <p><strong>Tanggal Kepulangan:</strong> <?= date('l, d F Y', strtotime($booking['return_date'])); ?></p>
+                                    <p><strong>Request Pelanggan:</strong> <?= !empty($booking['cust_request']) ? esc($booking['cust_request']) : '-'; ?></p>
                                     <!-- Add this section where you want to display the vehicle details -->
                                     <?php if (!empty($vehicles)): ?>
                                         <h6>Kendaraan yang Digunakan :</h6> <!-- Judul untuk accordion -->
@@ -81,8 +81,8 @@
                                     <h5 class="mb-0">Customer Details</h5>
                                 </div>
                                 <div class="card-body">
-                                    <p><strong>Name:</strong> <?= esc($customer['full_name']); ?></p>
-                                    <p><strong>Phone Number:</strong> <?= esc($customer['phone_number']); ?></p>
+                                    <p><strong>Nama:</strong> <?= esc($customer['full_name']); ?></p>
+                                    <p><strong>Nomor Telepon:</strong> <?= esc($customer['phone_number']); ?></p>
                                     <p><strong>Email:</strong> <?= esc($customer['email']); ?></p>
                                 </div>
                             </div>
@@ -135,8 +135,8 @@
                                                 <img src="<?= base_url('uploads/banktravel/' . esc($bank['photo'])); ?>" width="90" alt="<?= esc($bank['bank_name']); ?>" style="margin-right: 20px;">
                                                 <div>
                                                     <h6><?= esc($bank['bank_name']); ?></h6>
-                                                    <small><strong>Account Holder: </strong><?= esc($bank['account_holder_name']); ?></small><br>
-                                                    <small><strong>Account Number: </strong><?= esc($bank['account_number']); ?></small>
+                                                    <small><strong>Nama Pemegang Akun: </strong><?= esc($bank['account_holder_name']); ?></small><br>
+                                                    <small><strong>Nomor Akun: </strong><?= esc($bank['account_number']); ?></small>
                                                 </div>
                                             </li>
                                         <?php endforeach; ?>
@@ -180,7 +180,7 @@
                                     ?>
 
                                     <hr>
-                                    <p><strong>Total Amount Booking:</strong> Rp <?= number_format($totalAmount, 0, ',', '.'); ?></p>
+                                    <p><strong>Total Bayar Pemesanan:</strong> Rp <?= number_format($totalAmount, 0, ',', '.'); ?></p>
                                 </div>
                             </div>
                         </div>
@@ -233,7 +233,7 @@
 
                             <!-- Account Name -->
                             <div class="mb-3">
-                                <label for="accountName" class="form-label">Nama Akun/Bank/E-Wallet</label>
+                                <label for="accountName" class="form-label">Nama Akun Bank/E-Wallet</label>
                                 <input type="text" id="accountName" name="accountName" class="form-control" required>
                             </div>
 
@@ -509,5 +509,18 @@
 
                 selectWrapper.appendChild(select);
                 return selectWrapper;
+            }
+
+            function payLater() {
+                // Tampilkan pesan konfirmasi
+                const confirmMessage = confirm("Anda memilih untuk membayar nanti. Apakah Anda yakin ingin melanjutkan?");
+
+                if (confirmMessage) {
+                    // Jika pengguna mengklik "OK", arahkan mereka ke halaman daftar paket atau halaman yang diinginkan
+                    window.location.href = '<?= base_url('bali/#paket') ?>'; // Ganti dengan URL yang sesuai
+                } else {
+                    // Jika pengguna mengklik "Batal", tidak melakukan apa-apa
+                    return;
+                }
             }
         </script>

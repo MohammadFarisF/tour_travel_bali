@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Nov 26, 2024 at 12:37 AM
+-- Generation Time: Dec 03, 2024 at 03:40 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -91,7 +91,7 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `allocateVehicles` (IN `p_booking_id
     END WHILE;
 END$$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `calculateRefund` (IN `p_booking_id` INT)   BEGIN
+CREATE DEFINER=`root`@`localhost` PROCEDURE `calculateRefund` (IN `p_booking_id` VARCHAR(10))   BEGIN
     DECLARE booking_date DATE;
     DECLARE departure_date DATE;
     DECLARE days_before_departure INT;
@@ -115,9 +115,12 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `calculateRefund` (IN `p_booking_id`
     END IF;
     
     -- Simpan informasi refund ke tabel refunds
-    INSERT INTO refunds (booking_id, user_id, refund_amount, refund_status)
-    SELECT b.booking_id, b.user_id, refund_amount, 'pending'
+    INSERT INTO refunds (booking_id, refund_amount, refund_status)
+    SELECT b.booking_id, refund_amount, "processed"
     FROM bookings b WHERE b.booking_id = p_booking_id;
+    
+    SELECT refund_amount AS refund_amount;
+
 END$$
 
 DELIMITER ;
@@ -394,9 +397,8 @@ CREATE TABLE `packages` (
 --
 
 INSERT INTO `packages` (`package_id`, `package_name`, `package_type`, `hari`, `description`, `foto`, `created_at`, `updated_at`) VALUES
-('P01', 'Paket Wisata Ubud', 'single_destination', 1, 'Ubud is a unique and captivating tourist destination that offers a perfect blend of nature, culture, and art. Despite its increasing popularity, Ubud has managed to preserve its traditional charm and serene atmosphere, which are hallmarks of the area. With its stunning natural beauty, rich cultural heritage, and peaceful environment, Ubud stands out as one of Bali\'s hidden gems and is a must-visit for travelers.', '1729568758_e309f0d7e9cae72dcd8a.jpg', NULL, '2024-11-08 20:34:56'),
-('P02', 'Paket Wisata Bedugul', 'single_destination', 1, 'Bedugul is a famous mountain tourist area in Bali, Indonesia. Located in Tabanan Regency, about 50 kilometers from Denpasar, Bedugul is a favorite destination because of its cool air and beautiful natural views. Bedugul is surrounded by green hills, lakes and lush gardens.', '1729568779_5b6aa544ebe5b64901ab.jpg', NULL, '2024-11-08 20:24:43'),
-('P03', 'Paket Hamparan Perak', 'single_destination', 1, 'hamparan perak adalah kota yang sangat luar biasa', '1730166231_0e6a73dd39350d1fb1f6.jpg', NULL, '2024-11-08 20:24:49');
+('P01', 'Paket Wisata Ubud', 'single_destination', 1, 'Ubud adalah destinasi wisata yang unik dan memikat, menawarkan perpaduan sempurna antara alam, budaya, dan seni. Meskipun semakin populer, Ubud berhasil mempertahankan pesona tradisional dan suasana tenangnya, yang menjadi ciri khas daerah ini. Dengan keindahan alam yang menakjubkan, warisan budaya yang kaya, dan lingkungan yang damai, Ubud menjadi salah satu permata tersembunyi Bali dan wajib dikunjungi oleh para wisatawan.', '1729568758_e309f0d7e9cae72dcd8a.jpg', NULL, '2024-12-02 23:18:22'),
+('P02', 'Paket Wisata Bedugul', 'single_destination', 1, 'Bedugul adalah kawasan wisata pegunungan yang terkenal di Bali, Indonesia. Terletak di Kabupaten Tabanan, sekitar 50 kilometer dari Denpasar, Bedugul menjadi destinasi favorit karena udara sejuknya dan pemandangan alam yang indah. Dikelilingi oleh perbukitan hijau, danau, dan taman yang subur, Bedugul menawarkan suasana yang menenangkan dan pemandangan alam yang memukau.', '1729568779_5b6aa544ebe5b64901ab.jpg', NULL, '2024-12-02 23:18:48');
 
 -- --------------------------------------------------------
 
@@ -456,9 +458,7 @@ DELIMITER ;
 
 CREATE TABLE `refunds` (
   `refund_id` int NOT NULL,
-  `payment_id` int NOT NULL,
-  `booking_id` varchar(10) COLLATE utf8mb4_general_ci DEFAULT NULL,
-  `customer_id` varchar(20) COLLATE utf8mb4_general_ci NOT NULL,
+  `booking_id` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL,
   `refund_amount` decimal(10,2) DEFAULT NULL,
   `refund_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `refund_status` enum('completed','processed','rejected') CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL
@@ -498,7 +498,8 @@ CREATE TABLE `reviews` (
 
 INSERT INTO `reviews` (`review_id`, `booking_id`, `rating`, `review_text`, `review_photo`, `review_date`) VALUES
 (2, 'B43298', 4, 'Perjalanan Menyenangkan', '1731823523_5b69b5e0facc51478b6b.jpg,1731823523_0f177569924865b0ff5c.jpg', '2024-11-16 23:05:23'),
-(3, 'B68127', 5, 'Pelayanan Ramah dan Menyenangkan, Saya Akan menggunakan jasa Travel ini lagi jika saya ingin berpergian', '1732580467_2d46395e73335a845281.jpeg,1732580467_ea6fc87ee9daf0eaffb4.jpeg', '2024-11-25 17:21:07');
+(3, 'B68127', 5, 'Pelayanan Ramah dan Menyenangkan, Saya Akan menggunakan jasa Travel ini lagi jika saya ingin berpergian', '1732580467_2d46395e73335a845281.jpeg,1732580467_ea6fc87ee9daf0eaffb4.jpeg', '2024-11-25 17:21:07'),
+(6, 'B32535', 5, 'Paket wisata yang sangat memuaskan! Semua lokasi yang dikunjungi luar biasa, dan pemandu wisata sangat informatif dan ramah. Pengalaman yang tak terlupakan.', '1732583319_21beb8846a8c8f15a55d.jpeg,1732583319_c02afa793517fef845b3.jpeg,1732583319_bbada3f9db12d66fafee.jpeg', '2024-11-25 18:08:39');
 
 -- --------------------------------------------------------
 
@@ -523,9 +524,9 @@ CREATE TABLE `vehicles` (
 --
 
 INSERT INTO `vehicles` (`vehicle_id`, `vehicle_name`, `license_plate`, `capacity`, `vehicle_type`, `vehicle_photo`, `status`, `created_at`, `updated_at`) VALUES
-(7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'available', '2024-09-30 21:44:20', '2024-11-25 11:09:02'),
-(9, 'Suzuki APV Putih', 'DK 1234 ABC', 8, 'APV', '1728292802_0e76ce8c9e2331e8ddef.png', 'available', '2024-10-07 02:20:02', '2024-11-11 14:17:50'),
-(10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'available', '2024-10-07 02:21:40', '2024-11-25 11:28:47');
+(7, 'Avanza Black', 'DK 1234 AB', 6, 'MPV', '1727757860_3598cad48cb5adbdbd31.jpg', 'in_use', '2024-09-30 21:44:20', '2024-12-03 03:38:30'),
+(9, 'Suzuki APV Putih', 'DK 1234 ABC', 8, 'APV', '1728292802_0e76ce8c9e2331e8ddef.png', 'in_use', '2024-10-07 02:20:02', '2024-12-03 02:32:02'),
+(10, 'Suzuki Ertiga Abu - Abu', 'DK 3456 BCD', 5, 'MPV', '1728292900_1fe2e62667d6773573d4.png', 'in_use', '2024-10-07 02:21:40', '2024-12-03 02:32:09');
 
 --
 -- Indexes for dumped tables
@@ -601,9 +602,7 @@ ALTER TABLE `payments`
 --
 ALTER TABLE `refunds`
   ADD PRIMARY KEY (`refund_id`),
-  ADD KEY `refunds_ibfk_1` (`booking_id`),
-  ADD KEY `refunds_ibfk_2` (`customer_id`),
-  ADD KEY `refunds_ibfk_3` (`payment_id`);
+  ADD KEY `booking_id` (`booking_id`) USING BTREE;
 
 --
 -- Indexes for table `reviews`
@@ -632,31 +631,31 @@ ALTER TABLE `bank_travel`
 -- AUTO_INCREMENT for table `booking_destinations`
 --
 ALTER TABLE `booking_destinations`
-  MODIFY `booking_destination_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `booking_destination_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `booking_vehicles`
 --
 ALTER TABLE `booking_vehicles`
-  MODIFY `booking_vehicle_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `booking_vehicle_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `payment_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `refunds`
 --
 ALTER TABLE `refunds`
-  MODIFY `refund_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `refund_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `review_id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `vehicles`
@@ -706,9 +705,7 @@ ALTER TABLE `payments`
 -- Constraints for table `refunds`
 --
 ALTER TABLE `refunds`
-  ADD CONSTRAINT `refunds_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `refunds_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customer` (`customer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `refunds_ibfk_3` FOREIGN KEY (`payment_id`) REFERENCES `payments` (`payment_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `refunds_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`booking_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `reviews`

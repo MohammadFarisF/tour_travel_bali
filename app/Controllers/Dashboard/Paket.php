@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use App\Models\paketmodel;
 use App\Models\DestinasiModel;
 use App\Models\CustModel;
+use App\Models\kendaraanmodel;
 
 class Paket extends BaseController
 {
@@ -13,6 +14,7 @@ class Paket extends BaseController
     protected $destinasiModel;
     protected $roleLabel;
     protected $customerModel;
+    protected $kendaraanModel;
 
     public function __construct()
     {
@@ -20,6 +22,7 @@ class Paket extends BaseController
         $this->paketModel = new paketmodel();
         $this->destinasiModel = new DestinasiModel();
         $this->customerModel = new CustModel();
+        $this->kendaraanModel = new kendaraanmodel();
         $this->roleLabel = (session()->get('user_role') === 'owner') ? 'Super Admin' : 'Admin';
     }
 
@@ -222,6 +225,8 @@ class Paket extends BaseController
         $customerId = session()->get('userid');
         $customer = $this->customerModel->find($customerId);
 
+        $availableVehicles = $this->kendaraanModel->where('status', 'available')->findAll();
+
         // Check if customer data is complete
         $isDataComplete = !empty($customer['full_name']) &&
             !empty($customer['email']) &&
@@ -236,6 +241,7 @@ class Paket extends BaseController
             'destinations' => $destinations,
             'customer' => $customer,
             'isDataComplete' => $isDataComplete,
+            'availableVehicles' => !empty($availableVehicles),
             'contact' => [
                 'phone' => '6282236906042', // Replace with actual contact phone
                 'email' => 'explorebali52@gmail.com' // Replace with actual contact email

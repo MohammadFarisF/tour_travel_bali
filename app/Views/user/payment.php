@@ -84,6 +84,9 @@
             <div class="card mb-4">
                 <div class="card-header-primary d-flex justify-content-between align-items-center">
                     <span>Data Pemesanan</span>
+                    <button class="btn btn-danger text-white" data-bs-toggle="modal" data-bs-target="#termsModal">
+                        Syarat dan Ketentuan
+                    </button>
                 </div>
                 <div class="card-body">
                     <table id="datatablesSimple" class="table table-striped table-bordered">
@@ -235,6 +238,47 @@
                             <button type="submit" class="btn btn-primary">Kirim Review</button>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="termsModal" tabindex="-1" aria-labelledby="termsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="termsModalLabel">Syarat dan Ketentuan Pemesanan</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6><strong>1. Kebijakan Refund</strong></h6>
+                    <p>Refund akan diproses berdasarkan waktu pembatalan pemesanan dengan ketentuan:</p>
+                    <ul>
+                        <li><strong>Lebih dari 7 hari</strong> sebelum tanggal keberangkatan: <span class="text-success">100% dana dikembalikan</span> (kecuali biaya administrasi).</li>
+                        <li><strong>Antara 3 hingga 7 hari</strong> sebelum tanggal keberangkatan: <span class="text-warning">50% dana dikembalikan</span>.</li>
+                        <li><strong>Kurang dari 3 hari</strong> sebelum tanggal keberangkatan: <span class="text-danger">Tidak ada pengembalian dana</span>.</li>
+                    </ul>
+
+                    <h6><strong>2. Kebijakan Pembatalan</strong></h6>
+                    <p>Pembatalan dapat dilakukan melalui halaman detail pemesanan dari setiap kode pemesanan melalui tombol detail di akun pengguna dan mengikuti kebijakan refund di atas.</p>
+
+                    <h6><strong>3. Pembayaran</strong></h6>
+                    <p>
+                        Pemesanan dianggap sah setelah pembayaran diterima dan dikonfirmasi.
+                        Jika bukti pembayaran belum diunggah dalam <strong>24 jam</strong>, sistem berhak membatalkan pesanan.
+                    </p>
+
+                    <h6><strong>4. Ketentuan Perjalanan</strong></h6>
+                    <p>
+                        Pelanggan diharapkan hadir di lokasi keberangkatan tepat waktu. Keterlambatan dapat menyebabkan pembatalan tanpa refund.
+                    </p>
+
+                    <h6><strong>5. Keamanan dan Asuransi</strong></h6>
+                    <p>
+                        Kami tidak bertanggung jawab atas kehilangan barang pribadi selama perjalanan. Asuransi perjalanan tidak termasuk dalam harga paket.
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
