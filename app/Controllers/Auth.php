@@ -206,7 +206,8 @@ class Auth extends BaseController
             'phone_number' => $this->request->getPost('no_hp'),
             'password' => $passwordHash,
             'user_role' => 'customer',
-            'created_at' => date('Y-m-d H:i:s'), // Set waktu pembuatan
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => NULL // Set waktu pembuatan
         ];
 
         // Simpan data ke database dengan error handling

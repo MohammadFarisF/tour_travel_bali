@@ -60,9 +60,13 @@
                                         <?php endif; ?>
                                     </td>
                                     <td>
-                                        <form action="<?php echo site_url('/bali/admin/delete/' . $user['user_id']); ?>" method="post" style="display:inline;">
-                                            <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this admin?');">Delete</button>
-                                        </form>
+                                        <?php if (session()->get('userid') != $user['user_id']): ?>
+                                            <form action="<?php echo site_url('/bali/admin/delete/' . $user['user_id']); ?>" method="post" style="display:inline;">
+                                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this admin?');">Delete</button>
+                                            </form>
+                                        <?php else: ?>
+                                            <p>Cannot Delete</p>
+                                        <?php endif; ?>
                                     </td>
                                 </tr>
                             <?php endforeach; ?>

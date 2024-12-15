@@ -115,7 +115,8 @@ class Destinasi extends BaseController
                 'description' => $this->request->getPost('description'),
                 'foto' => $foto,
                 'harga_per_orang' => $harga,
-                'created_at' => date('Y-m-d H:i:s')
+                'created_at' => date('Y-m-d H:i:s'),
+                'updated_at' => NULL
             ];
 
             $this->destinasiModel->save($data);
@@ -150,7 +151,13 @@ class Destinasi extends BaseController
             return redirect()->to(base_url('/bali'))->with('dilarang_masuk', 'Anda tidak memiliki akses untuk ke halaman ini.');
         }
         $harga = $this->request->getPost('harga');
-        $harga = str_replace(['Rp ', '.', ','], ['', '', '.'], $harga);
+
+        // Menghapus simbol 'Rp ' dan titik sebagai pemisah ribuan
+        $harga = preg_replace('/[Rp. ]/', '', $harga);
+
+        // Pastikan harga adalah integer
+        $harga = (int)str_replace(',', '', $harga);
+
         // Mengupdate data destinasi berdasarkan ID
         $id = $this->request->getPost('destination_id');
         $data = [
@@ -159,7 +166,6 @@ class Destinasi extends BaseController
             'longitude' => $this->request->getPost('longitude'), // Ubah field ini
             'description' => $this->request->getPost('description'),
             'harga_per_orang' => $harga,
-            'created_at' => date('Y-m-d H:i:s'),
             'updated_at' => date('Y-m-d H:i:s')
         ];
         $this->destinasiModel->update($id, $data);

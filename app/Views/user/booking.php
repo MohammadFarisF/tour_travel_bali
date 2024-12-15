@@ -45,11 +45,26 @@
                                             <li>-</li>
                                         <?php endif; ?>
                                     </ul>
+                                    <?php
+                                    // Menggunakan IntlDateFormatter untuk format tanggal
+                                    function formatTanggal($tanggal)
+                                    {
+                                        $formatter = new IntlDateFormatter(
+                                            'id_ID', // Locale untuk bahasa Indonesia
+                                            IntlDateFormatter::FULL, // Format hari
+                                            IntlDateFormatter::NONE, // Format waktu
+                                            null, // Zona waktu
+                                            IntlDateFormatter::GREGORIAN, // Kalender Gregorian
+                                            'EEEE, dd MMMM yyyy' // Format tanggal
+                                        );
+                                        return $formatter->format(strtotime($tanggal));
+                                    }
+                                    ?>
 
                                     <p><strong>Alamat Penjemputan:</strong> <?= esc($booking['address']); ?></p>
                                     <p><strong>Total Peserta:</strong> <?= esc($booking['total_people']); ?> Orang</p>
-                                    <p><strong>Tanggal Keberangkatan:</strong> <?= date('l, d F Y', strtotime($booking['departure_date'])); ?></p>
-                                    <p><strong>Tanggal Kepulangan:</strong> <?= date('l, d F Y', strtotime($booking['return_date'])); ?></p>
+                                    <p><strong>Tanggal Keberangkatan:</strong> <?= formatTanggal($booking['departure_date']); ?></p>
+                                    <p><strong>Tanggal Kepulangan:</strong> <?= formatTanggal($booking['return_date']); ?></p>
                                     <p><strong>Request Pelanggan:</strong> <?= !empty($booking['cust_request']) ? esc($booking['cust_request']) : '-'; ?></p>
                                     <!-- Add this section where you want to display the vehicle details -->
                                     <?php if (!empty($vehicles)): ?>

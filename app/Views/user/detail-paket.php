@@ -111,7 +111,7 @@
                                     <input type="hidden" name="package_id" value="<?= esc($package['package_id']); ?>">
                                     <div class="mb-3">
                                         <label for="booking_date" class="form-label">Booking Date:</label>
-                                        <input type="text" class="form-control" id="booking_date" name="booking_date" style="background-color: #ffffff;" required>
+                                        <input type="text" class="form-control" id="booking_date" name="booking_date" placeholder="Pilih Tanggal Booking" style="background-color: #ffffff;" required>
                                     </div>
 
                                     <div class="mb-3">
@@ -161,11 +161,14 @@
                             <div class="card-header-primary">Have Questions?</div>
                             <div class="card-body">
                                 <p>Contact us via WhatsApp or email for any questions.</p>
-                                <a href="https://wa.me/<?= esc($contact['phone']); ?>" class="btn btn-success">
+                                <a href="https://wa.me/<?= esc($contact['phone']); ?>?text=Saya%20ingin%20bertanya%20-%20tanya%20mengenai%20info%20jelas%20dari%20Paket%20Perjalanan%20<?= urlencode($package['package_name']); ?>" target="_blank" class="btn btn-success">
                                     <img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp Icon" style="width: 20px; height: 20px; margin-right: 5px;">
                                     Contact Us on WhatsApp
                                 </a>
-                                <p>Email: <?= esc($contact['email']); ?></p>
+                                <a href="mailto:<?= esc($contact['email']); ?>?subject=Pertanyaan%20Paket%20Perjalanan%20<?= urlencode($package['package_name']); ?>&body=Saya%20ingin%20bertanya%20mengenai%20informasi%20lengkap%20dari%20Paket%20Perjalanan%20<?= urlencode($package['package_name']); ?>" class="btn btn-primary mt-2" target="_blank">
+                                    <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email Icon" style="width: 20px; height: 20px;">
+                                    Contact Us via Email
+                                </a>
                             </div>
                         </div>
                     </div>
@@ -193,7 +196,8 @@
 
                         <form id="confirm-booking-form" action="<?= base_url('confirm-booking'); ?>" method="POST">
                             <input type="hidden" id="hidden_package_id" name="package_id">
-                            <input type="hidden" id="hidden_booking_date" name="booking_date">
+                            <input type="hidden" id="hidden_start" name="start_date">
+                            <input type="hidden" id="hidden_end" name="end_date">
                             <input type="hidden" id="hidden_num_people" name="num_people">
                             <input type="hidden" id="hidden_total_price" name="total_price">
                             <input type="hidden" id="hidden_destinations" name="destinations">
@@ -218,7 +222,13 @@
         <script>
             feather.replace();
             // Initialize the map
-            var map = L.map('map').setView([-8.434760395434676, 115.2791456846530], 9);
+            <?php if (!empty($destinations)): ?>
+                // Ambil latitude dan longitude dari destinasi pertama
+                var initialLatitude = <?= esc($destinations[0]['latitude']); ?>;
+                var initialLongitude = <?= esc($destinations[0]['longitude']); ?>;
+            <?php endif; ?>
+
+            var map = L.map('map').setView([initialLatitude, initialLongitude], 9);
 
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 maxZoom: 19,
@@ -417,72 +427,102 @@
 
                 const modal = document.getElementById('bookingModal');
 
-                // Check if the user is logged in and has the 'customer' role
                 if (!isLoggedIn || !isCustomer) {
                     redirectToLogin();
                     document.getElementById('book_now_button').style.display = 'none';
                     document.getElementById('book_now_button_logged_out').style.display = 'inline-block';
-                    return; // Prevent further execution
+                    return;
                 }
 
                 const isDataComplete = <?= json_encode($isDataComplete); ?>;
 
                 if (!isDataComplete) {
                     alert('Lengkapi data diri Anda terlebih dahulu di halaman profil.');
-                    window.location.href = '<?= base_url('profile/my_account'); ?>'; // Redirect to profile page
-                    return; // Prevent further execution
-                }
-
-                const availableVehicles = <?= json_encode($availableVehicles); ?>; // Pass the availability status from PHP
-
-                if (!availableVehicles) {
-                    alert('Mohon Maaf anda sedang tidak dapat memesan paket perjalanan');
-                    window.location.href = '<?= base_url('package-detail/' . esc($package['package_id'])); ?>'; // Redirect to profile page
+                    window.location.href = '<?= base_url('profile/my_account'); ?>';
                     return;
                 }
 
-                // Retrieve data from the form if user is logged in and has the 'customer' role
+                const availableVehicles = <?= json_encode($availableVehicles); ?>;
+
+                if (!availableVehicles) {
+                    alert('Mohon Maaf anda sedang tidak dapat memesan paket perjalanan');
+                    window.location.href = '<?= base_url('package-detail/' . esc($package['package_id'])); ?>';
+                    return;
+                }
+
                 const bookingData = {
-                    packageName: '<?= esc($package['package_name']); ?>', // Package name
+                    packageName: '<?= esc($package['package_name']); ?>',
                     destinations: Array.from(document.querySelectorAll('input[name="destinations[]"]:checked')).map(
                         checkbox => {
-                            const destinationName = checkbox.nextElementSibling.innerText.split(' - ')[0]; // Mengambil nama
-                            const destinationId = checkbox.value; // Mengambil ID dari checkbox
+                            const destinationName = checkbox.nextElementSibling.innerText.split(' - ')[0];
+                            const destinationId = checkbox.value;
                             return {
                                 name: destinationName,
                                 id: destinationId
-                            }
+                            };
                         }
-                    ), // Only destination names
-                    numPeople: document.getElementById('num_people').value, // Number of participants
-                    totalPrice: document.getElementById('total_price').value,
-                    bookingDate: document.getElementById('booking_date').value
+                    ),
+                    numPeople: document.getElementById('num_people').value,
+                    totalPrice: document.getElementById('total_price').value
                 };
 
-                const bookingDate = document.getElementById('booking_date').value;
+                const bookingDateValue = document.getElementById('booking_date').value;
 
-                // Convert bookingDate to YYYY-MM-DD format
-                const formattedBookingDate = new Date(bookingDate).toISOString().split('T')[0];
-                const totalPriceFormatted = parseFloat(bookingData.totalPrice.replace(/[^0-9,-]+/g, "").replace(",", ".")).toFixed(2);
+                const [startDateStr, endDateStr] = bookingDateValue.split(' - ');
 
-                // Set data in the modal (only if the user is logged in and a customer)
+                const monthNames = {
+                    'Januari': 0,
+                    'Februari': 1,
+                    'Maret': 2,
+                    'April': 3,
+                    'Mei': 4,
+                    'Juni': 5,
+                    'Juli': 6,
+                    'Agustus': 7,
+                    'September': 8,
+                    'Oktober': 9,
+                    'November': 10,
+                    'Desember': 11
+                };
+
+                const formatDate = (dateStr) => {
+                    const [day, monthName, year] = dateStr.split(' ');
+                    const month = monthNames[monthName];
+                    const formattedDate = new Date(Date.UTC(year, month, day)); // Using UTC to avoid timezone issue
+                    return formattedDate.toISOString().split('T')[0]; // 'YYYY-MM-DD'
+                };
+
+                let startDateISO, endDateISO;
+
+                if (endDateStr) {
+                    // Jika ada dua tanggal (rentang)
+                    startDateISO = formatDate(startDateStr);
+                    endDateISO = formatDate(endDateStr);
+                } else {
+                    // Jika hanya ada satu tanggal
+                    startDateISO = formatDate(bookingDateValue);
+                    endDateISO = startDateISO; // Set start and end date the same
+                }
+
+                // Set hidden input values
+                document.getElementById('hidden_start').value = startDateISO;
+                document.getElementById('hidden_end').value = endDateISO;
+
+                // Set data in the modal
                 document.getElementById('package_name').innerText = bookingData.packageName;
                 document.getElementById('participants_count').innerText = bookingData.numPeople + ' people';
                 document.getElementById('total_price_display').innerText = bookingData.totalPrice;
-                document.getElementById('departure_date').innerText = bookingData.bookingDate;
+                document.getElementById('departure_date').innerText = bookingDateValue;
 
-                // Display only destination names in the modal list
                 document.getElementById('destination_list').innerHTML = bookingData.destinations
-                    .map(dest => `<li>${dest.name}</li>`) // Ambil nama dari objek
+                    .map(dest => `<li>${dest.name}</li>`)
                     .join('');
 
-                // Ensure the hidden fields for num_people and total_price are updated
                 document.getElementById('hidden_num_people').value = bookingData.numPeople;
-                document.getElementById('hidden_total_price').value = totalPriceFormatted; // Set formatted total price
+                document.getElementById('hidden_total_price').value = parseFloat(bookingData.totalPrice.replace(/[^0-9,-]+/g, "").replace(",", ".")).toFixed(2);
                 document.getElementById('hidden_package_id').value = '<?= esc($package['package_id']); ?>';
-                document.getElementById('hidden_booking_date').value = formattedBookingDate;
 
-                const destinationIds = bookingData.destinations.map(dest => dest.id); // Ambil ID destinasi sebagai array
+                const destinationIds = bookingData.destinations.map(dest => dest.id);
                 document.getElementById('hidden_destinations').value = JSON.stringify(destinationIds);
 
                 bookingModal.show();
@@ -545,11 +585,116 @@
         </script>
 
         <script>
-            // Initialize Flatpickr for the booking date
-            flatpickr("#booking_date", {
-                minDate: "today", // Disable past dates
-                dateFormat: "d M Y", // Format the date as dd MM yyyy
-                defaultDate: "today", // Default to today's date
-                allowInput: false, // Disable manual typing (only calendar selection allowed)
+            document.addEventListener('DOMContentLoaded', function() {
+                const packageType = '<?= esc($package['package_type']); ?>';
+                const packageDuration = <?= esc($package['hari'] ?? 1); ?>;
+
+                const flatpickrInstance = flatpickr("#booking_date", {
+                    minDate: "today",
+                    dateFormat: "d F Y",
+                    allowInput: false,
+                    mode: packageType === 'multiple_day' ? 'range' : 'single',
+
+                    onChange: function(selectedDates, dateStr, instance) {
+                        if (packageType === 'multiple_day') {
+                            // Handle multiple_day logic
+                            if (selectedDates.length === 1) {
+                                const startDate = selectedDates[0];
+                                const endDate = new Date(startDate);
+                                endDate.setDate(endDate.getDate() + (packageDuration - 1));
+
+                                instance.setDate([startDate, endDate]);
+
+                                const formattedStartDate = startDate.toLocaleDateString('id-ID', {
+                                    day: '2-digit',
+                                    month: 'long',
+                                    year: 'numeric'
+                                });
+                                const formattedEndDate = endDate.toLocaleDateString('id-ID', {
+                                    day: '2-digit',
+                                    month: 'long',
+                                    year: 'numeric'
+                                });
+
+                                document.getElementById('booking_date').value =
+                                    `${formattedStartDate} - ${formattedEndDate}`;
+                            }
+                        } else {
+                            // Handle single_destination logic
+                            if (selectedDates.length === 1) {
+                                const selectedDate = selectedDates[0];
+                                const formattedDate = selectedDate.toLocaleDateString('id-ID', {
+                                    day: '2-digit',
+                                    month: 'long',
+                                    year: 'numeric'
+                                });
+
+                                document.getElementById('booking_date').value = formattedDate;
+                            }
+                        }
+                        instance.close(); // Close the calendar after selection
+                    },
+
+                    onReady: function() {
+                        const style = document.createElement('style');
+                        style.innerHTML = `
+                .flatpickr-day.selected, 
+                .flatpickr-day.startRange, 
+                .flatpickr-day.endRange,
+                .flatpickr-day.selected.inRange, 
+                .flatpickr-day.startRange.inRange, 
+                .flatpickr-day.endRange.inRange {
+                    background-color: #007bff !important;
+                    border-color: #007bff !important;
+                    color: white !important;
+                }
+                .flatpickr-day.inRange,
+                .flatpickr-day.prevMonthDay.inRange,
+                .flatpickr-day.nextMonthDay.inRange,
+                .flatpickr-day.today.inRange,
+                .flatpickr-day.prevMonthDay.today.inRange,
+                .flatpickr-day.nextMonthDay.today.inRange {
+                    background-color: #007bff33 !important;
+                    border-color: #007bff33 !important;
+                    color: #007bff !important;
+                }
+                .flatpickr-day.hover-in-range {
+                    background-color: #007bff33 !important;
+                    border-color: #007bff33 !important;
+                    color: #007bff !important;
+                }
+            `;
+                        document.head.appendChild(style);
+                    },
+
+                    onDayCreate: function(dObj, dStr, fp, dayElem) {
+                        if (packageType === 'multiple_day') {
+                            dayElem.addEventListener('mouseenter', function() {
+                                if (!fp.selectedDates.length) {
+                                    const hoverDate = new Date(dayElem.dateObj);
+                                    const rangeEndDate = new Date(hoverDate);
+                                    rangeEndDate.setDate(rangeEndDate.getDate() + (packageDuration - 1));
+
+                                    const allDays = fp.days.childNodes;
+                                    allDays.forEach(day => {
+                                        const currentDate = new Date(day.dateObj);
+                                        if (currentDate >= hoverDate && currentDate <= rangeEndDate) {
+                                            day.classList.add('hover-in-range');
+                                        }
+                                    });
+                                }
+                            });
+
+                            dayElem.addEventListener('mouseleave', function() {
+                                if (!fp.selectedDates.length) {
+                                    const allDays = fp.days.childNodes;
+                                    allDays.forEach(day => {
+                                        day.classList.remove('hover-in-range');
+                                    });
+                                }
+                            });
+                        }
+                    }
+                });
             });
         </script>

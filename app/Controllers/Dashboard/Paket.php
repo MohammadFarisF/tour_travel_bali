@@ -148,7 +148,6 @@ class Paket extends BaseController
             'package_type' => $packageType,
             'description' => $this->request->getPost('description'),
             'hari' => $dayCount, // Set day count based on the package type
-            'created_at' => $this->request->getPost('created_at'), // Bisa disesuaikan
             'updated_at' => date('Y-m-d H:i:s')
         ];
 

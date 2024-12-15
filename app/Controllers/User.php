@@ -27,7 +27,12 @@ class User extends BaseController
     public function index()
     {
         // Ambil semua paket
-        $packages = $this->paketModel->findAll();
+        $packages = $this->paketModel
+            ->select('packages.*, COUNT(destinations.destination_id) as destination_count')
+            ->join('destinations', 'destinations.package_id = packages.package_id', 'inner') // INNER JOIN memastikan hanya paket dengan destinasi
+            ->groupBy('packages.package_id')
+            ->having('destination_count > 0') // Filter hanya paket dengan destinasi
+            ->findAll();
 
         $reviews = $this->reviewModel->getReviewsWithPackageAndBooking();
 
@@ -37,6 +42,8 @@ class User extends BaseController
             'reviews' => $reviews,
             'title' => ''
         ];
+
+
 
         // Muat tampilan
         echo view('user/Template/header', $data);

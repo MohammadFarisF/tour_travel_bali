@@ -76,7 +76,7 @@ class Admin extends BaseController
         if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
             // Pindahkan file ke folder uploads dengan nama asli
             $fileName = $filePhoto->getRandomName(); // Buat nama file acak
-            $filePhoto->move('uploads/user', $fileName); // Simpan file ke folder uploads
+            $filePhoto->move('uploads/admin', $fileName); // Simpan file ke folder uploads
         }
         // Menyimpan data admin ke database
         $this->adminModel->save([
@@ -86,9 +86,9 @@ class Admin extends BaseController
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT), // Hash password untuk keamanan
             'phone_number' => $this->request->getPost('phone_number'),
             'user_role' => $this->request->getPost('user_role'),
-            'photo' => $this->request->getPost('photo'),
+            'photo' => $fileName,
             'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
+            'updated_at' => NULL
         ]);
 
         // Redirect ke halaman daftar admin setelah berhasil menyimpan
@@ -104,6 +104,10 @@ class Admin extends BaseController
         $admin = $this->adminModel->find($id);
         if (!$admin) {
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Admin tidak ditemukan');
+        }
+
+        if (session()->get('user_id') == $id) {
+            return redirect()->to(base_url('/bali/admin'))->with('error', 'Anda tidak dapat menghapus akun Anda sendiri.');
         }
 
         // Hapus data admin dari database
