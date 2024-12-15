@@ -47,7 +47,7 @@
                                     <div class="mb-3">
                                         <label for="day_count" class="form-label">Jumlah Hari</label>
                                         <div class="input-group">
-                                            <input type="number" class="form-control" id="day_count" name="day_count" placeholder="Masukkan Jumlah Hari" min="1" required>
+                                            <input type="number" class="form-control" id="day_count" name="day_count" value="<?= esc($package['hari']) ?>" min="1" required>
                                             <span class="input-group-text text-large"><b>Hari</b></span>
                                         </div>
                                     </div>

@@ -75,7 +75,7 @@ class Bank_Travel extends BaseController
             'bank_name' => $this->request->getPost('bank_name'),
             'photo' => $fileName,
             'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
+            'updated_at' => NULL
         ]);
 
         // Redirect ke halaman daftar travel setelah berhasil menyimpan

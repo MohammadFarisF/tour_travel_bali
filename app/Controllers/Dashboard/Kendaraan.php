@@ -71,7 +71,8 @@ class Kendaraan extends BaseController
             'vehicle_type' => $this->request->getPost('vehicle_type'),
             'vehicle_photo' => $fileName, // Simpan nama file di database
             'status' => 'available',
-            'created_at' => date('Y-m-d H:i:s')
+            'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => NULL
         ]);
 
         return redirect()->to(base_url('/bali/kendaraan'));

@@ -244,19 +244,31 @@ class Booking extends BaseController
             'package_id' => 'required',
             'address' => 'required|string',
             'num_people' => 'required|integer',
-            'cust_request' => 'permit_empty|string',
-            'booking_date' => 'required|date'
+            'cust_request' => 'permit_empty|string'
         ]);
 
         // Retrieve form data
         $packageId = $this->request->getPost('package_id');
         $customerId = session()->get('userid'); // Logged-in user ID
         $totalPeople = $this->request->getPost('num_people');
-        $bookingDate = $this->request->getPost('booking_date');
+        $startDate = $this->request->getPost('start_date');
+        $endDate = $this->request->getPost('end_date');
         $destinations = json_decode($this->request->getPost('destinations'), true);
         $totalAmount = $this->request->getPost('total_price');
         $address = $this->request->getPost('address');
         $custRequest = $this->request->getPost('cust_request');
+
+        log_message('info', 'Booking Data: ' . json_encode([
+            'package_id' => $packageId,
+            'customer_id' => $customerId,
+            'total_people' => $totalPeople,
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+            'destinations' => $destinations,
+            'total_amount' => $totalAmount,
+            'address' => $address,
+            'cust_request' => $custRequest
+        ]));
 
         // Generate a random booking ID (same as booking code) in the format #B12345
         $bookingId = $this->generateUniqueBookingID();
@@ -267,13 +279,14 @@ class Booking extends BaseController
             'package_id' => $packageId,
             'address' => $address,
             'total_people' => $totalPeople,
-            'departure_date' => $bookingDate,
-            'return_date' => $bookingDate, // Assuming single day for now
+            'departure_date' => $startDate,
+            'return_date' => $endDate,
             'total_amount' => $totalAmount,
             'cust_request' => $custRequest,
             'booking_status' => 'pending',
             'payment_status' => 'pending',
             'created_at' => date('Y-m-d H:i:s'),
+            'updated_at' => NULL
         ];
 
         // Insert booking data into the database
