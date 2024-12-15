@@ -23,8 +23,9 @@
                         <div class="col-lg-5">
                             <!-- Basic login form-->
                             <div class="card shadow-lg border-0 rounded-lg mt-5">
-                                <div class="card-header justify-content-center">
+                                <div class="card-header d-flex justify-content-between align-items-center">
                                     <h3 class="fw-light my-4">Login</h3>
+                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#userInfoModal">User Info</button>
                                 </div>
                                 <div class="card-body">
                                     <?php if (session()->getFlashdata('danger')) : ?>
@@ -69,6 +70,35 @@
             </footer>
         </div>
     </div>
+
+    <!-- User Info Modal -->
+    <div class="modal fade" id="userInfoModal" tabindex="-1" aria-labelledby="userInfoModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="userInfoModalLabel">User Account Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <h6>SUPERADMIN</h6>
+                    <p>Username: teguhpratama@gmail.com</p>
+                    <p>Password: teguh123</p>
+                    <hr>
+                    <h6>ADMIN</h6>
+                    <p>Username: jakajayanto @mail.com</p>
+                    <p>Password: Jaka123</p>
+                    <hr>
+                    <h6>CUSTOMER</h6>
+                    <p>Username: agushariyanto@gmail.com</p>
+                    <p>Password: agus123</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
     <script src="<?= base_url() ?>asset_admin/js/scripts.js"></script>
 </body>
