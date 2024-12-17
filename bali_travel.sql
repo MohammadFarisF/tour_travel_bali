@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 15, 2024 at 02:20 PM
+-- Generation Time: Dec 17, 2024 at 09:26 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -148,7 +148,7 @@ CREATE TABLE `admin` (
 --
 
 INSERT INTO `admin` (`user_id`, `full_name`, `email`, `password`, `phone_number`, `user_role`, `photo`, `created_at`, `updated_at`) VALUES
-('U003', 'Teguh Pratama', 'teguhpratama@gmail.com', '$2y$10$UjjRopX9tEwbxP1S6bYObeSqs6H1ZFLodZ5WM0LnsIK0YKLI.WzJO', '081456286315', 'owner', '1734225146_faee40e7fec61cf51392.jpg', '2024-12-15 01:12:26', NULL),
+('U003', 'Teguh Pratama', 'teguhpratama@gmail.com', '$2y$10$UjjRopX9tEwbxP1S6bYObeSqs6H1ZFLodZ5WM0LnsIK0YKLI.WzJO', '081456286315', 'owner', '1734422714_e2719f2300c08070fad3.jpg', '2024-12-15 01:12:26', '2024-12-17 08:05:14'),
 ('U004', 'Jaka Jayanto', 'jakajayanto@mail.com', '$2y$10$odXt2omStdwzFzB8QexTAOt47lm8QpR4kw904XB.iplzj7Hzxtk4a', '081234567891', 'admin', '1734225235_07fdb60e50d9da880365.jpeg', '2024-12-15 01:13:56', NULL);
 
 -- --------------------------------------------------------
