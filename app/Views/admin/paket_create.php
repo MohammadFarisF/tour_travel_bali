@@ -50,7 +50,7 @@
                                     <div class="mb-3">
                                         <label for="day_count" class="form-label">Jumlah Hari</label>
                                         <div class="input-group">
-                                            <input type="number" class="form-control" id="day_count" name="day_count" placeholder="Masukkan Jumlah Hari" min="1" required>
+                                            <input type="number" class="form-control" id="day_count" name="day_count" placeholder="Masukkan Jumlah Hari" min="1">
                                             <span class="input-group-text text-large"><b>Hari</b></span>
                                         </div>
                                     </div>
@@ -81,13 +81,16 @@
         document.getElementById('package_type').addEventListener('change', function() {
             const packageType = this.value;
             const daysInputContainer = document.getElementById('days_input_container');
+            const dayCountField = document.getElementById('day_count');
 
             if (packageType === 'multiple_day') {
-                // Show the input field for day count
+                // Show the input field for day count and make it required
                 daysInputContainer.style.display = 'block';
+                dayCountField.required = true;
             } else {
-                // Hide the input field for day count when 'Single Destination' is selected
+                // Hide the input field for day count and make it not required
                 daysInputContainer.style.display = 'none';
+                dayCountField.required = false;
             }
         });
 

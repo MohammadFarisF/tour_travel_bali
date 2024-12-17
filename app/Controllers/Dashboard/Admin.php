@@ -150,11 +150,15 @@ class Admin extends BaseController
 
         if ($filePhoto && $filePhoto->isValid() && !$filePhoto->hasMoved()) {
             $fileName = $filePhoto->getRandomName();
-            $filePhoto->move('uploads/user', $fileName);
+            $filePhoto->move('uploads/admin', $fileName);
 
-            if ($oldPhoto && file_exists(FCPATH . 'uploads/user/' . $oldPhoto)) {
-                unlink(FCPATH . 'uploads/user/' . $oldPhoto);
+            // Hapus foto lama jika ada
+            if ($oldPhoto && file_exists(FCPATH . 'uploads/admin/' . $oldPhoto)) {
+                unlink(FCPATH . 'uploads/admin/' . $oldPhoto);
             }
+
+            // Update session photo
+            session()->set('userPhoto', $fileName);
         }
 
         $updateData = [

@@ -42,7 +42,7 @@ class Dashboard extends BaseController
         $destinations = $this->destinasiModel->findAll();
         $vehicles = $this->kendaraanModel->where('status', 'available')->findAll(); // Kendaraan dengan status 'available'
         $pendingPayments = $this->paymentModel->where('payment_status', 'pending')->countAllResults(); // Pembayaran yang masih 'pending'
-        $pendingRefunds = $this->refundModel->where('refund_status', 'pending')->countAllResults(); // Refund yang masih 'pending'
+        $pendingRefunds = $this->refundModel->where('refund_status', 'processed')->countAllResults(); // Refund yang masih 'pending'
         $currentDate = date('Y-m-d'); // Ambil tanggal saat ini
         $pendingTasks = $this->bookingModel->where('departure_date <', $currentDate)
             ->where('booking_status', 'confirmed')
